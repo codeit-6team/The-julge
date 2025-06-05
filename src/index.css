@@ -8,14 +8,61 @@
   font-style: normal;
 }
 
+/* reset */
 @layer base {
+  html,
+  body,
+  div,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  img,
+  ol,
+  ul,
+  li,
+  form,
+  label,
+  footer,
+  header,
+  nav,
+  section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+
+  /* HTML5 display-role reset for older browsers */
+  footer,
+  header,
+  nav,
+  section {
+    display: block;
+  }
+
+  body {
+    line-height: 1;
+  }
+
+  ol,
+  ul {
+    list-style: none;
+  }
+
   html {
     font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
   }
 }
 
-@import 'tailwindcss';
-
+/* style variables */
 @theme {
   --color-white: #ffffff;
   --color-gray-5: #fafafa;
