@@ -1,4 +1,12 @@
-function formatWorkTime({ startsAt, workHour }) {
+interface workTime {
+  startsAt: string;
+  workHour: number;
+}
+
+export default function formatWorkTime({
+  startsAt,
+  workHour,
+}: workTime): string {
   const date = new Date(startsAt);
 
   const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
@@ -12,5 +20,3 @@ function formatWorkTime({ startsAt, workHour }) {
 
   return `${year}-${month}-${day} ${hours}:${minutes}~${afterhours}:${minutes} `;
 }
-
-export default formatWorkTime;

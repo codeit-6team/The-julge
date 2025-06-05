@@ -1,4 +1,4 @@
-function calculateTimeDifference(createdAt) {
+export default function calculateTimeDifference(createdAt: string): string {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
 
@@ -23,5 +23,3 @@ function calculateTimeDifference(createdAt) {
     return `${years}년 전`;
   }
 }
-
-export default calculateTimeDifference;

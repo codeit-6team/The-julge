@@ -1,13 +1,21 @@
 import calculateTimeDifference from '@/utils/calculateTimeDefference';
 import formatWorkTime from '@/utils/formatWorkTime';
 
+interface alert {
+  status: 'accepted' | 'rejected';
+  restaurantName: string;
+  startsAt: string;
+  workHour: number;
+  createdAt: string;
+}
+
 export default function NotificationCard({
   status,
   restaurantName,
   startsAt,
   workHour,
   createdAt,
-}) {
+}: alert) {
   const formattedTime = formatWorkTime({
     startsAt,
     workHour,
