@@ -1,10 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "./App";
+import { createBrowserRouter } from 'react-router-dom';
+import App from '@/App';
 
 export default function createAppRouter() {
   return createBrowserRouter([
     {
-      path: "/",
+      path: '/',
       element: <App />,
     },
   ]);
