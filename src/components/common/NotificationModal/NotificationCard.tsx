@@ -25,7 +25,7 @@ export default function NotificationCard({
   const formattedStatusClass =
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
   return (
-    <div className="flex flex-col gap-1 w-[328px] py-4 px-3 ">
+    <div className="flex flex-col gap-1 w-[328px] py-4 px-3 bg-white border border-gray-20 rounded-[5px] ">
       {status === 'accepted' ? (
         <div className="w-[5px] h-[5px] rounded-full bg-blue-20"></div>
       ) : (
