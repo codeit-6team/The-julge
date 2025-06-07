@@ -5,6 +5,10 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'large' | 'medium' | 'small';
 }
 
-export default function Button({ children, ...props }: Props) {
-  return <button {...props}>{children}</button>;
+export default function Button({ className = '', children, ...props }: Props) {
+  return (
+    <button className={`${className}`} {...props}>
+      {children}
+    </button>
+  );
 }
