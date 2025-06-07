@@ -1,8 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import NotificationCard from './NotificationCard';
+import type { NotificationModalProps } from '@/types/notification';
 import close from '@/assets/icons/ic_close.svg';
 
-export default function NotificationModal({ data, count }) {
+export default function NotificationModal({ data, count }: NotificationModalProps) {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col px-5 py-10 bg-red-10 gap-4 h-screen md:py-6 md:border-1 md:border-gray-30 md:rounded-[10px] md:shadow-custom md:h-[420px] md:w-[368px]">

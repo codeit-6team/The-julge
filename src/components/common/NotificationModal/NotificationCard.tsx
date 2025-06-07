@@ -1,13 +1,6 @@
+import type { NotificationCardProps } from '@/types/notification';
 import calculateTimeDifference from '@/utils/calculateTimeDefference';
 import formatWorkTime from '@/utils/formatWorkTime';
-
-interface alert {
-  status: 'accepted' | 'rejected';
-  restaurantName: string;
-  startsAt: string;
-  workHour: number;
-  createdAt: string;
-}
 
 export default function NotificationCard({
   status,
@@ -15,7 +8,7 @@ export default function NotificationCard({
   startsAt,
   workHour,
   createdAt,
-}: alert) {
+}: NotificationCardProps) {
   const formattedTime = formatWorkTime({
     startsAt,
     workHour,
