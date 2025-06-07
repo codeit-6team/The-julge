@@ -49,8 +49,34 @@ export default function Pagination({
 
   return (
     <div className="flex items-center justify-center gap-4">
-      {/* 여기선 이전/다음 버튼 없이 번호만 보여줌 */}
+      {/* 이전 버튼 */}
+      <button
+        type="button"
+        onClick={() => onChangePage(currentPage - 1)}
+        disabled={currentPage === 1}
+      >
+        <img
+          src={currentPage === 1 ? ArrowLeftGray : ArrowLeft}
+          alt="이전 페이지"
+          className="w-5 h-5"
+        />
+      </button>
+
+      {/* 페이지 번호 버튼 */}
       <div className="flex gap-1">{renderPageNumbers()}</div>
+
+      {/* 다음 버튼 */}
+      <button
+        type="button"
+        onClick={() => onChangePage(currentPage + 1)}
+        disabled={currentPage === totalPages}
+      >
+        <img
+          src={currentPage === totalPages ? ArrowRightGray : ArrowRight}
+          alt="다음 페이지"
+          className="w-5 h-5"
+        />
+      </button>
     </div>
   );
 }
