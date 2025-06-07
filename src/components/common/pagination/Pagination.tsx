@@ -13,37 +13,25 @@ export default function Pagination({
   currentPage,
   onChangePage,
 }: Props) {
+  const groupSize = 7;
+  const currentGroup = Math.floor((currentPage - 1) / groupSize);
+  const groupStart = currentGroup * groupSize + 1;
+  const groupEnd = Math.min(groupStart + groupSize - 1, totalPages);
+
   const renderPageNumbers = () => {
-    let startPage = 1;
-    let endPage = totalPages;
-
-    if (totalPages > 7) {
-      if (currentPage <= 4) {
-        startPage = 1;
-        endPage = 7;
-      } else if (currentPage + 3 >= totalPages) {
-        startPage = totalPages - 6;
-        endPage = totalPages;
-      } else {
-        startPage = currentPage - 3;
-        endPage = currentPage + 3;
-      }
-    }
-
     return Array.from(
-      { length: endPage - startPage + 1 },
-      (_, index) => startPage + index,
+      { length: groupEnd - groupStart + 1 },
+      (_, index) => groupStart + index,
     ).map((pageNumber) => (
       <button
         key={pageNumber}
         type="button"
         onClick={() => onChangePage(pageNumber)}
-        className={`w-10 h-10 rounded flex items-center justify-center text-sm
-          ${
-            currentPage === pageNumber
-              ? 'text-white font-bold'
-              : 'text-black hover:bg-gray-100'
-          }`}
+        className={`w-10 h-10 rounded flex items-center justify-center text-sm ${
+          currentPage === pageNumber
+            ? 'text-white font-bold'
+            : 'text-black hover:bg-gray-100'
+        }`}
         style={{
           backgroundColor: currentPage === pageNumber ? '#FF8D72' : '#ffffff',
         }}
@@ -55,28 +43,24 @@ export default function Pagination({
 
   return (
     <div className="flex items-center justify-center gap-4">
-      {/* ← 이전 버튼 */}
-      {totalPages > 7 && (
-        <button
-          type="button"
-          onClick={() => onChangePage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
+      {/* 이전 그룹 이동 */}
+      {totalPages > groupSize && groupStart > 1 && (
+        <button type="button" onClick={() => onChangePage(groupStart - 1)}>
           <img
-            src={currentPage === 1 ? ArrowLeftGray : ArrowLeft}
-            alt="이전 페이지"
+            src={groupStart - 1 === 1 ? ArrowLeftGray : ArrowLeft}
+            alt="이전 페이지 그룹"
             className="w-5 h-5"
           />
         </button>
       )}
 
-      {/* 페이지 번호 버튼 */}
+      {/* 페이지 번호 */}
       <div className="flex gap-1">{renderPageNumbers()}</div>
 
-      {/* → 다음 버튼 (마지막 페이지일 때 숨김) */}
-      {totalPages > 7 && currentPage < totalPages && (
-        <button type="button" onClick={() => onChangePage(currentPage + 1)}>
-          <img src={ArrowRight} alt="다음 페이지" className="w-5 h-5" />
+      {/* 다음 그룹 이동 */}
+      {totalPages > groupSize && groupEnd < totalPages && (
+        <button type="button" onClick={() => onChangePage(groupEnd + 1)}>
+          <img src={ArrowRight} alt="다음 페이지 그룹" className="w-5 h-5" />
         </button>
       )}
     </div>
