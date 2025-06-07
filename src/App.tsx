@@ -13,16 +13,29 @@ import Post from './pages/post/Post';
 export default function App() {
   return (
     <Routes>
+      {/* 공통 페이지 */}
       <Route path="/" element={<PostList />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/owner/store" element={<Store />} />
-      <Route path="/owner/store/edit" element={<StoreEdit />} />
-      <Route path="/owner/post" element={<StoreForm />} />
-      <Route path="/owner/post/:id" element={<StorePost />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/profile/edit" element={<ProfileForm />} />
-      <Route path="/post/:id" element={<Post />} />
+      <Route path=":id" element={<Post />} />
+      <Route path="login" element={<Login />} />
+      <Route path="signup" element={<Signup />} />
+
+      {/* 사장님 페이지 */}
+      <Route path="owner">
+        <Route path="store">
+          <Route index element={<Store />} />
+          <Route path="edit" element={<StoreEdit />} />
+        </Route>
+        <Route path="post">
+          <Route index element={<StoreForm />} />
+          <Route path=":id" element={<StorePost />} />
+        </Route>
+      </Route>
+
+      {/* 알바님 프로필 페이지 */}
+      <Route path="profile">
+        <Route index element={<Profile />} />
+        <Route path="edit" element={<ProfileForm />} />
+      </Route>
     </Routes>
   );
 }
