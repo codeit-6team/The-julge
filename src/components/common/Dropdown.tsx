@@ -64,13 +64,13 @@ export default function Dropdown({
 
       {isOpen && (
         <ul
-          className={`absolute right-0 left-0 mt-2 flex cursor-pointer flex-col justify-center rounded-md border border-gray-20 bg-white text-black ${variant === 'form' ? 'h-[230px] w-full overflow-y-scroll' : 'h-[160px] w-[105px]'}`}
+          className={`absolute right-0 left-0 mt-2 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black ${variant === 'form' ? 'h-[230px] w-full overflow-y-auto' : 'h-[160px] w-[105px]'}`}
         >
           {items.map((item) => (
             <li
               key={item}
               onClick={() => handleSelect(item)}
-              className={`flex w-full cursor-pointer items-center justify-center border-b border-gray-20 text-sm leading-[22px] font-regular text-black last:border-b-0 ${variant === 'form' ? 'py-3' : 'py-2'}`}
+              className={`flex w-full cursor-pointer justify-center border-b border-gray-20 text-sm leading-[22px] font-regular text-black last:border-b-0 ${variant === 'form' ? 'py-3' : 'py-2'}`}
             >
               {item}
             </li>
