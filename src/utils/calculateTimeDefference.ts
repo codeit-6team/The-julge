@@ -1,10 +1,10 @@
 /**
  * 주어진 날짜로부터 현재까지의 경과 시간을 사람이 읽기 좋은 문자열로 반환합니다.
  *
- * @param {string} createdAt - 기준이 되는 날짜 및 시간 (ISO 8601 형식 문자열)
+ * @param {string|number} createdAt - 기준이 되는 날짜 및 시간 (ISO 8601 형식 문자열 / timestamp 형식)
  * @returns {string} 현재부터 `createdAt`까지의 경과 시간 (예: '방금', '5분 전', '3시간 전', '2일 전', '1달 전', '1년 전')
  */
-export default function calculateTimeDifference(createdAt: string): string {
+export default function calculateTimeDifference(createdAt: string | number): string {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
 

@@ -3,7 +3,7 @@
  */
 interface workTime {
   /** 공고 시작 시간 (ISO 8601 형식 문자열) */
-  startsAt: string;
+  startsAt: string | number;
 
   /** 근무 시간 (시간 단위) */
   workHour: number;
