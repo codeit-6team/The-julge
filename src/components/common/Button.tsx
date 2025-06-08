@@ -5,9 +5,17 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'large' | 'medium' | 'small';
 }
 
-export default function Button({ className = '', children, ...props }: Props) {
+export default function Button({
+  solid = true,
+  className = '',
+  children,
+  ...props
+}: Props) {
   return (
-    <button className={`${className}`} {...props}>
+    <button
+      className={`${solid ? 'bg-red-40 text-white' : 'bg-white text-red-40 border border-red-40'} ${className}`}
+      {...props}
+    >
       {children}
     </button>
   );
