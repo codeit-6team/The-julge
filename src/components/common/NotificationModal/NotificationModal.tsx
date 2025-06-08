@@ -6,36 +6,35 @@ import close from '@/assets/icons/ic_close.svg';
  * 개별 알림 항목을 나타내는 인터페이스입니다.
  */
 interface NotificationItem {
-  item: {
-    /** 생성 일시 (ISO 8601 문자열) */
-    createdAt: string;
+  /** 생성 일시 (ISO 8601 문자열) */
+  createdAt: string;
 
-    /** 결과 상태 ('accepted' 또는 'rejected') */
-    result: 'accepted' | 'rejected';
+  /** 결과 상태 ('accepted' 또는 'rejected') */
+  result: 'accepted' | 'rejected';
 
-    /** 읽음 여부 */
-    read: boolean;
+  /** 읽음 여부 */
+  read: boolean;
 
-    /** 가게 정보 */
-    shop: {
-      item: {
-        /** 가게 이름 */
-        name: string;
-      };
+  /** 가게 정보 */
+  shop: {
+    item: {
+      /** 가게 이름 */
+      name: string;
     };
+  };
 
-    /** 공고 정보 */
-    notice: {
-      item: {
-        /** 근무 시작 시간 (ISO 8601 문자열) */
-        startsAt: string;
+  /** 공고 정보 */
+  notice: {
+    item: {
+      /** 근무 시작 시간 (ISO 8601 문자열) */
+      startsAt: string;
 
-        /** 근무 시간 (시간 단위) */
-        workhour: number;
-      };
+      /** 근무 시간 (시간 단위) */
+      workhour: number;
     };
   };
 }
+
 
 /**
  * NotificationModal 컴포넌트에 전달되는 props의 타입입니다.
@@ -74,11 +73,11 @@ export default function NotificationModal({ data, count }: NotificationModalProp
         {data.map((data, index) => (
           <NotificationCard
             key={index}
-            status={data.item.result}
-            restaurantName={data.item.shop.item.name}
-            startsAt={data.item.notice.item.startsAt}
-            workHour={data.item.notice.item.workhour}
-            createdAt={data.item.createdAt}
+            status={data.result}
+            restaurantName={data.shop.item.name}
+            startsAt={data.notice.item.startsAt}
+            workHour={data.notice.item.workhour}
+            createdAt={data.createdAt}
           />
         ))}
       </div>
