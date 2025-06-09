@@ -6,16 +6,20 @@ import alarmActive from '@/assets/icons/alarm-active.svg';
 import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [alarms, setAlarms] = useState([]);
+  const [role, setRole] = useState('employee')
+  
   return (
     <header className="bg-white ">
       <nav className="flex flex-wrap items-center justify-between gap-y-22 py-10 md:py-15 mx-20 md:mx-32 lg:max-w-1023 lg:mx-auto">
-        <img
-          src={logo}
-          alt="더줄게 로고 이미지"
-          className="h-30 md:h-40 order-1"
-        />
+        <Link to="/">
+          <img
+            src={logo}
+            alt="더줄게 로고 이미지"
+            className="h-30 md:h-40 order-1"
+          />
+        </Link>
 
         <div className="relative order-5 w-full md:flex-1 md:order-2 md:ml-40 ">
           <img
@@ -30,8 +34,14 @@ export default function Navbar() {
         </div>
         {isLoggedIn ? (
           <div className="flex gap-16 font-bold text-body2 md:gap-40 md:text-body1 order-3">
-            <Link>내 가게</Link>
-            <Link>로그아웃</Link>
+            {role === 'employer' ? (
+              <Link to="/owner/store">내 가게</Link>
+            ):(
+              <Link to="/profile">내 프로필</Link>
+            )
+            }
+            
+            <button onClick={() => setIsLoggedIn(false)}>로그아웃</button>
             <button>
               {alarms.length > 0 ? (
                 <img src={alarmActive} />
@@ -42,8 +52,8 @@ export default function Navbar() {
           </div>
         ) : (
           <div className="flex gap-16 font-bold text-body2 md:gap-40 md:text-body1 order-4">
-            <Link>로그인</Link>
-            <Link>회원가입</Link>
+            <Link to="/login">로그인</Link>
+            <Link to="/signup">회원가입</Link>
           </div>
         )}
       </nav>
