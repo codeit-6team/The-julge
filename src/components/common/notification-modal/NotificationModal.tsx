@@ -2,18 +2,20 @@ import NotificationCard from './NotificationCard';
 import close from '@/assets/icons/close.svg';
 
 interface NotificationItem {
-  createdAt: string;                          // 생성 일시 (ISO 8601 문자열) 
-  result: 'accepted' | 'rejected';            // 결과 상태 
-  read: boolean;                              // 읽음 여부 
-  shop: {
-    item: {
-      name: string;                           // 가게 이름
+  item: {
+    createdAt: string;                          // 생성 일시 (ISO 8601 문자열) 
+    result: 'accepted' | 'rejected';            // 결과 상태 
+    read: boolean;                              // 읽음 여부 
+    shop: {
+      item: {
+        name: string;                           // 가게 이름
+      };
     };
-  };
-  notice: {
-    item: {
-      startsAt: string;                       // 근무 시작 시간 (ISO 8601 문자열) 
-      workhour: number;                       // 근무 시간 (시간 단위) 
+    notice: {
+      item: {
+        startsAt: string;                       // 근무 시작 시간 (ISO 8601 문자열) 
+        workhour: number;                       // 근무 시간 (시간 단위) 
+      };
     };
   };
 }
@@ -43,11 +45,11 @@ export default function NotificationModal({ data, count, onClose }: Notification
         {data.map((data, index) => (
           <NotificationCard
             key={index}
-            status={data.result}
-            restaurantName={data.shop.item.name}
-            startsAt={data.notice.item.startsAt}
-            workHour={data.notice.item.workhour}
-            createdAt={data.createdAt}
+            status={data.item.result}
+            restaurantName={data.item.shop.item.name}
+            startsAt={data.item.notice.item.startsAt}
+            workHour={data.item.notice.item.workhour}
+            createdAt={data.item.createdAt}
           />
         ))}
       </div>
