@@ -76,7 +76,7 @@ export default function Navbar() {
             <Link to={myPageLink}>{myPageLabel}</Link>
             <button onClick={logout}>로그아웃</button>
             <button ref={buttonRef} onClick={()=> setShowModal(prev => !prev)}>
-              {alarms.count > 0 ? (
+              {alarms?.count > 0 ? (
                 <img src={alarmActive} />
               ) : (
                 <img src={alarmInactive} />
