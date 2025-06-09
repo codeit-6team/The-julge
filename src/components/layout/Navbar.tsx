@@ -79,7 +79,7 @@ export default function Navbar() {
             
             <button onClick={logout}>로그아웃</button>
             <button ref={buttonRef} onClick={()=> setShowModal(prev => !prev)}>
-              {alarms.length > 0 ? (
+              {alarms.count > 0 ? (
                 <img src={alarmActive} />
               ) : (
                 <img src={alarmInactive} />
@@ -102,7 +102,6 @@ export default function Navbar() {
         </div>
       )}
       </nav>
-
     </header>
   );
 }
