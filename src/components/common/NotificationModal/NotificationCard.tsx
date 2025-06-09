@@ -47,18 +47,18 @@ export default function NotificationCard({
   const formattedStatusClass =
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
   return (
-    <div className="flex flex-col gap-1 md:w-[328px] py-4 px-3 bg-white border border-gray-20 rounded-[5px] ">
+    <div className="flex flex-col gap-4 md:w-328 py-16 px-12 bg-white border border-gray-20 rounded-5 ">
       {status === 'accepted' ? (
-        <div className="w-[5px] h-[5px] rounded-full bg-blue-20"></div>
+        <div className="w-5 h-5 rounded-full bg-blue-20"></div>
       ) : (
-        <div className="w-[5px] h-[5px] rounded-full bg-red-20"></div>
+        <div className="w-5 h-5 rounded-full bg-red-20"></div>
       )}
-      <h2 className="text-body2/[22px] font-regular">
+      <h2 className="text-body2/22 font-regular">
         {restaurantName} ({formattedTime}) 공고 지원이{' '}
         <span className={formattedStatusClass}>{formattedStatus}</span>
         되었어요.
       </h2>
-      <p className="text-caption/4 text-gray-40">{formattedCreatedAt}</p>
+      <p className="text-caption/16 text-gray-40">{formattedCreatedAt}</p>
     </div>
   );
 }
