@@ -33,7 +33,7 @@ interface NotificationModalProps {
 export default function NotificationModal({ data, count }: NotificationModalProps) {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col px-20 py-40 bg-red-10 gap-16 h-screen md:py-24 md:border-4 md:border-gray-30 md:rounded-10 md:shadow-custom md:h-420 md:w-368">
+    <div className="flex flex-col px-20 py-40 bg-red-10 gap-16 h-screen md:py-24 md:border-4 md:border-gray-30 md:rounded-[10px] md:shadow-custom md:h-420 md:w-368">
       <div className="flex justify-between items-center">
         <h1 className="text-h3 font-bold">알림 {count}개</h1>
         <button onClick={()=> navigate(-1)} className="md:hidden">
