@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import logo from '@/assets/images/logo.png';
 import search from '@/assets/icons/search.svg';
 import alarmActive from '@/assets/icons/alarm-active.svg';
@@ -7,9 +8,7 @@ import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
   const {pathname} = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [alarms, setAlarms] = useState([]);
-  const [role, setRole] = useState('employee')
+  const { isLoggedIn, role, alarms, logout } = useAuth();
 
   // 로그인/회원가입 페이지에서는 Navbar 숨김
   if (pathname === '/login' || pathname === '/signup') return null;
@@ -37,7 +36,7 @@ export default function Navbar() {
           />
         </div>
         {isLoggedIn ? (
-          <div className="flex gap-16 font-bold text-body2 md:gap-40 md:text-body1 order-3">
+          <div className="flex items-center gap-16 font-bold text-body2 md:gap-40 md:text-body1 order-3">
             {role === 'employer' ? (
               <Link to="/owner/store">내 가게</Link>
             ):(
@@ -45,7 +44,7 @@ export default function Navbar() {
             )
             }
             
-            <button onClick={() => setIsLoggedIn(false)}>로그아웃</button>
+            <button onClick={logout}>로그아웃</button>
             <button>
               {alarms.length > 0 ? (
                 <img src={alarmActive} />
