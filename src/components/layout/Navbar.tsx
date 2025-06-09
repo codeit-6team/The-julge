@@ -10,26 +10,26 @@ export default function Navbar() {
   const [alarms, setAlarms] = useState([]);
   return (
     <header className="bg-white ">
-      <nav className="flex flex-wrap items-center justify-between gap-y-[22px] py-2.5 md:py-[15px] mx-5 md:mx-8 lg:max-w-[1023px] lg:mx-auto">
+      <nav className="flex flex-wrap items-center justify-between gap-y-22 py-10 md:py-15 mx-20 md:mx-32 lg:max-w-1023 lg:mx-auto">
         <img
           src={logo}
           alt="더줄게 로고 이미지"
-          className="h-[30px] md:h-[40px] order-1"
+          className="h-30 md:h-40 order-1"
         />
 
-        <div className="relative order-5 w-full md:flex-1 md:order-2 md:ml-10 ">
+        <div className="relative order-5 w-full md:flex-1 md:order-2 md:ml-40 ">
           <img
             src={search}
-            className="absolute -translate-y-1/2 left-2.5 top-1/2"
+            className="absolute -translate-y-1/2 left-10 top-1/2"
           />
           <input
             type="text"
             placeholder="가게 이름으로 찾아보세요"
-            className="w-full md:w-[344px] lg:w-[450px] h-9 md:h-10 bg-gray-10 pl-10 pt-2.5 pb-2.5 rounded-[10px] placeholder:text-body2 placeholder:text-gray-40"
+            className="w-full md:w-344 lg:w-450 h-36 md:h-40 bg-gray-10 pl-40 pt-10 pb-10 rounded-[10px] placeholder:text-body2 placeholder:text-gray-40"
           />
         </div>
         {isLoggedIn ? (
-          <div className="flex gap-4 font-bold text-body2 md:gap-10 md:text-body1 order-3">
+          <div className="flex gap-16 font-bold text-body2 md:gap-40 md:text-body1 order-3">
             <Link>내 가게</Link>
             <Link>로그아웃</Link>
             <button>
@@ -41,7 +41,7 @@ export default function Navbar() {
             </button>
           </div>
         ) : (
-          <div className="flex gap-4 font-bold text-body2 md:gap-10 md:text-body1 order-4">
+          <div className="flex gap-16 font-bold text-body2 md:gap-40 md:text-body1 order-4">
             <Link>로그인</Link>
             <Link>회원가입</Link>
           </div>
