@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import logo from '@/assets/images/logo.svg';
-import search from '@/assets/icons/ic_search.svg';
-import alarmActive from '@/assets/icons/ic_alarm-active.svg';
-import alarmInactive from '@/assets/icons/ic_alarm-inactive.svg';
+import logo from '@/assets/images/logo.png';
+import search from '@/assets/icons/search.svg';
+import alarmActive from '@/assets/icons/alarm-active.svg';
+import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
