@@ -56,7 +56,7 @@ export default function Dropdown({
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`flex items-center justify-between rounded-md ${variant === 'form' ? 'border-gray-30 text-body1 w-full border bg-white px-20 py-16' : 'bg-gray-10 text-body2 h-30 w-105 rounded-5 justify-center gap-6 px-12'}`}
+        className={`flex items-center justify-between rounded-md ${variant === 'form' ? 'h-58 w-full border border-gray-30 bg-white px-20 py-16 text-body1 font-regular' : 'rounded-5 h-30 w-105 justify-center gap-6 bg-gray-10 px-12 text-body2 font-bold'}`}
       >
         <span className={selected ? 'text-black' : 'text-gray-40'}>
           {selected || placeholder}
@@ -70,16 +70,16 @@ export default function Dropdown({
 
       {isOpen && (
         <div
-          className={`border-gray-20 absolute left-0 right-0 mt-8 flex cursor-pointer flex-col rounded-md border bg-white text-black ${variant === 'form' ? 'h-230 w-full overflow-y-auto' : 'h-160 w-105 justify-center py-12'}`}
+          className={`absolute right-0 left-0 mt-8 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black ${variant === 'form' ? 'h-230 w-full overflow-y-auto' : 'h-160 w-105 justify-center py-12'}`}
         >
           <ul
-            className={`${variant === 'form' ? '' : 'h-136 flex flex-col gap-8'}`}
+            className={`${variant === 'form' ? '' : 'flex h-136 flex-col gap-8'}`}
           >
             {options.map((option) => (
               <li
                 key={option}
                 onClick={() => handleSelect(option)}
-                className={`border-gray-20 text-body2 font-regular leading-22 flex items-center justify-center border-b text-black last:border-b-0 ${variant === 'form' ? 'pb-11 pt-12' : 'pb-8'}`}
+                className={`flex items-center justify-center border-b border-gray-20 text-body2 leading-22 font-regular text-black last:border-b-0 ${variant === 'form' ? 'pt-12 pb-11' : 'pb-8'}`}
               >
                 {option}
               </li>
