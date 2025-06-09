@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import NotificationCard from './NotificationCard';
 import close from '@/assets/icons/close.svg';
 
@@ -21,6 +20,7 @@ interface NotificationItem {
 interface NotificationModalProps {
   data: NotificationItem[];                   // 알림 데이터 배열
   count: number;                              // 알림 개수
+  onClose: () => void;                        // x 버튼을 누를때 실행할 함수
 }
 
 /*
@@ -30,13 +30,12 @@ interface NotificationModalProps {
  * 모바일에서는 닫기 버튼으로 창을 닫을 수 있습니다.
  */
 
-export default function NotificationModal({ data, count }: NotificationModalProps) {
-  const navigate = useNavigate();
+export default function NotificationModal({ data, count, onClose }: NotificationModalProps) {
   return (
     <div className="flex flex-col px-20 py-40 bg-red-10 gap-16 h-screen md:py-24 md:border-4 md:border-gray-30 md:rounded-[10px] md:shadow-custom md:h-420 md:w-368">
       <div className="flex justify-between items-center">
         <h1 className="text-h3 font-bold">알림 {count}개</h1>
-        <button onClick={()=> navigate(-1)} className="md:hidden">
+        <button onClick={onClose} className="md:hidden">
           <img src={close} alt="닫기" />
         </button>
       </div>
