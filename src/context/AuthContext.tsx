@@ -12,10 +12,10 @@ interface AlarmType {
 }
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  role: UserRole;
-  alarms: AlarmType[];
-  logout: () => void;
+  isLoggedIn: boolean;                          // 로그인 여부
+  role: UserRole;                               // 알바님, 사장님 구분
+  alarms: AlarmType[];                          // 알림 리스트
+  logout: () => void;                           // 로그아웃 함수
 }
 
 const defaultAuthContext: AuthContextType = {
