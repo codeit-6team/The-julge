@@ -50,7 +50,7 @@ export default function Navbar() {
   if (pathname === '/login' || pathname === '/signup') return null;
 
   return (
-    <header className="bg-white ">
+    <header className="bg-white">
       <nav className="relative flex flex-wrap items-center justify-between gap-y-22 py-10 md:py-15 mx-20 md:mx-32 lg:max-w-1023 lg:mx-auto">
         <Link to="/">
           <img
