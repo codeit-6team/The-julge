@@ -1,1 +1,91 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'SpoqaHanSansNeo-Regular';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SpoqaHanSansNeo-Regular.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* reset */
+@layer base {
+  html,
+  body,
+  div,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  img,
+  ol,
+  ul,
+  li,
+  form,
+  label,
+  footer,
+  header,
+  nav,
+  section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+
+  /* HTML5 display-role reset for older browsers */
+  footer,
+  header,
+  nav,
+  section {
+    display: block;
+  }
+
+  body {
+    line-height: 1;
+  }
+
+  ol,
+  ul {
+    list-style: none;
+  }
+
+  html {
+    font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
+  }
+}
+
+/* style variables */
+@theme {
+  --color-white: #ffffff;
+  --color-gray-5: #fafafa;
+  --color-gray-10: #f2f2f3;
+  --color-gray-20: #e5e4e7;
+  --color-gray-30: #cbc9cf;
+  --color-gray-40: #a4a1aa;
+  --color-gray-50: #7d7986;
+  --color-black: #111322;
+  --color-red-10: #ffebe7;
+  --color-red-20: #ffaf9b;
+  --color-red-30: #ff8d72;
+  --color-red-40: #ff4040;
+  --color-blue-10: #cce6ff;
+  --color-blue-20: #0080ff;
+  --color-green-10: #d4f7d4;
+  --color-green-20: #20a81e;
+  --color-kakao: #fee500;
+  --font-weight-regular: 400;
+  --text-h1: 28px;
+  --text-h2: 24px;
+  --text-h3: 20px;
+  --text-body1: 16px;
+  --text-body2: 14px;
+  --text-caption: 12px;
+}
