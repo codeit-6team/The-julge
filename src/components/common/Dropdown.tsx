@@ -56,7 +56,7 @@ export default function Dropdown({
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`flex items-center justify-between rounded-md ${variant === 'form' ? 'h-58 w-full border border-gray-30 bg-white px-20 py-16 text-body1 font-regular' : 'rounded-5 h-30 w-105 justify-center gap-6 bg-gray-10 px-12 text-body2 font-bold'}`}
+        className={`flex items-center justify-between rounded-md ${variant === 'form' ? 'h-58 w-full border border-gray-30 bg-white px-20 py-16 text-body1 font-regular' : 'h-30 w-105 justify-center gap-6 rounded-[5px] bg-gray-10 px-12 text-body2 font-bold'}`}
       >
         <span className={selected ? 'text-black' : 'text-gray-40'}>
           {selected || placeholder}
