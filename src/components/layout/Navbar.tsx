@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '@/assets/images/logo.png';
 import search from '@/assets/icons/search.svg';
@@ -6,10 +6,14 @@ import alarmActive from '@/assets/icons/alarm-active.svg';
 import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
+  const {pathname} = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [alarms, setAlarms] = useState([]);
   const [role, setRole] = useState('employee')
-  
+
+  // 로그인/회원가입 페이지에서는 Navbar 숨김
+  if (pathname === '/login' || pathname === '/signup') return null;
+
   return (
     <header className="bg-white ">
       <nav className="flex flex-wrap items-center justify-between gap-y-22 py-10 md:py-15 mx-20 md:mx-32 lg:max-w-1023 lg:mx-auto">
