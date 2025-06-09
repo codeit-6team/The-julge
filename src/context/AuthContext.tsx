@@ -3,6 +3,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 type UserRole = 'employer' | 'employee' | null;
 
 interface AlarmType {
+  id: 'string'                                  // 공고 id
   status: 'accepted' | 'rejected';              // 공고 지원 상태
   restaurantName: string;                       // 음식점 이름 
   startsAt: string;                             // 공고 시작 시간 (ISO 8601 문자열)
