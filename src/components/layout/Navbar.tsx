@@ -43,6 +43,9 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const myPageLink = role === 'employer' ? '/owner/store' : '/profile';
+  const myPageLabel = role === 'employer' ? '내 가게' : '내 프로필';
+
   // 로그인/회원가입 페이지에서는 Navbar 숨김
   if (pathname === '/login' || pathname === '/signup') return null;
 
@@ -70,13 +73,7 @@ export default function Navbar() {
         </div>
         {isLoggedIn ? (
           <div className="flex items-center gap-16 font-bold text-body2 md:gap-12 md:text-body1 order-3 lg:gap-40">
-            {role === 'employer' ? (
-              <Link to="/owner/store">내 가게</Link>
-            ):(
-              <Link to="/profile">내 프로필</Link>
-            )
-            }
-            
+            <Link to={myPageLink}>{myPageLabel}</Link>
             <button onClick={logout}>로그아웃</button>
             <button ref={buttonRef} onClick={()=> setShowModal(prev => !prev)}>
               {alarms.count > 0 ? (
