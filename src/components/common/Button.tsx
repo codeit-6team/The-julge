@@ -13,9 +13,7 @@ export default function Button({
 }: Props) {
   return (
     <button
-      className={`disabled:bg-gray-40 disabled:text-white disabled:border-none 
-        ${solid ? 'bg-red-40 text-white' : 'bg-white text-red-40 border border-red-40'} 
-        ${className}`}
+      className={`rounded-md disabled:border-none disabled:bg-gray-40 disabled:text-white ${solid ? 'bg-red-40 text-white' : 'border border-red-40 bg-white text-red-40'} ${className}`}
       {...props}
     >
       {children}
