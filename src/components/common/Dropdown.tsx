@@ -1,18 +1,24 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 import Down from '@/assets/icons/dropdown.svg';
 
 interface DropdownProps {
-  items: string[];
+  options: string[];
   selected: string;
-  onSelect: (value: string) => void;
+  setSelect: Dispatch<SetStateAction<string>>;
   placeholder?: string;
   variant: 'form' | 'filter';
 }
 
 export default function Dropdown({
-  items,
+  options,
   selected,
-  onSelect,
+  setSelect,
   placeholder = '선택',
   variant,
 }: DropdownProps) {
@@ -27,8 +33,8 @@ export default function Dropdown({
     setIsOpen(false);
   };
 
-  const handleSelect = (item: string) => {
-    onSelect(item);
+  const handleSelect = (options: string) => {
+    setSelect(options);
     closeDropdown();
   };
 
@@ -50,7 +56,7 @@ export default function Dropdown({
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`flex cursor-pointer items-center justify-between rounded-md border border-gray-30 bg-white ${variant === 'form' ? 'w-full px-5 py-4 text-base' : 'bg-gray-10px-3 rounded-[5px]px-3 h-[30px] w-[105px] gap-[6px] px-2.5 text-sm'}`}
+        className={`flex cursor-pointer items-center justify-between rounded-md ${variant === 'form' ? 'w-full border border-gray-30 bg-white px-5 py-4 text-body1' : 'h-[30px] w-[105px] justify-center gap-[6px] rounded-[5px] bg-gray-10 px-3 text-body2'}`}
       >
         <span className={selected ? 'text-black' : 'text-gray-40'}>
           {selected || placeholder}
@@ -63,19 +69,23 @@ export default function Dropdown({
       </button>
 
       {isOpen && (
-        <ul
-          className={`absolute right-0 left-0 mt-2 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black ${variant === 'form' ? 'h-[230px] w-full overflow-y-auto' : 'h-[160px] w-[105px]'}`}
+        <div
+          className={`absolute right-0 left-0 mt-2 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black ${variant === 'form' ? 'h-[230px] w-full overflow-y-auto' : 'h-[160px] w-[105px] justify-center py-3'}`}
         >
-          {items.map((item) => (
-            <li
-              key={item}
-              onClick={() => handleSelect(item)}
-              className={`flex w-full cursor-pointer justify-center border-b border-gray-20 text-sm leading-[22px] font-regular text-black last:border-b-0 ${variant === 'form' ? 'py-3' : 'py-2'}`}
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
+          <ul
+            className={`${variant === 'form' ? '' : 'flex h-[136px] flex-col gap-2'}`}
+          >
+            {options.map((option) => (
+              <li
+                key={option}
+                onClick={() => handleSelect(option)}
+                className={`flex items-center justify-center border-b border-gray-20 text-body2 leading-[22px] font-regular text-black last:border-b-0 ${variant === 'form' ? 'pt-3 pb-[11px]' : 'pb-2'}`}
+              >
+                {option}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
