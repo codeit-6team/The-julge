@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tailwind-scrollbar-hide/v4';
 
 @font-face {
   font-family: 'SpoqaHanSansNeo-Regular';
@@ -96,5 +97,6 @@
   --text-body1: 16px;
   --text-body2: 14px;
   --text-caption: 12px;
+  --shadow-custom: 0px 2px 8px 0px rgba(120, 116, 134, 0.25);
   --spacing: 0.0625rem;
 }
