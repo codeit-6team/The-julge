@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import NotificationCard from './NotificationCard';
-import close from '@/assets/icons/ic_close.svg';
+import close from '@/assets/icons/close.svg';
 
 interface NotificationItem {
   createdAt: string;                          // 생성 일시 (ISO 8601 문자열) 
