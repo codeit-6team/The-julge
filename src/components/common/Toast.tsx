@@ -7,7 +7,7 @@ export default function Toast({
 }: HTMLAttributes<HTMLElement>) {
   return (
     <div
-      className={`inline-block rounded-[5px] bg-red-30 px-16 py-10 text-body1/26 font-regular text-white ${className}`}
+      className={`z-10 inline-block rounded-[5px] bg-red-30 px-16 py-10 text-body1/26 font-regular text-white ${className}`}
       {...props}
     >
       {children}
