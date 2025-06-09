@@ -94,12 +94,11 @@ export default function Navbar() {
           className="absolute top-56 right-0 z-100"
           ref={modalRef}
         >
-          <NotificationModal data={alarms} count={alarms.length} />
+          <NotificationModal data={alarms.items} count={alarms.count} />
         </div>
       )}
       </nav>
 
-      
     </header>
   );
 }
