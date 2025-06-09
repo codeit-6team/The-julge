@@ -7,13 +7,14 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function Button({
   solid = true,
+  size = 'large',
   className = '',
   children,
   ...props
 }: Props) {
   return (
     <button
-      className={`rounded-md disabled:border-none disabled:bg-gray-40 disabled:text-white ${solid ? 'bg-red-40 text-white' : 'border border-red-40 bg-white text-red-40'} ${className}`}
+      className={`rounded-md disabled:border-none disabled:bg-gray-40 disabled:text-white ${solid ? 'bg-red-40 text-white' : 'border border-red-40 bg-white text-red-40'} ${size === 'large' ? 'h-48 text-body1 font-bold' : size === 'medium' ? 'h-37 text-body2 font-bold' : 'h-32 text-caption font-regular'} ${className}`}
       {...props}
     >
       {children}
