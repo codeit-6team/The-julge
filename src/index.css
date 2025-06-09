@@ -98,5 +98,6 @@
   --text-body2: 14px;
   --text-caption: 12px;
   --shadow-custom: 0px 2px 8px 0px rgba(120, 116, 134, 0.25);
+  --shadow-custom2: 0px 4px 25px rgba(0, 0, 0, 0.1);
   --spacing: 0.0625rem;
 }
