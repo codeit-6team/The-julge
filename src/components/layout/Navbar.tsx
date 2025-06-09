@@ -95,10 +95,10 @@ export default function Navbar() {
 
         {showModal && (
         <div
-          className="absolute top-56 right-0 z-100"
+          className="absolute z-100 top-0 left-[-20px] md:top-56 md:right-0 md:left-auto"
           ref={modalRef}
         >
-          <NotificationModal data={alarms.items} count={alarms.count} />
+          <NotificationModal data={alarms.items} count={alarms.count} onClose={() => setShowModal(false)}/>
         </div>
       )}
       </nav>
