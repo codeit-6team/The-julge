@@ -10,7 +10,7 @@ import Down from '@/assets/icons/dropdown.svg';
 interface DropdownProps {
   options: string[];
   selected: string;
-  setSelect: Dispatch<SetStateAction<string>>;
+  setSelect: Dispatch<SetStateAction<string>>; // Dispatch<SetStateAction<string>>는 set함수 타입
   placeholder?: string;
   variant: 'form' | 'filter';
 }
@@ -56,7 +56,7 @@ export default function Dropdown({
       <button
         type="button"
         onClick={toggleDropdown}
-        className={`flex cursor-pointer items-center justify-between rounded-md ${variant === 'form' ? 'w-full border border-gray-30 bg-white px-5 py-4 text-body1' : 'h-[30px] w-[105px] justify-center gap-[6px] rounded-[5px] bg-gray-10 px-3 text-body2'}`}
+        className={`flex items-center justify-between rounded-md ${variant === 'form' ? 'border-gray-30 text-body1 w-full border bg-white px-20 py-16' : 'bg-gray-10 text-body2 h-30 w-105 rounded-5 justify-center gap-6 px-12'}`}
       >
         <span className={selected ? 'text-black' : 'text-gray-40'}>
           {selected || placeholder}
@@ -64,22 +64,22 @@ export default function Dropdown({
         <img
           src={Down}
           alt="arrow down"
-          className={`${isOpen ? '' : 'rotate-180'} ${variant === 'form' ? 'h-4 w-4' : 'h-[10px] w-[10px]'}`}
+          className={`${isOpen ? '' : 'rotate-180'} ${variant === 'form' ? 'h-16 w-16' : 'h-10 w-10'}`}
         />
       </button>
 
       {isOpen && (
         <div
-          className={`absolute right-0 left-0 mt-2 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black ${variant === 'form' ? 'h-[230px] w-full overflow-y-auto' : 'h-[160px] w-[105px] justify-center py-3'}`}
+          className={`border-gray-20 absolute left-0 right-0 mt-8 flex cursor-pointer flex-col rounded-md border bg-white text-black ${variant === 'form' ? 'h-230 w-full overflow-y-auto' : 'h-160 w-105 justify-center py-12'}`}
         >
           <ul
-            className={`${variant === 'form' ? '' : 'flex h-[136px] flex-col gap-2'}`}
+            className={`${variant === 'form' ? '' : 'h-136 flex flex-col gap-8'}`}
           >
             {options.map((option) => (
               <li
                 key={option}
                 onClick={() => handleSelect(option)}
-                className={`flex items-center justify-center border-b border-gray-20 text-body2 leading-[22px] font-regular text-black last:border-b-0 ${variant === 'form' ? 'pt-3 pb-[11px]' : 'pb-2'}`}
+                className={`border-gray-20 text-body2 font-regular leading-22 flex items-center justify-center border-b text-black last:border-b-0 ${variant === 'form' ? 'pb-11 pt-12' : 'pb-8'}`}
               >
                 {option}
               </li>
