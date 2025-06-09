@@ -12,14 +12,18 @@ export default function Navbar() {
   const { isLoggedIn, role, alarms, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef(null);
+  const buttonRef = useRef(null);
 
   // 바깥 클릭 시 모달 닫기
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node
       if (
         showModal &&
         modalRef.current &&
-        !(modalRef.current as HTMLElement).contains(event.target as Node)
+        !(modalRef.current as HTMLElement).contains(target) &&
+        buttonRef.current &&
+        !(buttonRef.current as HTMLElement).contains(target)
       ) {
         setShowModal(false);
       }
@@ -74,7 +78,7 @@ export default function Navbar() {
             }
             
             <button onClick={logout}>로그아웃</button>
-            <button onClick={()=> setShowModal(!showModal)}>
+            <button ref={buttonRef} onClick={()=> setShowModal(prev => !prev)}>
               {alarms.length > 0 ? (
                 <img src={alarmActive} />
               ) : (
