@@ -57,6 +57,14 @@
     list-style: none;
   }
 
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+
   html {
     font-family: 'SpoqaHanSansNeo-Regular', sans-serif;
   }
@@ -88,4 +96,5 @@
   --text-body1: 16px;
   --text-body2: 14px;
   --text-caption: 12px;
+  --spacing: 0.0625rem;
 }
