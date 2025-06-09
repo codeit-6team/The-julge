@@ -1,7 +1,10 @@
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import calculateTimeDifference from '@/utils/calculateTimeDefference';
 import formatWorkTime from '@/utils/formatWorkTime';
 
 interface NotificationCardProps {
+  id: 'string';                                 // 가게 id
   status: 'accepted' | 'rejected';              // 공고 지원 상태
   restaurantName: string;                       // 음식점 이름 
   startsAt: string;                             // 공고 시작 시간 (ISO 8601 문자열)
@@ -16,6 +19,7 @@ interface NotificationCardProps {
  */
 
 export default function NotificationCard({
+  id,
   status,
   restaurantName,
   startsAt,
@@ -26,23 +30,26 @@ export default function NotificationCard({
     startsAt,
     workHour,
   });
+  const { role } = useAuth();
   const formattedCreatedAt = calculateTimeDifference(createdAt);
   const formattedStatus = status === 'accepted' ? '승인' : '거절';
   const formattedStatusClass =
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
   return (
-    <div className="flex flex-col gap-4 md:w-328 py-16 px-12 bg-white border border-gray-20 rounded-[5px] ">
-      {status === 'accepted' ? (
-        <div className="w-5 h-5 rounded-full bg-blue-20"></div>
-      ) : (
-        <div className="w-5 h-5 rounded-full bg-red-20"></div>
-      )}
-      <h2 className="text-body2/22 font-regular">
-        {restaurantName} ({formattedTime}) 공고 지원이{' '}
-        <span className={formattedStatusClass}>{formattedStatus}</span>
-        되었어요.
-      </h2>
-      <p className="text-caption/16 text-gray-40">{formattedCreatedAt}</p>
-    </div>
+    <Link to={role === 'employee' ? '/profile' : `/owner/post/${id}`}>
+      <div className="flex flex-col gap-4 md:w-328 py-16 px-12 bg-white border border-gray-20 rounded-5 ">
+        {status === 'accepted' ? (
+          <div className="w-5 h-5 rounded-full bg-blue-20"></div>
+        ) : (
+          <div className="w-5 h-5 rounded-full bg-red-20"></div>
+        )}
+        <h2 className="text-body2/22 font-regular">
+          {restaurantName} ({formattedTime}) 공고 지원이{' '}
+          <span className={formattedStatusClass}>{formattedStatus}</span>
+          되었어요.
+        </h2>
+        <p className="text-caption/16 text-gray-40">{formattedCreatedAt}</p>
+      </div>
+    </Link>
   );
 }
