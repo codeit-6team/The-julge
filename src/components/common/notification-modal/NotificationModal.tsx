@@ -3,6 +3,7 @@ import close from '@/assets/icons/close.svg';
 
 interface NotificationItem {
   item: {
+    id: string;                                 // 가게 id
     createdAt: string;                          // 생성 일시 (ISO 8601 문자열) 
     result: 'accepted' | 'rejected';            // 결과 상태 
     read: boolean;                              // 읽음 여부 
@@ -42,9 +43,10 @@ export default function NotificationModal({ data, count, onClose }: Notification
         </button>
       </div>
       <div className="flex flex-col gap-8 overflow-y-auto scrollbar-hide">
-        {data.map((data, index) => (
+        {data.map((data) => (
           <NotificationCard
-            key={index}
+            key={data.item.id}
+            id={data.item.id}
             status={data.item.result}
             restaurantName={data.item.shop.item.name}
             startsAt={data.item.notice.item.startsAt}
