@@ -11,12 +11,12 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { isLoggedIn, role, alarms, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const modalRef = useRef(null);
-  const buttonRef = useRef(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   // 바깥 클릭 시 모달 닫기
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
+    function handleClickOutside(event: MouseEvent): void {
       const target = event.target as Node
       if (
         showModal &&
@@ -35,7 +35,7 @@ export default function Navbar() {
 
   // esc로 닫기
   useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
+    function handleKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Escape') setShowModal(false);
     }
 
