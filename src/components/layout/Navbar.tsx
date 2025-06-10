@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import NotificationModal from '../common/notification-modal/NotificationModal';
-import logo from '@/assets/images/logo.png';
+import logo from '@/assets/images/logo.svg';
 import search from '@/assets/icons/search.svg';
 import alarmActive from '@/assets/icons/alarm-active.svg';
 import alarmInactive from '@/assets/icons/alarm-inactive.svg';
@@ -53,7 +53,7 @@ export default function Navbar() {
           <img
             src={logo}
             alt="더줄게 로고 이미지"
-            className="h-30 md:h-40 order-1"
+            className="h-15 my-7.5 md:h-20 md:my-10 order-1"
           />
         </Link>
 
