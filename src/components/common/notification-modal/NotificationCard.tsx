@@ -37,7 +37,7 @@ export default function NotificationCard({
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
   return (
     <Link to={role === 'employee' ? '/profile' : `/owner/post/${id}`}>
-      <div className="flex flex-col gap-4 md:w-328 py-16 px-12 bg-white border border-gray-20 rounded-5 ">
+      <div className="flex flex-col gap-4 md:w-328 py-16 px-12 bg-white border border-gray-20 rounded-[5px] ">
         {status === 'accepted' ? (
           <div className="w-5 h-5 rounded-full bg-blue-20"></div>
         ) : (
