@@ -21,7 +21,7 @@ interface NotificationItem {
   };
 }
 interface NotificationModalProps {
-  data: NotificationItem[];                   // 알림 데이터 배열
+  data?: NotificationItem[];                   // 알림 데이터 배열
   count: number;                              // 알림 개수
   onClose: () => void;                        // x 버튼을 누를때 실행할 함수
 }
@@ -33,7 +33,7 @@ interface NotificationModalProps {
  * 모바일에서는 닫기 버튼으로 창을 닫을 수 있습니다.
  */
 
-export default function NotificationModal({ data, count, onClose }: NotificationModalProps) {
+export default function NotificationModal({ data = [], count = 0, onClose }: NotificationModalProps) {
   return (
     <div className="flex flex-col px-20 py-40 bg-red-10 gap-16 h-screen w-screen md:py-24 md:border-1 md:border-gray-30 md:rounded-[10px] md:shadow-custom md:h-420 md:w-368">
       <div className="flex justify-between items-center">
@@ -43,7 +43,8 @@ export default function NotificationModal({ data, count, onClose }: Notification
         </button>
       </div>
       <div className="flex flex-col gap-8 overflow-y-auto scrollbar-hide">
-        {data.map((data) => (
+        {data.length > 0 ? (
+        data.map((data) => (
           <NotificationCard
             key={data.item.id}
             id={data.item.id}
@@ -53,7 +54,7 @@ export default function NotificationModal({ data, count, onClose }: Notification
             workHour={data.item.notice.item.workhour}
             createdAt={data.item.createdAt}
           />
-        ))}
+        ))) : null}
       </div>
     </div>
   );
