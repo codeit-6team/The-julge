@@ -4,6 +4,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   error?: string;
   unit?: string;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 export default function Input({
@@ -11,6 +12,7 @@ export default function Input({
   label,
   placeholder = '입력',
   unit,
+  ref,
   ...props
 }: InputProps) {
   const id = useId();
@@ -20,9 +22,10 @@ export default function Input({
       <div className="relative">
         <input
           id={id}
+          ref={ref}
           placeholder={placeholder}
           {...props}
-          className={`h-58 w-full rounded-md border bg-white py-16 pr-40 pl-20 placeholder-gray-40 ${error ? 'border-red-40' : 'border-gray-30'}`}
+          className={`h-58 w-full rounded-md border bg-white py-16 pr-60 pl-20 placeholder-gray-40 ${error ? 'border-red-40' : 'border-gray-30'}`}
         />
         <span className="absolute top-16 right-20">{unit}</span>
       </div>
