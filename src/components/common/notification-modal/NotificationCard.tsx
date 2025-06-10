@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '@/context/AuthContext';
-import calculateTimeDifference from '@/utils/calculateTimeDefference';
+import calculateTimeDifference from '@/utils/calculateTimeDifference';
 import formatWorkTime from '@/utils/formatWorkTime';
 
 interface NotificationCardProps {
