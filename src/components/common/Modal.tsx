@@ -1,4 +1,4 @@
-import type { MouseEventHandler, ReactNode } from 'react';
+import { type MouseEventHandler, type ReactNode } from 'react';
 import ic_check from '@/assets/icons/modal_check.svg';
 import ic_exclamation from '@/assets/icons/modal_exclamation.svg';
 
@@ -24,24 +24,26 @@ export default function Modal({
 }: Props) {
   return (
     <div className="fixed inset-0 z-40 content-center justify-items-center bg-[#000000b3]">
-      <div
-        className={`flex flex-col items-center justify-between bg-white ${option === 'alert' ? 'h-220 w-327 rounded-lg p-28 md:h-250 md:w-540' : 'h-184 w-298 rounded-xl p-24'}`}
-      >
-        <div
-          className={`flex flex-col items-center gap-16 ${option === 'alert' ? 'mt-53 md:mt-80' : ''}`}
-        >
-          {option === 'confirm' ? (
-            <img src={ic_exclamation} />
-          ) : option === 'action' ? (
-            <img src={ic_check} />
-          ) : null}
-          <div
-            className={`text-body1 font-regular ${option === 'alert' ? 'text-[#333236] md:text-[18px]' : 'leading-26 text-black'}`}
-          >
+      {option === 'alert' ? (
+        <div className="flex h-220 w-327 flex-col items-center justify-between rounded-lg bg-white p-28 md:h-250 md:w-540">
+          <div className="mt-53 text-body1 font-regular text-[#333236] md:mt-80 md:text-[18px]">
             {children}
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex h-184 w-298 flex-col items-center justify-between rounded-xl bg-white p-24">
+          <div className="flex flex-col items-center gap-16">
+            {option === 'confirm' ? (
+              <img src={ic_exclamation} />
+            ) : (
+              <img src={ic_check} />
+            )}
+            <div className="text-body1 leading-26 font-regular text-black">
+              {children}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
