@@ -17,5 +17,5 @@ export default function Modal({
   onClickNo,
   content,
 }: Props) {
-  return <div className="fixed inset-0 z-40 bg-[#000] opacity-70"></div>;
+  return <div className="fixed inset-0 z-40 bg-[#000000b3]"></div>;
 }
