@@ -27,7 +27,7 @@ export default function Modal({
     <div className="fixed inset-0 z-40 content-center justify-items-center bg-[#000000b3]">
       {option === 'alert' ? (
         <div className="flex h-220 w-327 flex-col items-center justify-between rounded-lg bg-white p-28 md:h-250 md:w-540">
-          <div className="mt-53 text-center text-body1 font-regular text-[#333236] md:mt-80 md:text-[18px]">
+          <div className="mt-53 text-center text-body1/19 font-regular text-[#333236] md:mt-80 md:text-[18px]/21">
             {children}
           </div>
           <button
