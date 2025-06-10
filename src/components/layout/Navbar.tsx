@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import NotificationModal from '../common/notification-modal/NotificationModal';
@@ -8,7 +8,6 @@ import alarmActive from '@/assets/icons/alarm-active.svg';
 import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
-  const { pathname } = useLocation();
   const { isLoggedIn, role, alarms, logout } = useContext(AuthContext);
   const [isShowModal, setIsShowModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -42,9 +41,6 @@ export default function Navbar() {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
-
-  // 로그인/회원가입 페이지에서는 Navbar 숨김
-  if (pathname === '/login' || pathname === '/signup') return null;
 
   return (
     <header className="bg-white">

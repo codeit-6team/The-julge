@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Login from './pages/account/Login';
 import Signup from './pages/account/Signup';
@@ -12,8 +12,10 @@ import PostList from './pages/post/PostList';
 import Post from './pages/post/Post';
 
 export default function App() {
+  const { pathname } = useLocation();
+  
   return (<>
-    <Navbar />
+    {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
     <Routes>
       {/* 공통 페이지 */}
       <Route path="/" element={<PostList />} />
