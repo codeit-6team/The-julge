@@ -10,7 +10,7 @@ import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 export default function Navbar() {
   const { pathname } = useLocation();
   const { isLoggedIn, role, alarms, logout } = useContext(AuthContext);
-  const [showModal, setShowModal] = useState(false);
+  const [isShowModal, setIsShowModal] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -19,24 +19,24 @@ export default function Navbar() {
     function handleClickOutside(event: MouseEvent): void {
       const target = event.target as Node
       if (
-        showModal &&
+        isShowModal &&
         modalRef.current &&
         !(modalRef.current as HTMLElement).contains(target) &&
         buttonRef.current &&
         !(buttonRef.current as HTMLElement).contains(target)
       ) {
-        setShowModal(false);
+        setIsShowModal(false);
       }
     }
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showModal]);
+  }, [isShowModal]);
 
   // esc로 닫기
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent): void {
-      if (event.key === 'Escape') setShowModal(false);
+      if (event.key === 'Escape') setIsShowModal(false);
     }
 
     document.addEventListener('keydown', handleKeyDown);
@@ -75,7 +75,7 @@ export default function Navbar() {
           <div className="flex items-center gap-16 font-bold text-body2 md:gap-12 md:text-body1 order-3 lg:gap-40">
             <Link to={myPageLink}>{myPageLabel}</Link>
             <button onClick={logout}>로그아웃</button>
-            <button ref={buttonRef} onClick={()=> setShowModal(prev => !prev)}>
+            <button ref={buttonRef} onClick={()=> setIsShowModal(prev => !prev)}>
               {alarms?.count > 0 ? (
                 <img src={alarmActive} />
               ) : (
@@ -90,12 +90,12 @@ export default function Navbar() {
           </div>
         )}
 
-        {showModal && (
+        {isShowModal && (
         <div
           className="absolute z-100 top-0 left-[-20px] md:top-56 md:right-0 md:left-auto"
           ref={modalRef}
         >
-          <NotificationModal data={alarms?.items} count={alarms?.count} onClose={() => setShowModal(false)}/>
+          <NotificationModal data={alarms?.items} count={alarms?.count} onClose={() => setIsShowModal(false)}/>
         </div>
       )}
       </nav>
