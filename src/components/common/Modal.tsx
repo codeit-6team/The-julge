@@ -17,5 +17,11 @@ export default function Modal({
   onClickNo,
   content,
 }: Props) {
-  return <div className="fixed inset-0 z-40 bg-[#000000b3]"></div>;
+  return (
+    <div className="fixed inset-0 z-40 content-center justify-items-center bg-[#000000b3]">
+      <div
+        className={`flex flex-col items-center justify-between bg-white ${option === 'alert' ? 'h-220 w-327 rounded-lg p-28 md:h-250 md:w-540' : 'h-184 w-298 rounded-xl p-24'}`}
+      ></div>
+    </div>
+  );
 }
