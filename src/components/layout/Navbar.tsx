@@ -11,8 +11,8 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const { isLoggedIn, role, alarms, logout } = useContext(AuthContext);
   const [isShowModal, setIsShowModal] = useState(false);
-  const modalRef = useRef<HTMLDivElement | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // 바깥 클릭 시 모달 닫기
   useEffect(() => {
@@ -43,9 +43,6 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const myPageLink = role === 'employer' ? '/owner/store' : '/profile';
-  const myPageLabel = role === 'employer' ? '내 가게' : '내 프로필';
-
   // 로그인/회원가입 페이지에서는 Navbar 숨김
   if (pathname === '/login' || pathname === '/signup') return null;
 
@@ -73,7 +70,7 @@ export default function Navbar() {
         </div>
         {isLoggedIn ? (
           <div className="flex items-center gap-16 font-bold text-body2 md:gap-12 md:text-body1 order-3 lg:gap-40">
-            <Link to={myPageLink}>{myPageLabel}</Link>
+            <Link to={role === 'employer' ? '/owner/store' : '/profile'}>{role === 'employer' ? '내 가게' : '내 프로필'}</Link>
             <button onClick={logout}>로그아웃</button>
             <button ref={buttonRef} onClick={()=> setIsShowModal(prev => !prev)}>
               {alarms?.count > 0 ? (
