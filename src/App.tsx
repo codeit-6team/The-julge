@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Navbar from './components/layout/Navbar';
 import Login from './pages/account/Login';
 import Signup from './pages/account/Signup';
 import Store from './pages/myprofile/Store';
@@ -11,7 +12,10 @@ import PostList from './pages/post/PostList';
 import Post from './pages/post/Post';
 
 export default function App() {
-  return (
+  const { pathname } = useLocation();
+  
+  return (<>
+    {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
     <Routes>
       {/* 공통 페이지 */}
       <Route path="/" element={<PostList />} />
@@ -37,5 +41,6 @@ export default function App() {
         <Route path="edit" element={<ProfileForm />} />
       </Route>
     </Routes>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-interface workTime {
+interface WorkTime {
   startsAt: string | number;        // 근무 시작 시간 (ISO 8601 형식 문자열)
   workHour: number;                 // 근무 시간 (시간 단위)
 }
@@ -7,7 +7,7 @@ interface workTime {
 export default function formatWorkTime({
   startsAt,
   workHour,
-}: workTime): string {
+}: WorkTime): string {
   const date = new Date(startsAt);
 
   const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
