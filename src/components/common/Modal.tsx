@@ -1,4 +1,5 @@
 import { type MouseEventHandler, type ReactNode } from 'react';
+import Button from './Button';
 import ic_check from '@/assets/icons/modal_check.svg';
 import ic_exclamation from '@/assets/icons/modal_exclamation.svg';
 
@@ -29,6 +30,12 @@ export default function Modal({
           <div className="mt-53 text-body1 font-regular text-[#333236] md:mt-80 md:text-[18px]">
             {children}
           </div>
+          <button
+            className="h-42 w-138 rounded-lg bg-primary text-body2 font-regular text-white md:h-48 md:w-120 md:self-end md:text-body1"
+            onClick={onButtonClick}
+          >
+            확인
+          </button>
         </div>
       ) : (
         <div className="flex h-184 w-298 flex-col items-center justify-between rounded-xl bg-white p-24">
@@ -41,6 +48,21 @@ export default function Modal({
             <div className="text-body1 leading-26 font-regular text-black">
               {children}
             </div>
+          </div>
+          <div className="flex gap-8">
+            <Button
+              className="w-80"
+              size="medium"
+              solid={false}
+              onClick={onButtonClick}
+            >
+              {option === 'action' ? '아니오' : '확인'}
+            </Button>
+            {option === 'action' && (
+              <Button className="w-80" size="medium" onClick={onYesButtonClick}>
+                {yesButtonContent}
+              </Button>
+            )}
           </div>
         </div>
       )}
