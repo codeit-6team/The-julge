@@ -1,24 +1,17 @@
-import { useId } from 'react';
+import { useId, type InputHTMLAttributes } from 'react';
 
-interface InputProps {
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
-  value: string;
-  type?: string;
-  placeholder?: string;
   error?: string;
-  required?: boolean;
   unit?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Input({
-  value,
   error,
-  onChange,
   label,
-  type = 'text',
-  required,
+  placeholder = '입력',
   unit,
+  ...props
 }: InputProps) {
   const id = useId();
   return (
@@ -27,12 +20,9 @@ export default function Input({
       <div className="relative">
         <input
           id={id}
-          type={type}
-          value={value}
-          onChange={onChange}
-          placeholder="입력"
-          required={required}
-          className={`h-58 w-full rounded-md border bg-white px-20 py-16 ${error ? 'border-red-40' : 'border-gray-30'}`}
+          placeholder={placeholder}
+          {...props}
+          className={`h-58 w-full rounded-md border bg-white py-16 pr-40 pl-20 placeholder-gray-40 ${error ? 'border-red-40' : 'border-gray-30'}`}
         />
         <span className="absolute top-16 right-20">{unit}</span>
       </div>
