@@ -1,4 +1,4 @@
-import type { MouseEventHandler } from 'react';
+import type { MouseEventHandler, ReactNode } from 'react';
 import ic_check from '@/assets/icons/modal_check.svg';
 import ic_exclamation from '@/assets/icons/modal_exclamation.svg';
 
@@ -9,15 +9,15 @@ interface Props {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   /** option이 action일 때만 사용. 아니오 button에 해당하는 click event handler. */
   onClickNo?: MouseEventHandler<HTMLButtonElement>;
-  /** option이 alert일 때만 사용. */
-  content?: string;
+  /** modal 문구 */
+  children?: ReactNode;
 }
 
 export default function Modal({
   option = 'alert',
   onClick,
   onClickNo,
-  content = '안녕',
+  children,
 }: Props) {
   return (
     <div className="fixed inset-0 z-40 content-center justify-items-center bg-[#000000b3]">
