@@ -22,7 +22,7 @@ interface NotificationItem {
 }
 interface NotificationModalProps {
   data?: NotificationItem[];                   // 알림 데이터 배열
-  count: number;                              // 알림 개수
+  count?: number;                              // 알림 개수
   onClose: () => void;                        // x 버튼을 누를때 실행할 함수
 }
 
@@ -43,7 +43,7 @@ export default function NotificationModal({ data = [], count = 0, onClose }: Not
         </button>
       </div>
       <div className="flex flex-col gap-8 overflow-y-auto scrollbar-hide">
-        {data.length > 0 ? (
+        {data.length > 0 && (
         data.map((data) => (
           <NotificationCard
             key={data.item.id}
@@ -54,7 +54,7 @@ export default function NotificationModal({ data = [], count = 0, onClose }: Not
             workHour={data.item.notice.item.workhour}
             createdAt={data.item.createdAt}
           />
-        ))) : null}
+        )))}
       </div>
     </div>
   );

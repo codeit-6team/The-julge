@@ -20,9 +20,9 @@ export default function Navbar() {
       if (
         isShowModal &&
         modalRef.current &&
-        !(modalRef.current as HTMLElement).contains(target) &&
+        !modalRef.current.contains(target) &&
         buttonRef.current &&
-        !(buttonRef.current as HTMLElement).contains(target)
+        !buttonRef.current.contains(target)
       ) {
         setIsShowModal(false);
       }
@@ -45,11 +45,11 @@ export default function Navbar() {
   return (
     <header className="bg-white">
       <nav className="relative flex flex-wrap items-center justify-between gap-y-22 py-10 md:py-15 mx-20 md:mx-32 lg:max-w-1023 lg:mx-auto">
-        <Link to="/">
+        <Link to="/" className='h-30 md:h-40 order-1 flex items-center justify-center'>
           <img
             src={logo}
             alt="더줄게 로고 이미지"
-            className="h-15 my-7.5 md:h-20 md:my-10 order-1"
+            className="h-15 md:h-20"
           />
         </Link>
 

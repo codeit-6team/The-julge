@@ -47,12 +47,12 @@ export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState<UserRole>(null);
-  const [alarms, setAlarms] = useState<AlarmInfo>({count: 0, items:[]});
+  const [alarms, setAlarms] = useState<AlarmInfo>(defaultAuthContext.alarms);
 
   const logout = () => {
     setIsLoggedIn(false);
     setRole(null);
-    setAlarms({count: 0, items:[]});
+    setAlarms(defaultAuthContext.alarms);
   };
 
   return (
