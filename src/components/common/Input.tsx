@@ -25,7 +25,7 @@ export default function Input({
           ref={ref}
           placeholder={placeholder}
           {...props}
-          className={`h-58 w-full rounded-md border bg-white py-16 pr-60 pl-20 placeholder-gray-40 ${error ? 'border-red-40' : 'border-gray-30'}`}
+          className={`h-58 w-full rounded-md border bg-white py-16 pl-20 placeholder-gray-40 ${unit ? 'pr-60' : 'pr-20'} ${error ? 'border-red-40' : 'border-gray-30'}`}
         />
         <span className="absolute top-16 right-20">{unit}</span>
       </div>
