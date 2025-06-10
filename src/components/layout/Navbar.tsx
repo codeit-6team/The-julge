@@ -69,7 +69,7 @@ export default function Navbar() {
             <Link to={role === 'employer' ? '/owner/store' : '/profile'}>{role === 'employer' ? '내 가게' : '내 프로필'}</Link>
             <button onClick={logout}>로그아웃</button>
             <button ref={buttonRef} onClick={()=> setIsShowModal(prev => !prev)}>
-              {alarms?.count > 0 ? (
+              {alarms.length > 0 ? (
                 <img src={alarmActive} />
               ) : (
                 <img src={alarmInactive} />
@@ -88,7 +88,7 @@ export default function Navbar() {
           className="absolute z-100 top-0 -left-20 md:top-56 md:right-0 md:left-auto"
           ref={modalRef}
         >
-          <NotificationModal data={alarms?.items} count={alarms?.count} onClose={() => setIsShowModal(false)}/>
+          <NotificationModal data={alarms} count={alarms.length} onClose={() => setIsShowModal(false)}/>
         </div>
       )}
       </nav>
