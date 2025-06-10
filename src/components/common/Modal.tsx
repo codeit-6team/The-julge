@@ -6,17 +6,17 @@ interface Props {
   /** 기본 값은 alert */
   option?: 'alert' | 'confirm' | 'action';
   /** button click event handler */
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  /** option이 action일 때만 사용. 아니오 button에 해당하는 click event handler. */
-  onClickNo?: MouseEventHandler<HTMLButtonElement>;
+  onButtonClick?: MouseEventHandler<HTMLButtonElement>;
+  /** option이 action일 때만 사용. 예 button에 해당하는 click event handler. */
+  onYesButtonClick?: MouseEventHandler<HTMLButtonElement>;
   /** modal 문구 */
   children?: ReactNode;
 }
 
 export default function Modal({
   option = 'alert',
-  onClick,
-  onClickNo,
+  onButtonClick,
+  onYesButtonClick,
   children,
 }: Props) {
   return (
