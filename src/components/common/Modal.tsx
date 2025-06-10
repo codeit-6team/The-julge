@@ -35,6 +35,11 @@ export default function Modal({
           ) : option === 'action' ? (
             <img src={ic_check} />
           ) : null}
+          <div
+            className={`text-body1 font-regular ${option === 'alert' ? 'text-[#333236] md:text-[18px]' : 'leading-26 text-black'}`}
+          >
+            {children}
+          </div>
         </div>
       </div>
     </div>
