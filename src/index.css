@@ -102,3 +102,9 @@
   --shadow-custom2: 0px 4px 25px rgba(0, 0, 0, 0.1);
   --spacing: 0.0625rem;
 }
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
