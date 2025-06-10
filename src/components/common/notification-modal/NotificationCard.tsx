@@ -1,5 +1,6 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
+import { AuthContext } from '@/context/AuthContext';
 import calculateTimeDifference from '@/utils/calculateTimeDefference';
 import formatWorkTime from '@/utils/formatWorkTime';
 
@@ -30,7 +31,7 @@ export default function NotificationCard({
     startsAt,
     workHour,
   });
-  const { role } = useAuth();
+  const { role } = useContext(AuthContext);
   const formattedCreatedAt = calculateTimeDifference(createdAt);
   const formattedStatus = status === 'accepted' ? '승인' : '거절';
   const formattedStatusClass =

@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import NotificationModal from '../common/NotificationModal/NotificationModal';
+import { useRef, useState, useEffect, useContext } from 'react';
+import { AuthContext } from '@/context/AuthContext';
+import NotificationModal from '../common/notification-modal/NotificationModal';
 import logo from '@/assets/images/logo.png';
 import search from '@/assets/icons/search.svg';
 import alarmActive from '@/assets/icons/alarm-active.svg';
@@ -9,7 +9,7 @@ import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
   const { pathname } = useLocation();
-  const { isLoggedIn, role, alarms, logout } = useAuth();
+  const { isLoggedIn, role, alarms, logout } = useContext(AuthContext);
   const [showModal, setShowModal] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -95,7 +95,7 @@ export default function Navbar() {
           className="absolute z-100 top-0 left-[-20px] md:top-56 md:right-0 md:left-auto"
           ref={modalRef}
         >
-          <NotificationModal data={alarms.items} count={alarms.count} onClose={() => setShowModal(false)}/>
+          <NotificationModal data={alarms?.items} count={alarms?.count} onClose={() => setShowModal(false)}/>
         </div>
       )}
       </nav>

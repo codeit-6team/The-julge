@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
 type UserRole = 'employer' | 'employee' | null;
@@ -26,7 +26,7 @@ const defaultAuthContext: AuthContextType = {
   logout: () => {},
 };
 
-const AuthContext = createContext<AuthContextType>(defaultAuthContext);
+export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,8 +44,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuth() {
-  return useContext(AuthContext);
 }
