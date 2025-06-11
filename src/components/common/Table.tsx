@@ -74,6 +74,11 @@ export default function Table({
     ...[null, null, null, null, null],
   ].slice(0, 5);
 
+  const headers =
+    mode === 'notice'
+      ? ['신청자', '소개', '전화번호', '상태']
+      : ['가게', '일자', '시급', '상태'];
+
   const datas = applications.map((app) => {
     if (!app) return Array(5).fill([null, null, null, null]);
 
