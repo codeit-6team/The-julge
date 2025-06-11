@@ -40,10 +40,10 @@ export default function Modal({
       ) : (
         <div className="flex h-184 w-298 flex-col items-center justify-between rounded-xl bg-white p-24">
           <div className="flex flex-col items-center gap-16">
-            {option === 'confirm' ? (
-              <img src={ic_exclamation} />
-            ) : (
+            {option === 'action' ? (
               <img src={ic_check} />
+            ) : (
+              <img src={ic_exclamation} />
             )}
             <div className="text-center text-body1 leading-26 font-regular text-black">
               {children}
