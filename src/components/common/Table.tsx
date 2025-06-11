@@ -37,6 +37,13 @@ interface Notice {
   href: string;
 }
 
+interface Link {
+  rel: string;
+  description: string;
+  method: string;
+  href: string;
+}
+
 interface Application {
   item: {
     id: string;
@@ -46,7 +53,7 @@ interface Application {
     shop: Shop;
     notice: Notice;
   };
-  links: string[];
+  links: Link[];
 }
 
 interface Props {
