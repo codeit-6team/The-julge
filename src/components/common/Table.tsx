@@ -59,10 +59,18 @@ interface Application {
 interface Props {
   className?: string;
   mode: 'user' | 'notice';
-  applications: Application[];
+  applications: (Application | null)[];
 }
 
-export default function Table({ className = '', mode, applications }: Props) {
+export default function Table({
+  className = '',
+  mode,
+  applications: initialApplications,
+}: Props) {
+  const applications = initialApplications.concat(
+    Array(5 - initialApplications.length).fill(null),
+  );
+
   return (
     <table>
       <thead></thead>
