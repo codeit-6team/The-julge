@@ -26,7 +26,7 @@ export const postUser = async ({
   type,
 }: SignupParams): Promise<SignupResponse> => {
   try {
-    const response = await api.post('/users', {
+    const response = await api.post<SignupResponse>('/users', {
       email,
       password,
       type,

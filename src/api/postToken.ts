@@ -34,13 +34,13 @@ export const postToken = async ({
   password,
 }: LoginParams): Promise<LoginResponse> => {
   try {
-    const response = await api.post('/token', {
+    const response = await api.post<LoginResponse>('/token', {
       email,
       password,
     });
     return response.data;
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorMessage, LoginParams>;
+    const axiosError = error as AxiosError<ErrorMessage, LoginParams>; // 에러 타입 명시
     if (axiosError.response) {
       throw new Error(axiosError.response.data.message);
     } else {
