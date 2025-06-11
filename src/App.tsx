@@ -13,34 +13,35 @@ import Post from './pages/post/Post';
 
 export default function App() {
   const { pathname } = useLocation();
-  
-  return (<>
-    {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
-    <Routes>
-      {/* 공통 페이지 */}
-      <Route path="/" element={<PostList />} />
-      <Route path=":id" element={<Post />} />
-      <Route path="login" element={<Login />} />
-      <Route path="signup" element={<Signup />} />
 
-      {/* 사장님 페이지 */}
-      <Route path="owner">
-        <Route path="store">
-          <Route index element={<Store />} />
-          <Route path="edit" element={<StoreEdit />} />
-        </Route>
-        <Route path="post">
-          <Route index element={<StoreForm />} />
-          <Route path=":id" element={<StorePost />} />
-        </Route>
-      </Route>
+  return (
+    <>
+      {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
+      <Routes>
+        {/* 공통 페이지 */}
+        <Route path="/" element={<PostList />} />
+        <Route path=":id" element={<Post />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
 
-      {/* 알바님 프로필 페이지 */}
-      <Route path="profile">
-        <Route index element={<Profile />} />
-        <Route path="edit" element={<ProfileForm />} />
-      </Route>
-    </Routes>
+        {/* 사장님 페이지 */}
+        <Route path="owner">
+          <Route path="store">
+            <Route index element={<Store />} />
+            <Route path="edit" element={<StoreEdit />} />
+          </Route>
+          <Route path="post">
+            <Route index element={<StoreForm />} />
+            <Route path=":id" element={<StorePost />} />
+          </Route>
+        </Route>
+
+        {/* 알바님 프로필 페이지 */}
+        <Route path="profile">
+          <Route index element={<Profile />} />
+          <Route path="edit" element={<ProfileForm />} />
+        </Route>
+      </Routes>
     </>
   );
 }
