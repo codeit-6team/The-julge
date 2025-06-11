@@ -1,26 +1,26 @@
-import type { ErrorResponse } from 'react-router-dom';
 import api from './api';
 import { AxiosError } from 'axios';
 
-export const postUser = async ({
-  email,
-  password,
-  type,
-}: {
+interface ErrorMessage {
+  message: string;
+}
+
+interface SignupParams {
   email: string;
   password: string;
   type: string;
-}) => {
+}
+
+export const postUser = async ({ email, password, type }: SignupParams) => {
   try {
     const response = await api.post('/users', {
       email,
       password,
       type,
     });
-
     return response.data;
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorResponse>;
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
     if (axiosError.response) {
       throw new Error(axiosError.response.data.message);
     } else {
