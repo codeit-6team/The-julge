@@ -67,9 +67,10 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: Props) {
-  const applications: (Application | null)[] = initialApplications.concat(
-    Array(5 - initialApplications.length).fill(null),
-  );
+  const applications: (Application | null)[] = [
+    ...initialApplications,
+    ...[null, null, null, null, null],
+  ].slice(0, 5);
 
   return (
     <table>
