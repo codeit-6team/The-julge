@@ -8,14 +8,14 @@ interface ErrorMessage {
 interface SignupParams {
   email: string;
   password: string;
-  type: employee | employer;
+  type: 'employee' | 'employer';
 }
 
 interface SignupResponse {
   item: {
     id: string;
     email: string;
-    type: employee | employer;
+    type: 'employee' | 'employer';
   };
   links: object[]; // 정확한 타입이 나와있지 않아서 우선 object로만 처리함
 }

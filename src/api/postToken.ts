@@ -17,7 +17,7 @@ interface LoginResponse {
       item: {
         id: string;
         email: string;
-        type: employer | employee;
+        type: 'employer' | 'employee';
         name: string;
         phone: string;
         address: string;

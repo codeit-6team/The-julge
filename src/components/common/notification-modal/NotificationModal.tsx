@@ -44,7 +44,7 @@ interface AlertItem {
 }
 
 interface NotificationModalProps {
-  data?: AlertsInfo[]; // 알림 데이터 배열
+  data?: AlertItem[]; // 알림 데이터 배열
   count?: number; // 알림 개수
   onClose: () => void; // x 버튼을 누를때 실행할 함수
 }

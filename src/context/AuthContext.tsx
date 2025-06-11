@@ -65,7 +65,7 @@ interface AuthContextType {
 const defaultAuthContext: AuthContextType = {
   isLoggedIn: false,
   role: null,
-  alarms: { count: 0, items: [] },
+  alarms: { offset: 0, limit: 0, count: 0, hasNext: false, items: [] },
   login: () => {},
   logout: () => {},
 };
@@ -75,7 +75,7 @@ export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState<UserRole>(null);
-  const [alarms, setAlarms] = useState<AlarmInfo>(defaultAuthContext.alarms);
+  const [alarms, setAlarms] = useState<AlertsInfo>(defaultAuthContext.alarms);
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
