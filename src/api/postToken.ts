@@ -1,6 +1,10 @@
 import api from './api';
 import { AxiosError } from 'axios';
 
+interface ErrorMessage {
+  message: string;
+}
+
 interface LoginParams {
   email: string;
   password: string;
@@ -13,7 +17,7 @@ interface LoginResponse {
       item: {
         id: string;
         email: string;
-        type: string;
+        type: employer | employee;
         name: string;
         phone: string;
         address: string;
@@ -22,11 +26,7 @@ interface LoginResponse {
       href: string;
     };
   };
-  links: any[];
-}
-
-interface ErrorResponse {
-  message: string;
+  links: object[]; // 정확한 타입이 나와있지 않아서 우선 object로만 처리함
 }
 
 export const postToken = async ({
@@ -40,8 +40,7 @@ export const postToken = async ({
     });
     return response.data;
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorResponse>;
-
+    const axiosError = error as AxiosError<ErrorMessage, LoginParams>;
     if (axiosError.response) {
       throw new Error(axiosError.response.data.message);
     } else {
