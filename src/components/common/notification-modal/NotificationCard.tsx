@@ -1,15 +1,16 @@
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import calculateTimeDifference from '@/utils/calculateTimeDefference';
+import { AuthContext } from '@/context/AuthContext';
+import calculateTimeDifference from '@/utils/calculateTimeDifference';
 import formatWorkTime from '@/utils/formatWorkTime';
 
 interface NotificationCardProps {
-  id: string;                                 // 가게 id
-  status: 'accepted' | 'rejected';              // 공고 지원 상태
-  restaurantName: string;                       // 음식점 이름 
-  startsAt: string;                             // 공고 시작 시간 (ISO 8601 문자열)
-  workHour: number;                             // 근무 시간 (시간 단위) 
-  createdAt: string;                            // 알림 생성 시간 (ISO 8601 문자열) 
+  id: string; // 가게 id
+  status: 'accepted' | 'rejected'; // 공고 지원 상태
+  restaurantName: string; // 음식점 이름
+  startsAt: string; // 공고 시작 시간 (ISO 8601 문자열)
+  workHour: number; // 근무 시간 (시간 단위)
+  createdAt: string; // 알림 생성 시간 (ISO 8601 문자열)
 }
 
 /*
@@ -30,18 +31,18 @@ export default function NotificationCard({
     startsAt,
     workHour,
   });
-  const { role } = useAuth();
+  const { role } = useContext(AuthContext);
   const formattedCreatedAt = calculateTimeDifference(createdAt);
   const formattedStatus = status === 'accepted' ? '승인' : '거절';
   const formattedStatusClass =
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
   return (
     <Link to={role === 'employee' ? '/profile' : `/owner/post/${id}`}>
-      <div className="flex flex-col gap-4 md:w-328 py-16 px-12 bg-white border border-gray-20 rounded-[5px] ">
+      <div className="flex flex-col gap-4 rounded-[5px] border border-gray-20 bg-white px-12 py-16 md:w-328">
         {status === 'accepted' ? (
-          <div className="w-5 h-5 rounded-full bg-blue-20"></div>
+          <div className="h-5 w-5 rounded-full bg-blue-20"></div>
         ) : (
-          <div className="w-5 h-5 rounded-full bg-red-20"></div>
+          <div className="h-5 w-5 rounded-full bg-red-20"></div>
         )}
         <h2 className="text-body2/22 font-regular">
           {restaurantName} ({formattedTime}) 공고 지원이{' '}
