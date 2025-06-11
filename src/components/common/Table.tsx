@@ -59,7 +59,7 @@ interface Application {
 interface Props {
   className?: string;
   mode: 'user' | 'notice';
-  applications: (Application | null)[];
+  applications: Application[];
 }
 
 export default function Table({
@@ -67,7 +67,7 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: Props) {
-  const applications = initialApplications.concat(
+  const applications: (Application | null)[] = initialApplications.concat(
     Array(5 - initialApplications.length).fill(null),
   );
 
