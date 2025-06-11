@@ -8,9 +8,9 @@ interface Props {
   option?: 'alert' | 'confirm' | 'action';
   /** button click event handler */
   onButtonClick?: MouseEventHandler<HTMLButtonElement>;
-  /** option이 action일 때만 사용. 예 button에 해당하는 click event handler. */
+  /** option이 action일 때만 사용. solid button에 해당하는 click event handler. */
   onYesButtonClick?: MouseEventHandler<HTMLButtonElement>;
-  /** option이 action일 때만 사용. 예 button 내용. */
+  /** option이 action일 때만 사용. solid button 내용. */
   yesButtonContent?: string;
   /** modal 문구 */
   children?: ReactNode;
