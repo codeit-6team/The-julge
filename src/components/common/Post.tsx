@@ -9,4 +9,17 @@ interface PostProps {
   closed: boolean; // 마감 여부
 }
 
+// 상태 계산
+function getStatus(
+  startAt: string,
+  closed: boolean,
+): 'ACTIVE' | 'CLOSED' | 'EXPIRED' {
+  const now = new Date();
+  const startDate = new Date(startAt);
+
+  if (closed) return 'CLOSED'; // 인원 다 찼으면 마감
+  if (now >= startDate) return 'EXPIRED'; // 기간 종료되면 마감
+  return 'ACTIVE';
+}
+
 export default function Post() {}
