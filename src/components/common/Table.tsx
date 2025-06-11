@@ -1,3 +1,5 @@
+import formatWorkTime from '@/utils/formatWorkTime';
+
 interface User {
   item: {
     id: string;
@@ -67,10 +69,34 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: Props) {
-  const applications: (Application | null)[] = [
+  const applications = [
     ...initialApplications,
     ...[null, null, null, null, null],
   ].slice(0, 5);
+
+  const datas = applications.map((app) => {
+    if (!app) return Array(5).fill([null, null, null, null]);
+
+    const { item } = app;
+
+    return [
+      ...(mode === 'notice'
+        ? [
+            item?.user?.item?.name,
+            item?.user?.item?.bio,
+            item?.user?.item?.phone,
+          ]
+        : [
+            item.shop.item.name,
+            `${formatWorkTime({
+              startsAt: item.notice.item.startsAt,
+              workHour: item.notice.item.workhour,
+            })} (${item.notice.item.workhour}시간)`,
+            item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
+          ]),
+      item.status,
+    ];
+  });
 
   return (
     <table>
