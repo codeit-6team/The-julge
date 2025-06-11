@@ -1,5 +1,7 @@
 /* 주어진 날짜로부터 현재까지의 경과 시간을 사람이 읽기 좋은 문자열로 반환하는 함수 */
-export default function calculateTimeDifference(createdAt: string | number): string {
+export default function calculateTimeDifference(
+  createdAt: string | number,
+): string {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
 
