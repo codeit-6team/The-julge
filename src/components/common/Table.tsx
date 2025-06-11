@@ -58,10 +58,11 @@ interface Application {
 
 interface Props {
   className?: string;
+  mode: 'user' | 'notice';
   applications: Application[];
 }
 
-export default function Table({ className = '', applications }: Props) {
+export default function Table({ className = '', mode, applications }: Props) {
   return (
     <table>
       <thead></thead>
