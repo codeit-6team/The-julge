@@ -105,7 +105,14 @@ export default function Table({
 
   return (
     <table>
-      <thead></thead>
+      <thead>
+        <tr>
+          <td>{headers[0]}</td>
+          <td>{headers[1]}</td>
+          <td>{headers[2]}</td>
+          <td>{headers[3]}</td>
+        </tr>
+      </thead>
       <tbody></tbody>
       <tfoot></tfoot>
     </table>
