@@ -37,7 +37,7 @@ interface Notice {
   href: string;
 }
 
-interface Item {
+interface Application {
   item: {
     id: string;
     status: 'pending' | 'accepted' | 'rejected' | 'canceled';
@@ -49,7 +49,12 @@ interface Item {
   links: string[];
 }
 
-export default function Table() {
+interface Props {
+  className?: string;
+  applications: Application[];
+}
+
+export default function Table({ className = '', applications }: Props) {
   return (
     <table>
       <thead></thead>
