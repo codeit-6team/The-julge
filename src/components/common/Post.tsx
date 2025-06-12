@@ -129,7 +129,7 @@ export default function Post({
         </div>
         <div
           className="flex flex-col justify-between md:flex-row md:items-center"
-          title={`${hourlyPay.toLocaleString()}원 : 기존 시급보다 ${percent}%`}
+          title={`${hourlyPay.toLocaleString()}원${percent > 0 ? `: 기존 시급보다 ${percent}%` : ''}`}
         >
           <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
             {hourlyPay.toLocaleString()}원
