@@ -15,14 +15,14 @@ export default function formatWorkTime({
   const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
   /* 시각이 24시를 넘으면 다음날로 설정되어 자동으로 처리  */
-  const endDate = new Date(kstDate);
-  endDate.setHours(endDate.getHours() + workHour);
+  const endDate = new Date(date);
+  endDate.setHours(endDate.getHours() + workhour);
 
-  const year = kstDate.getFullYear();
-  const month = String(kstDate.getMonth() + 1).padStart(2, '0');
-  const day = String(kstDate.getDate()).padStart(2, '0');
-  const startHours = String(kstDate.getHours()).padStart(2, '0');
-  const startMinutes = String(kstDate.getMinutes()).padStart(2, '0');
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const startHours = String(date.getHours()).padStart(2, '0');
+  const startMinutes = String(date.getMinutes()).padStart(2, '0');
 
   const endHours = String(endDate.getHours()).padStart(2, '0');
   const endMinutes = String(endDate.getMinutes()).padStart(2, '0');
