@@ -1,3 +1,4 @@
+import Button from './Button';
 import formatWorkTime from '@/utils/formatWorkTime';
 
 interface User {
@@ -113,7 +114,33 @@ export default function Table({
           <td>{headers[3]}</td>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        {datas.map((data, index) => (
+          <tr key={index}>
+            <td>{data[0]}</td>
+            <td>{data[1]}</td>
+            <td>{data[2]}</td>
+            <td>
+              {data[3] === 'pending' ? (
+                mode === 'notice' ? (
+                  <div>
+                    <Button solid={false}>거절하기</Button>
+                    <Button solid={false}>승인하기</Button>
+                  </div>
+                ) : (
+                  <div>대기중</div>
+                )
+              ) : data[3] === 'accepted' ? (
+                <div>승인 완료</div>
+              ) : data[3] === 'rejected' ? (
+                <div>거절</div>
+              ) : data[3] === 'canceled' ? (
+                <div>취소</div>
+              ) : null}
+            </td>
+          </tr>
+        ))}
+      </tbody>
       <tfoot></tfoot>
     </table>
   );
