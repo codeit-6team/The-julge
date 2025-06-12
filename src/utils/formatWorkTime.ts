@@ -7,10 +7,10 @@ interface WorkTime {
 export default function formatWorkTime({
   startsAt,
   workHour,
-}: WorkTime): string {
+}: WorkTime): string | null {
   const date = new Date(startsAt);
   if (isNaN(date.getTime())) {
-    return '날짜 정보가 올바르지 않습니다';
+    return null;
   }
   const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
