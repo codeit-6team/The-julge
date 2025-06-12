@@ -51,8 +51,9 @@ export default function Post({
   const rawDateTime = formatWorkTime({ startsAt, workhour });
   const dateTime = `${rawDateTime} (${workhour}시간)`;
 
-  const payDiff = hourlyPay - originalHourlyPay; // 이전 공고 시급과 현재 시급 차이 계산
-  const percent = Math.floor((payDiff / originalHourlyPay) * 100); // 몇 % 올랐는지 계산
+  const percent = Math.floor(
+    ((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100,
+  );
   const isHigherPay = percent > 0; // 이전 시급보다 높을 때만 표시
 
   const clockIcon = isInactive ? ClockGray : ClockRed;
