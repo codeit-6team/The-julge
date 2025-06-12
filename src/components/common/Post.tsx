@@ -86,10 +86,9 @@ export default function Post({
   return (
     <div className="flex h-261 w-171 cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:w-332 md:gap-20 md:p-16 lg:h-348 lg:w-312">
       <div className="relative">
-        <img
-          src={imageUrl}
-          alt={title}
-          className="relative h-84 w-full rounded-xl object-cover md:h-171 lg:h-160"
+        <div
+          className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
+          style={{ backgroundImage: `url(${imageUrl})` }}
         />
         {isInactive && (
           <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#000000]/70 text-h3 font-bold text-gray-30 md:text-h1">
