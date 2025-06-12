@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Button from './Button';
 import formatWorkTime from '@/utils/formatWorkTime';
 
@@ -70,6 +71,8 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: Props) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   const applications = [
     ...initialApplications,
     ...[null, null, null, null, null],
@@ -103,6 +106,14 @@ export default function Table({
       item.status,
     ];
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const tdStyle =
     'border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19';
