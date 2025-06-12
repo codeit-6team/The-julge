@@ -103,7 +103,7 @@ export default function Post({
         <img
           src={imageUrl}
           alt={title}
-          className="relative w-full rounded-xl object-cover"
+          className="relative h-84 w-full rounded-xl object-cover md:h-171 lg:h-160"
         />
         {isInactive && (
           <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#000000]/70 text-h3 font-bold text-gray-30 md:text-h1">
