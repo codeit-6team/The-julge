@@ -105,8 +105,8 @@ export default function Table({
   });
 
   return (
-    <table className="border-separate border-spacing-0 rounded-[10px] bg-white inset-ring inset-ring-gray-20">
-      <thead>
+    <table className="border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20">
+      <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
         <tr>
           <th>{headers[0]}</th>
           <th>{headers[1]}</th>
