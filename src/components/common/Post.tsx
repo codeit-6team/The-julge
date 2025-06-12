@@ -107,24 +107,24 @@ export default function Post({
             {title}
           </div>
           <div
-            className={`${isInactive ? 'text-gray-30' : 'text-gray-50'} flex gap-6 text-caption/16 font-regular md:items-center md:text-body2/22 lg:items-center lg:text-body2/22`}
+            className={`${isInactive ? 'text-gray-30' : 'text-gray-50'} flex flex-col gap-8 text-caption/16 font-regular md:text-body2/22`}
           >
-            <img
-              src={clockIcon}
-              alt="시계 아이콘"
-              className="h-16 w-16 md:h-20 md:w-20"
-            />
-            <span>{dateTime}</span>
-          </div>
-          <div
-            className={`${isInactive ? 'text-gray-30' : 'text-gray-50'} flex gap-6 text-caption/16 font-regular md:items-center md:text-body2/22 lg:items-center lg:text-body2/22`}
-          >
-            <img
-              src={locationIcon}
-              alt="위치 아이콘"
-              className="h-16 w-16 md:h-20 md:w-20"
-            />
-            <span>{location}</span>
+            <div className="flex items-center gap-6">
+              <img
+                src={clockIcon}
+                alt="시계 아이콘"
+                className="h-16 w-16 md:h-20 md:w-20"
+              />
+              <span>{dateTime}</span>
+            </div>
+            <div className="flex items-center gap-6">
+              <img
+                src={locationIcon}
+                alt="위치 아이콘"
+                className="h-16 w-16 md:h-20 md:w-20"
+              />
+              <span>{location}</span>
+            </div>
           </div>
         </div>
         <div
