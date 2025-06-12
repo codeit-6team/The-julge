@@ -9,7 +9,9 @@ export default function formatWorkTime({
   workHour,
 }: WorkTime): string {
   const date = new Date(startsAt);
-
+  if (isNaN(date.getTime())) {
+    return '날짜 정보가 올바르지 않습니다';
+  }
   const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
 
   /* 시각이 24시를 넘으면 다음날로 설정되어 자동으로 처리  */
