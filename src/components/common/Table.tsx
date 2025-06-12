@@ -108,10 +108,12 @@ export default function Table({
     <table className="border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20">
       <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
         <tr>
-          <th>{headers[0]}</th>
-          <th>{headers[1]}</th>
-          <th>{headers[2]}</th>
-          <th>{headers[3]}</th>
+          <th className="w-228 px-8 font-regular md:px-12">{headers[0]}</th>
+          <th className="w-300 px-8 font-regular md:px-12">{headers[1]}</th>
+          <th className="w-200 px-8 font-regular md:px-12">{headers[2]}</th>
+          <th className="min-w-162 px-8 font-regular md:min-w-220 md:px-12">
+            {headers[3]}
+          </th>
         </tr>
       </thead>
       <tbody>
