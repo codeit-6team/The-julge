@@ -113,7 +113,7 @@ export default function Post({
               <img
                 src={clockIcon}
                 alt="시계 아이콘"
-                className="h-16 w-16 md:h-20 md:w-20"
+                className="size-16 md:size-20"
               />
               <span>{dateTime}</span>
             </div>
@@ -121,7 +121,7 @@ export default function Post({
               <img
                 src={locationIcon}
                 alt="위치 아이콘"
-                className="h-16 w-16 md:h-20 md:w-20"
+                className="size-16 md:size-20"
               />
               <span>{location}</span>
             </div>
