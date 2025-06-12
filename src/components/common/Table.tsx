@@ -108,10 +108,10 @@ export default function Table({
     <table className="border-separate border-spacing-0 rounded-[10px] bg-white inset-ring inset-ring-gray-20">
       <thead>
         <tr>
-          <td>{headers[0]}</td>
-          <td>{headers[1]}</td>
-          <td>{headers[2]}</td>
-          <td>{headers[3]}</td>
+          <th>{headers[0]}</th>
+          <th>{headers[1]}</th>
+          <th>{headers[2]}</th>
+          <th>{headers[3]}</th>
         </tr>
       </thead>
       <tbody>
