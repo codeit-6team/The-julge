@@ -140,11 +140,16 @@ export default function Table({
               {data[3] === 'pending' ? (
                 mode === 'notice' ? (
                   <div className="flex items-center gap-8 md:gap-12">
-                    <Button solid={false} className="w-69 md:w-92">
+                    <Button
+                      solid={false}
+                      size={isMobile ? 'small' : 'medium'}
+                      className="w-69 md:w-92"
+                    >
                       거절하기
                     </Button>
                     <Button
                       solid={false}
+                      size={isMobile ? 'small' : 'medium'}
                       className="w-69 md:w-92"
                       style={{
                         color: 'var(--color-blue-20)',
