@@ -116,7 +116,7 @@ export default function Table({
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody className="text-body2/22 font-regular md:text-body1/26">
         {datas.map((data, index) => (
           <tr key={index}>
             <td>{data[0]}</td>
