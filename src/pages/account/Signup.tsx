@@ -4,6 +4,8 @@ import { postUser } from '@/api/postUser';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import logo from '@/assets/images/logo.svg';
+import check from '@/assets/icons/modal_check.svg';
+import not_checked from '@/assets/icons/not-checked.svg';
 
 export default function Signup() {
   const [values, setValues] = useState({
@@ -109,6 +111,25 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
+          <div className="flex flex-col gap-8 text-body1/26 font-regular text-black">
+            <label htmlFor="type">회원 유형</label>
+            <div id="type" className="flex justify-between">
+              <button
+                type="button"
+                className="flex w-167 items-center justify-center gap-9 rounded-full border border-primary bg-white py-13"
+              >
+                <img src={check} />
+                알바님
+              </button>
+              <button
+                type="button"
+                className="flex w-167 items-center justify-center gap-9 rounded-full border border-gray-30 py-13"
+              >
+                <img src={not_checked} />
+                사장님
+              </button>
+            </div>
+          </div>
           <Button
             disabled={!isFormValid}
             className="w-350"
