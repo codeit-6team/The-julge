@@ -1,3 +1,4 @@
+import formatWorkTime from '@/utils/formatWorkTime';
 import ClockRed from '@/assets/icons/clock-red.svg';
 import ClockGray from '@/assets/icons/clock-gray.svg';
 import LocationRed from '@/assets/icons/location-red.svg';
@@ -32,23 +33,6 @@ function getStatus(
   return 'ACTIVE';
 }
 
-// 날짜 포맷
-function formatDate(startsAt: string, workhour: number): string {
-  const start = new Date(startsAt);
-  const end = new Date(start.getTime() + workhour * 60 * 60 * 1000);
-
-  const yyyy = start.getFullYear();
-  const mm = String(start.getMonth() + 1).padStart(2, '0'); // padStart 자리 수를 맞추는 용도
-  const dd = String(start.getDate()).padStart(2, '0');
-  const startHour = String(start.getHours()).padStart(2, '0');
-  const startMin = String(start.getMinutes()).padStart(2, '0');
-
-  const endHour = String(end.getHours()).padStart(2, '0');
-  const endMin = String(end.getMinutes()).padStart(2, '0');
-
-  return `${yyyy}-${mm}-${dd} ${startHour}:${startMin}~${endHour}:${endMin} (${workhour}시간)`;
-}
-
 export default function Post({
   imageUrl,
   title,
@@ -64,7 +48,8 @@ export default function Post({
   const overlayText =
     status === 'CLOSED' ? '마감 완료' : status === 'EXPIRED' ? '지난 공고' : '';
 
-  const dateTime = formatDate(startsAt, workhour);
+  const rawDateTime = formatWorkTime({ startsAt, workhour });
+  const dateTime = `${rawDateTime} (${workhour}시간)`;
 
   const payDiff = hourlyPay - originalHourlyPay; // 이전 공고 시급과 현재 시급 차이 계산
   const percent = Math.floor((payDiff / originalHourlyPay) * 100); // 몇 % 올랐는지 계산
