@@ -3,21 +3,21 @@ import type { ReactNode } from 'react';
 
 type UserRole = 'employer' | 'employee' | null;
 
-interface AlarmType { 
+interface AlarmType {
   item: {
-    id: string;                                 // 가게 id
-    createdAt: string;                          // 생성 일시 (ISO 8601 문자열) 
-    result: 'accepted' | 'rejected';            // 결과 상태 
-    read: boolean;                              // 읽음 여부 
+    id: string; // 가게 id
+    createdAt: string; // 생성 일시 (ISO 8601 문자열)
+    result: 'accepted' | 'rejected'; // 결과 상태
+    read: boolean; // 읽음 여부
     shop: {
       item: {
-        name: string;                           // 가게 이름
+        name: string; // 가게 이름
       };
     };
     notice: {
       item: {
-        startsAt: string;                       // 근무 시작 시간 (ISO 8601 문자열) 
-        workhour: number;                       // 근무 시간 (시간 단위) 
+        startsAt: string; // 근무 시작 시간 (ISO 8601 문자열)
+        workhour: number; // 근무 시간 (시간 단위)
       };
     };
   };
@@ -29,16 +29,16 @@ interface AlarmInfo {
 }
 
 interface AuthContextType {
-  isLoggedIn: boolean;                          // 로그인 여부
-  role: UserRole;                               // 알바님, 사장님 구분
-  alarms: AlarmInfo;                            // 알림 리스트
-  logout: () => void;                           // 로그아웃 함수
+  isLoggedIn: boolean; // 로그인 여부
+  role: UserRole; // 알바님, 사장님 구분
+  alarms: AlarmInfo; // 알림 리스트
+  logout: () => void; // 로그아웃 함수
 }
 
 const defaultAuthContext: AuthContextType = {
   isLoggedIn: false,
   role: null,
-  alarms: {count: 0, items:[]},
+  alarms: { count: 0, items: [] },
   logout: () => {},
 };
 
