@@ -16,7 +16,8 @@ function isPublicRequest(method?: string, url?: string): boolean {
     method === 'get' &&
       (
         url?.startsWith('/notices') ||
-        url?.startsWith('/shops')
+        url?.startsWith('/shops') ||
+        (/^\/users\/[^/]+$/.test(url)) // '/users/{id}' 형태만 허용 ('/users/{id}/alert' = X)
       )) ||
     (method === 'post' &&
       (
