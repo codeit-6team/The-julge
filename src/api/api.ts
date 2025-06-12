@@ -9,7 +9,9 @@ const api = axios.create({
 
 // 가독성을 위해 prettier-ignore 적용
 //prettier-ignore
-function isPublicRequest(method: string, url: string): boolean {
+function isPublicRequest(method?: string, url?: string): boolean {
+  if (!method || !url) return false;
+
   return (
     method === 'get' &&
       (
