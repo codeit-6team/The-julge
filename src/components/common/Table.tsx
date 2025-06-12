@@ -128,9 +128,20 @@ export default function Table({
             <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
               {data[3] === 'pending' ? (
                 mode === 'notice' ? (
-                  <div>
-                    <Button solid={false}>거절하기</Button>
-                    <Button solid={false}>승인하기</Button>
+                  <div className="flex items-center gap-8 md:gap-12">
+                    <Button solid={false} className="w-69 md:w-92">
+                      거절하기
+                    </Button>
+                    <Button
+                      solid={false}
+                      className="w-69 md:w-92"
+                      style={{
+                        color: 'var(--color-blue-20)',
+                        borderColor: 'var(--color-blue-20)',
+                      }}
+                    >
+                      승인하기
+                    </Button>
                   </div>
                 ) : (
                   <div>대기중</div>
