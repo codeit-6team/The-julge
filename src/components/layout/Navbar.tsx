@@ -89,7 +89,7 @@ export default function Navbar() {
 
         {isShowModal && (
           <div
-            className="absolute top-0 -left-20 z-100 md:top-56 md:right-0 md:left-auto"
+            className="absolute top-0 -left-20 z-30 md:top-56 md:right-0 md:left-auto"
             ref={modalRef}
           >
             <NotificationModal
