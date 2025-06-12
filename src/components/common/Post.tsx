@@ -115,7 +115,10 @@ export default function Post({
         className={` ${isInactive ? 'text-gray-30' : 'text-black'} flex flex-col gap-16`}
       >
         <div className="flex flex-col gap-8">
-          <div className="truncate text-body1/20 font-bold md:text-h3/24">
+          <div
+            className="truncate text-body1/20 font-bold md:text-h3/24"
+            title={`${title}`}
+          >
             {title}
           </div>
           <div
