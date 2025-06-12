@@ -104,6 +104,9 @@ export default function Table({
     ];
   });
 
+  const tdStyle =
+    'border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19';
+
   return (
     <table className="border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20">
       <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
@@ -119,10 +122,10 @@ export default function Table({
       <tbody className="text-body2/22 font-regular md:text-body1/26">
         {datas.map((data, index) => (
           <tr key={index}>
-            <td>{data[0]}</td>
-            <td>{data[1]}</td>
-            <td>{data[2]}</td>
-            <td>
+            <td className={tdStyle}>{data[0]}</td>
+            <td className={tdStyle}>{data[1]}</td>
+            <td className={tdStyle}>{data[2]}</td>
+            <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
               {data[3] === 'pending' ? (
                 mode === 'notice' ? (
                   <div>
