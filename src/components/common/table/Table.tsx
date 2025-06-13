@@ -1,5 +1,6 @@
 import formatWorkTime from '@/utils/formatWorkTime';
 import TableStatus from './TableStatus';
+import TableButtons from './TableButtons';
 
 interface User {
   item: {
@@ -129,7 +130,11 @@ export default function Table({
               {data[2]}
             </td>
             <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
-              <TableStatus mode={mode} status={data[3]} />
+              {mode === 'notice' && data[3] === 'pending' ? (
+                <TableButtons />
+              ) : (
+                <TableStatus status={data[3]} />
+              )}
             </td>
           </tr>
         ))}
