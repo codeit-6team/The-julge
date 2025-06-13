@@ -21,97 +21,56 @@ export default function Pagination({
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   };
 
-  const renderButtons = () => {
-    const buttons: React.ReactNode[] = [];
+  let start = 1;
+  let end = 7;
 
-    if (totalPages <= 7) {
-      for (let page = 1; page <= totalPages; page++) {
-        buttons.push(
+  if (currentPage > 4) {
+    start = currentPage - 3;
+    end = currentPage + 3;
+  }
+
+  if (end > totalPages) {
+    end = totalPages;
+    start = Math.max(end - 5, 1);
+  }
+
+  const pageNumbers = range(start, end);
+
+  return (
+    <div className="flex items-center justify-center gap-5 sm:gap-3 md:gap-4">
+      {/* 왼쪽 화살표 */}
+      {totalPages > 7 && (
+        <button type="button" onClick={() => handleClick(1)}>
+          <img
+            src={currentPage === 1 ? ArrowLeftGray : ArrowLeft}
+            alt="이전"
+            className="size-5"
+          />
+        </button>
+      )}
+
+      {/* 페이지 버튼들 */}
+      <div className="flex gap-2 sm:gap-1">
+        {pageNumbers.map((page) => (
           <button
             key={page}
             type="button"
             onClick={() => handleClick(page)}
-            className={`flex h-10 w-10 items-center justify-center rounded text-sm ${
-              currentPage === page
-                ? 'bg-[#FF8D72] font-bold text-white'
-                : 'text-black hover:bg-gray-100'
-            }`}
-            disabled={currentPage === page}
+            className={`flex items-center justify-center rounded text-body2 ${
+              currentPage === page ? 'bg-red-30 text-white' : 'text-black'
+            } size-10 text-body2 max-sm:size-8 max-sm:text-[12px]`}
           >
             {page}
-          </button>,
-        );
-      }
-      return buttons;
-    }
+          </button>
+        ))}
+      </div>
 
-    let start = 1;
-    let end = 7;
-
-    if (currentPage > 4) {
-      start = currentPage - 3;
-      end = currentPage + 3;
-    }
-
-    if (currentPage + 3 > totalPages) {
-      start = totalPages - 6;
-      end = totalPages;
-    }
-
-    const buttonRange = range(start, end);
-
-    if (totalPages > 7) {
-      buttons.push(
-        <button
-          key="first"
-          type="button"
-          onClick={() => handleClick(1)}
-          className="h-5 w-5"
-        >
-          <img
-            src={currentPage === 1 ? ArrowLeftGray : ArrowLeft}
-            alt="First Page"
-          />
-        </button>,
-      );
-    }
-
-    buttonRange.forEach((page) => {
-      buttons.push(
-        <button
-          key={page}
-          type="button"
-          onClick={() => handleClick(page)}
-          className={`flex h-10 w-10 items-center justify-center rounded text-sm ${
-            currentPage === page
-              ? 'bg-[#FF8D72] font-bold text-white'
-              : 'text-black hover:bg-gray-100'
-          }`}
-        >
-          {page}
-        </button>,
-      );
-    });
-
-    if (end < totalPages) {
-      buttons.push(
-        <button
-          key="last"
-          type="button"
-          onClick={() => handleClick(totalPages)}
-          className="h-5 w-5"
-        >
-          <img src={ArrowRight} alt="Last Page" />
-        </button>,
-      );
-    }
-
-    return buttons;
-  };
-
-  return (
-    <div className="flex items-center justify-center gap-2">
-      {renderButtons()}
+      {/* 오른쪽 화살표 */}
+      {totalPages > 7 && (
+        <button type="button" onClick={() => handleClick(totalPages)}>
+          <img src={ArrowRight} alt="다음" className="size-5" />
+        </button>
+      )}
     </div>
   );
 }
