@@ -8,6 +8,7 @@ import ArrowUpGray from '@/assets/icons/arrow-up-gray.svg';
 import ArrowUpRed40 from '@/assets/icons/arrow-up-red40.svg';
 import ArrowUpRed30 from '@/assets/icons/arrow-up-red30.svg';
 import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
+import PostImg from '@/assets/images/post-default.png';
 
 interface PostProps {
   imageUrl: string;
@@ -59,6 +60,8 @@ export default function Post({
   const clockIcon = isInactive ? ClockGray : ClockRed;
   const locationIcon = isInactive ? LocationGray : LocationRed;
 
+  const background = imageUrl ?? PostImg;
+
   let badgeBgColor = '';
   let badgeTextColor = '';
   let arrowIcon = '';
@@ -88,7 +91,7 @@ export default function Post({
       <div className="relative">
         <div
           className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
-          style={{ backgroundImage: `url(${imageUrl})` }}
+          style={{ backgroundImage: `url(${background})` }}
         />
         {isInactive && (
           <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#000000]/70 text-h3 font-bold text-gray-30 md:text-h1">
