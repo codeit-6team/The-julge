@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import Button from './Button';
 import formatWorkTime from '@/utils/formatWorkTime';
+import TableStatus from './TableStatus';
 
 interface User {
   item: {
@@ -71,8 +70,6 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: Props) {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
   const applications = [
     ...initialApplications,
     ...[null, null, null, null, null],
@@ -107,14 +104,6 @@ export default function Table({
     ];
   });
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <table className="border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20">
       <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
@@ -140,46 +129,7 @@ export default function Table({
               {data[2]}
             </td>
             <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
-              {data[3] === 'pending' ? (
-                mode === 'notice' ? (
-                  <div className="flex gap-8 md:gap-12">
-                    <Button
-                      solid={false}
-                      size={isMobile ? 'small' : 'medium'}
-                      className="w-69 md:w-92"
-                    >
-                      거절하기
-                    </Button>
-                    <Button
-                      solid={false}
-                      size={isMobile ? 'small' : 'medium'}
-                      className="w-69 md:w-92"
-                      style={{
-                        color: 'var(--color-blue-20)',
-                        borderColor: 'var(--color-blue-20)',
-                      }}
-                    >
-                      승인하기
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="inline-block rounded-full bg-green-10 px-10 py-6 text-caption/16 text-green-20 md:text-body2/17 md:font-bold">
-                    대기중
-                  </div>
-                )
-              ) : data[3] === 'accepted' ? (
-                <div className="inline-block rounded-full bg-blue-10 px-10 py-6 text-caption/16 text-blue-20 md:text-body2/17 md:font-bold">
-                  승인 완료
-                </div>
-              ) : data[3] === 'rejected' ? (
-                <div className="inline-block rounded-full bg-red-10 px-10 py-6 text-caption/16 text-red-40 md:text-body2/17 md:font-bold">
-                  거절
-                </div>
-              ) : data[3] === 'canceled' ? (
-                <div className="inline-block rounded-full bg-gray-20 px-10 py-6 text-caption/16 text-gray-50 md:text-body2/17 md:font-bold">
-                  취소
-                </div>
-              ) : null}
+              <TableStatus mode={mode} status={data[3]} />
             </td>
           </tr>
         ))}
