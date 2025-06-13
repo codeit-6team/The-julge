@@ -9,12 +9,6 @@ export interface LinkInfo {
 
 export type UserType = 'employee' | 'employer';
 
-export interface BasicUserInfo {
-  id: string;
-  email: string;
-  type: UserType;
-}
-
 export interface ShopItem {
   id: string;
   name: string;
@@ -71,11 +65,12 @@ export interface SignupRequest {
 
 // Post /users - 회원가입 response
 export interface SignupResponse {
-  item: BasicUserInfo;
+  item: UserProfileItem;
   links: LinkInfo[];
 }
 
 // Get /users/{user_id} - 유저 정보 조회 response
+// Put /users/{user_id} - 내 정보 수정 response
 export interface UserDetailResponse {
   item: UserDetailItem;
   links: LinkInfo[];
@@ -88,8 +83,5 @@ export interface UpdateUserRequest {
   address: SeoulDistrict;
   bio: string;
 }
-
-// Put /users/{user_id} - 내 정보 수정 response
-export type UpdateUserResponse = UserDetailResponse;
 
 /* 아래에 user 관련 api 함수들 작성 */
