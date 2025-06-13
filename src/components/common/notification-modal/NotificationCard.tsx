@@ -9,7 +9,7 @@ interface NotificationCardProps {
   status: 'accepted' | 'rejected'; // 공고 지원 상태
   restaurantName: string; // 음식점 이름
   startsAt: string; // 공고 시작 시간 (ISO 8601 문자열)
-  workHour: number; // 근무 시간 (시간 단위)
+  workhour: number; // 근무 시간 (시간 단위)
   createdAt: string; // 알림 생성 시간 (ISO 8601 문자열)
 }
 
@@ -24,12 +24,12 @@ export default function NotificationCard({
   status,
   restaurantName,
   startsAt,
-  workHour,
+  workhour,
   createdAt,
 }: NotificationCardProps) {
   const formattedTime = formatWorkTime({
     startsAt,
-    workHour,
+    workhour,
   });
   const { role } = useContext(AuthContext);
   const formattedCreatedAt = calculateTimeDifference(createdAt);

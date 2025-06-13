@@ -24,7 +24,7 @@ export const ADDRESS_OPTIONS = [
   '서울시 강남구',
   '서울시 송파구',
   '서울시 강동구',
-];
+] as const;
 
 export const CATEGORY_OPTIONS = [
   '한식',

@@ -78,7 +78,7 @@ export default function NotificationModal({
               status={data.item.result}
               restaurantName={data.item.shop.item.name}
               startsAt={data.item.notice.item.startsAt}
-              workHour={data.item.notice.item.workhour}
+              workhour={data.item.notice.item.workhour}
               createdAt={data.item.createdAt}
             />
           ))}
