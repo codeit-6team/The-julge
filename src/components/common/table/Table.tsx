@@ -106,40 +106,42 @@ export default function Table({
   });
 
   return (
-    <table className="border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20">
-      <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
-        <tr>
-          <th className="w-228 px-8 font-regular md:px-12">{headers[0]}</th>
-          <th className="w-300 px-8 font-regular md:px-12">{headers[1]}</th>
-          <th className="w-200 px-8 font-regular md:px-12">{headers[2]}</th>
-          <th className="min-w-162 px-8 font-regular md:min-w-220 md:px-12">
-            {headers[3]}
-          </th>
-        </tr>
-      </thead>
-      <tbody className="text-body2/22 font-regular md:text-body1/26">
-        {datas.map((data, index) => (
-          <tr key={index}>
-            <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
-              {data[0]}
-            </td>
-            <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
-              {data[1]}
-            </td>
-            <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
-              {data[2]}
-            </td>
-            <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
-              {mode === 'notice' && data[3] === 'pending' ? (
-                <TableButtons />
-              ) : (
-                <TableStatus status={data[3]} />
-              )}
-            </td>
+    <div className={`overflow-x-auto ${className}`}>
+      <table className="w-full min-w-890 border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20 md:min-w-948">
+        <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
+          <tr>
+            <th className="w-228 px-8 font-regular md:px-12">{headers[0]}</th>
+            <th className="w-300 px-8 font-regular md:px-12">{headers[1]}</th>
+            <th className="w-200 px-8 font-regular md:px-12">{headers[2]}</th>
+            <th className="min-w-162 px-8 font-regular md:min-w-220 md:px-12">
+              {headers[3]}
+            </th>
           </tr>
-        ))}
-      </tbody>
-      <tfoot></tfoot>
-    </table>
+        </thead>
+        <tbody className="text-body2/22 font-regular md:text-body1/26">
+          {datas.map((data, index) => (
+            <tr key={index}>
+              <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
+                {data[0]}
+              </td>
+              <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
+                {data[1]}
+              </td>
+              <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
+                {data[2]}
+              </td>
+              <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
+                {mode === 'notice' && data[3] === 'pending' ? (
+                  <TableButtons />
+                ) : (
+                  <TableStatus status={data[3]} />
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
   );
 }
