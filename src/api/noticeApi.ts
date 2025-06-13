@@ -115,8 +115,9 @@ export interface GetShopNoticesResponse {
 }
 
 // POST /shops/{shop_id}/notices 공고 등록
+// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정
 // Request Body
-export interface CreateNoticeRequest {
+export interface NoticeUpsertRequest {
   hourlyPay: number;
   startsAt: string;
   workhour: number;
@@ -124,7 +125,7 @@ export interface CreateNoticeRequest {
 }
 
 // Response
-export interface CreateNoticeResponse {
+export interface NoticeUpsertResponse {
   item: {
     id: string;
     hourlyPay: number;
@@ -151,29 +152,6 @@ export interface GetNoticeDetailResponse {
     currentUserApplication?: {
       item: ApplicationItem;
     };
-  };
-  links: LinkInfo[];
-}
-
-// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정
-// Request Body
-export interface UpdateNoticeRequest {
-  hourlyPay: number;
-  startsAt: string;
-  workhour: number;
-  description: string;
-}
-
-// Response
-export interface UpdateNoticeResponse {
-  item: {
-    id: string;
-    hourlyPay: number;
-    startsAt: string;
-    workhour: number;
-    description: string;
-    closed: boolean;
-    shop: ShopInfo;
   };
   links: LinkInfo[];
 }
