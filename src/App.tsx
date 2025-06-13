@@ -9,7 +9,7 @@ import StorePost from './pages/myprofile/StorePost';
 import Profile from './pages/mystore/Profile';
 import ProfileForm from './pages/mystore/ProfileForm';
 import PostList from './pages/notice/PostList';
-import Post from './pages/notice/Post';
+import Notice from './pages/notice/Notice';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -20,7 +20,7 @@ export default function App() {
       <Routes>
         {/* 공통 페이지 */}
         <Route path="/" element={<PostList />} />
-        <Route path=":id" element={<Post />} />
+        <Route path=":id" element={<Notice />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
 
