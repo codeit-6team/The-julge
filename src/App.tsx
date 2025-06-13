@@ -8,7 +8,7 @@ import StoreForm from './pages/myprofile/StoreForm';
 import StorePost from './pages/myprofile/StorePost';
 import Profile from './pages/mystore/Profile';
 import ProfileForm from './pages/mystore/ProfileForm';
-import PostList from './pages/notice/PostList';
+import NoticeList from './pages/notice/NoticeList';
 import Notice from './pages/notice/Notice';
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
       {pathname !== '/login' && pathname !== '/signup' && <Navbar />}
       <Routes>
         {/* 공통 페이지 */}
-        <Route path="/" element={<PostList />} />
+        <Route path="/" element={<NoticeList />} />
         <Route path=":id" element={<Notice />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
