@@ -40,15 +40,13 @@ export interface NoticeItem {
   closed: boolean;
 }
 
-// 공통 Notice Info
-export interface NoticeInfo {
-  item: NoticeItem;
-  href: string;
+// shop 포함된 확장형 Notice (리스트, 등록, 수정에 사용)
+export interface NoticeWithShop extends NoticeItem {
+  shop: ShopInfo;
 }
 
-// 공고에 포함되는 상세 정보 (shop, application 포함)
-export interface NoticeDetailItem extends NoticeItem {
-  shop: ShopInfo;
+// application까지 포함된 상세형 Notice (상세 조회 시 사용)
+export interface NoticeDetailItem extends NoticeWithShop {
   currentUserApplication?: {
     item: ApplicationItem;
   };
@@ -61,7 +59,7 @@ export interface GetNoticesQuery {
   limit?: number;
   address?: string;
   keyword?: string;
-  startsAtGte?: string; // RFC 3339
+  startsAtGte?: string;
   hourlyPayGte?: number;
   sort?: 'time' | 'pay' | 'hour' | 'shop';
 }
@@ -75,32 +73,13 @@ export interface GetNoticesResponse {
   address: string[];
   keyword?: string;
   items: {
-    item: {
-      id: string;
-      hourlyPay: number;
-      startsAt: string;
-      workhour: number;
-      description: string;
-      closed: boolean;
-      shop: ShopInfo;
-    };
+    item: NoticeWithShop;
     links: LinkInfo[];
   }[];
   links: LinkInfo[];
 }
 
 // GET /shops/{shop_id}/notices 가게별 공고 조회
-// path param
-export interface GetShopNoticePathParam {
-  shop_id: string;
-}
-
-// Request Query
-export interface GetShopNoticesQuery {
-  offset?: number;
-  limit?: number;
-}
-
 // Response
 export interface GetShopNoticesResponse {
   offset: number;
@@ -126,32 +105,13 @@ export interface NoticeUpsertRequest {
 
 // Response
 export interface NoticeUpsertResponse {
-  item: {
-    id: string;
-    hourlyPay: number;
-    startsAt: string;
-    workhour: number;
-    description: string;
-    closed: boolean;
-    shop: ShopInfo;
-  };
+  item: NoticeWithShop;
   links: LinkInfo[];
 }
 
 // GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회
 // Response
 export interface GetNoticeDetailResponse {
-  item: {
-    id: string;
-    hourlyPay: number;
-    startsAt: string;
-    workhour: number;
-    description: string;
-    closed: boolean;
-    shop: ShopInfo;
-    currentUserApplication?: {
-      item: ApplicationItem;
-    };
-  };
+  item: NoticeDetailItem;
   links: LinkInfo[];
 }
