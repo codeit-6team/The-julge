@@ -68,6 +68,7 @@ export interface AlertViewResponse {
   count: number;
   hasNext: boolean;
   items: AlertListItem[];
+  links: LinkInfo[];
 }
 
 // PUT /users/{user_id}/alerts/{alert_id} - 알림 읽음 처리 response
@@ -75,6 +76,7 @@ export interface AlertReadResponse {
   offset: number;
   limit: number;
   items: AlertListItem[];
+  links: LinkInfo[];
 }
 
 /* 아래에 alert 관련 api 함수들 작성 */
