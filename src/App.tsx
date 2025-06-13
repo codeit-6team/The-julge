@@ -8,8 +8,8 @@ import StoreForm from './pages/myprofile/StoreForm';
 import StorePost from './pages/myprofile/StorePost';
 import Profile from './pages/mystore/Profile';
 import ProfileForm from './pages/mystore/ProfileForm';
-import PostList from './pages/post/PostList';
-import Post from './pages/post/Post';
+import PostList from './pages/notice/PostList';
+import Post from './pages/notice/Post';
 
 export default function App() {
   const { pathname } = useLocation();
