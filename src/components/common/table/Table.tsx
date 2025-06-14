@@ -139,7 +139,7 @@ export default function Table({
                 {data[2]}
               </td>
               <td className="sticky right-0 border-b border-gray-20 bg-white px-8 pt-1 md:px-12">
-                <div className="content-center md:min-h-67">
+                <div className="min-h-44 content-center md:min-h-67">
                   {mode === 'notice' && data[3] === 'pending' ? (
                     <TableButtons />
                   ) : (
