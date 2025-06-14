@@ -13,7 +13,14 @@ interface AuthContextType {
 const defaultAuthContext: AuthContextType = {
   isLoggedIn: false,
   role: null,
-  alarms: { offset: 0, limit: 0, count: 0, hasNext: false, items: [] },
+  alarms: {
+    offset: 0,
+    limit: 0,
+    count: 0,
+    hasNext: false,
+    items: [],
+    links: [],
+  },
   login: () => {},
   logout: () => {},
 };

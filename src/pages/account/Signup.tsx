@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { postUser } from '@/api/postUser';
+import { postUser, type UserType } from '@/api/userApi';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import logo from '@/assets/images/logo.svg';
@@ -27,7 +27,7 @@ export default function Signup() {
     !errorMessages.passwordError &&
     !errorMessages.passwordCheckError;
 
-  function handleChange(e) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
     setValues((prevValues) => ({
@@ -66,14 +66,14 @@ export default function Signup() {
     });
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password, type } = values;
     console.log('values', values);
     try {
-      await postUser({ email, password, type });
+      await postUser({ email, password, type: type as UserType });
     } catch (error) {
-      console.error(error.message);
+      console.error((error as Error).message);
     }
   }
 
