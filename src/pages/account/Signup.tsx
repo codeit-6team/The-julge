@@ -12,7 +12,7 @@ export default function Signup() {
     email: '',
     password: '',
     passwordCheck: '',
-    type: '',
+    type: 'employee',
   });
   const [errorMessages, setErrorMessages] = useState({
     emailError: '',
@@ -115,22 +115,52 @@ export default function Signup() {
             required
           />
           <div className="flex flex-col gap-8 text-body1/26 font-regular text-black">
-            <label htmlFor="type">회원 유형</label>
-            <div id="type" className="flex justify-between">
-              <button
-                type="button"
-                className="flex w-167 items-center justify-center gap-9 rounded-full border border-primary bg-white py-13"
-              >
-                <img src={check} />
-                알바님
-              </button>
-              <button
-                type="button"
-                className="flex w-167 items-center justify-center gap-9 rounded-full border border-gray-30 py-13"
-              >
-                <img src={not_checked} />
-                사장님
-              </button>
+            <label>회원 유형</label>
+            <div className="flex justify-between">
+              <div>
+                <input
+                  type="radio"
+                  id="type-employee"
+                  name="type"
+                  value="employee"
+                  className="sr-only"
+                  checked={values.type === 'employee'}
+                  onChange={handleChange}
+                />
+                <label
+                  htmlFor="type-employee"
+                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 ${
+                    values.type === 'employee'
+                      ? 'border-primary bg-white'
+                      : 'border-gray-30'
+                  }`}
+                >
+                  <img src={values.type === 'employee' ? check : not_checked} />
+                  알바님
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  id="type-employer"
+                  name="type"
+                  value="employer"
+                  className="sr-only"
+                  checked={values.type === 'employer'}
+                  onChange={handleChange}
+                />
+                <label
+                  htmlFor="type-employer"
+                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 ${
+                    values.type === 'employer'
+                      ? 'border-primary bg-white'
+                      : 'border-gray-30'
+                  }`}
+                >
+                  <img src={values.type === 'employer' ? check : not_checked} />
+                  사장님
+                </label>
+              </div>
             </div>
           </div>
           <Button type="submit" disabled={!isFormValid} className="w-350">
