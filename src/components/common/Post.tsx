@@ -11,10 +11,6 @@ import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
 import type { NoticeWithShopItem } from '@/api/noticeApi';
 
-interface PostProps {
-  data: NoticeWithShopItem;
-}
-
 // 상태 계산
 function getStatus(
   startsAt: string,
@@ -28,7 +24,7 @@ function getStatus(
   return 'ACTIVE';
 }
 
-export default function Post({ data }: PostProps) {
+export default function Post({ data }: { data: NoticeWithShopItem }) {
   const {
     hourlyPay,
     workhour,
@@ -40,12 +36,14 @@ export default function Post({ data }: PostProps) {
   } = data;
 
   const status = getStatus(startsAt, closed);
-  const isInactive = status === 'CLOSED' || status === 'EXPIRED';
-  const overlayText =
-    status === 'CLOSED' ? '마감 완료' : status === 'EXPIRED' ? '지난 공고' : '';
+  const isInactive = status !== 'ACTIVE';
+  const overlayText = isInactive
+    ? status === 'CLOSED'
+      ? '마감 완료'
+      : '지난 공고'
+    : '';
 
-  const rawDateTime = formatWorkTime({ startsAt, workhour });
-  const dateTime = `${rawDateTime} (${workhour}시간)`;
+  const dateTime = `${formatWorkTime({ startsAt, workhour })} (${workhour}시간)`;
 
   const percent = Math.floor(
     ((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100,
@@ -127,7 +125,7 @@ export default function Post({ data }: PostProps) {
         </div>
         <div
           className="flex flex-col justify-between md:flex-row md:items-center"
-          title={`${hourlyPay.toLocaleString()}원${percent > 0 ? `: 기존 시급보다 ${percent}%` : ''}`}
+          title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
         >
           <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
             {hourlyPay.toLocaleString()}원
