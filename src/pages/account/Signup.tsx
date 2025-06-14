@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { postUser, type UserType } from '@/api/userApi';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
@@ -8,6 +8,7 @@ import check from '@/assets/icons/modal_check.svg';
 import not_checked from '@/assets/icons/not-checked.svg';
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -19,6 +20,7 @@ export default function Signup() {
     passwordError: '',
     passwordCheckError: '',
   });
+
   const isFormValid =
     values.email &&
     values.password &&
@@ -72,6 +74,8 @@ export default function Signup() {
     console.log('values', values);
     try {
       await postUser({ email, password, type: type as UserType });
+      alert('가입이 완료되었습니다.');
+      navigate('/login');
     } catch (error) {
       console.error((error as Error).message);
     }
