@@ -41,29 +41,18 @@ export interface NoticeItem {
 }
 
 // shop 포함된 확장형 Notice (리스트, 등록, 수정에 사용)
-export interface NoticeWithShop extends NoticeItem {
+export interface NoticeWithShopItem extends NoticeItem {
   shop: ShopInfo;
 }
 
 // application까지 포함된 상세형 Notice (상세 조회 시 사용)
-export interface NoticeDetailItem extends NoticeWithShop {
+export interface NoticeDetailItem extends NoticeWithShopItem {
   currentUserApplication?: {
     item: ApplicationItem;
   };
 }
 
 // GET /notices 공고 조회
-// Request Query
-export interface GetNoticesQuery {
-  offset?: number;
-  limit?: number;
-  address?: string;
-  keyword?: string;
-  startsAtGte?: string;
-  hourlyPayGte?: number;
-  sort?: 'time' | 'pay' | 'hour' | 'shop';
-}
-
 // Response
 export interface GetNoticesResponse {
   offset: number;
@@ -73,7 +62,7 @@ export interface GetNoticesResponse {
   address: string[];
   keyword?: string;
   items: {
-    item: NoticeWithShop;
+    item: NoticeWithShopItem;
     links: LinkInfo[];
   }[];
   links: LinkInfo[];
@@ -105,7 +94,7 @@ export interface NoticeUpsertRequest {
 
 // Response
 export interface NoticeUpsertResponse {
-  item: NoticeWithShop;
+  item: NoticeWithShopItem;
   links: LinkInfo[];
 }
 
