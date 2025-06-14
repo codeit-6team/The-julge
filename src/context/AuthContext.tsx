@@ -1,62 +1,11 @@
 import { createContext, useState, useEffect, type ReactNode } from 'react';
-import { getAlerts } from '@/api/getAlerts';
-
+import { getAlerts, type AlertViewResponse } from '@/api/alertApi';
 type UserRole = 'employer' | 'employee' | null;
-
-interface AlertItem {
-  item: {
-    id: string;
-    createdAt: string;
-    result: 'accepted' | 'rejected';
-    read: boolean;
-    application: {
-      item: {
-        id: string;
-        status: 'pending' | 'accepted' | 'rejected';
-      };
-      href: string;
-    };
-    shop: {
-      item: {
-        id: string;
-        name: string;
-        category: string;
-        address1: string;
-        address2: string;
-        description: string;
-        imageUrl: string;
-        originalHourlyPay: number;
-      };
-      href: string;
-    };
-    notice: {
-      item: {
-        id: string;
-        hourlyPay: number;
-        description: string;
-        startsAt: string;
-        workhour: number;
-        closed: boolean;
-      };
-      href: string;
-    };
-    links: object[]; // 정확한 타입이 나와있지 않아서 우선 object로만 처리함
-  };
-  links: object[]; // 정확한 타입이 나와있지 않아서 우선 object로만 처리함
-}
-
-interface AlertsInfo {
-  offset: number;
-  limit: number;
-  count: number;
-  hasNext: boolean;
-  items: AlertItem[];
-}
 
 interface AuthContextType {
   isLoggedIn: boolean; // 로그인 여부
   role: UserRole; // 알바님, 사장님 구분
-  alarms: AlertsInfo; // 알림 정보
+  alarms: AlertViewResponse; // 알림 정보
   login: (token: string, role: UserRole, userId: string) => void; // 로그인 함수
   logout: () => void; // 로그아웃 함수
 }
@@ -74,7 +23,9 @@ export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState<UserRole>(null);
-  const [alarms, setAlarms] = useState<AlertsInfo>(defaultAuthContext.alarms);
+  const [alarms, setAlarms] = useState<AlertViewResponse>(
+    defaultAuthContext.alarms,
+  );
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
