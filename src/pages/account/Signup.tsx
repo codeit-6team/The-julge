@@ -79,7 +79,10 @@ export default function Signup() {
 
   return (
     <>
-      <form className="mx-auto flex h-screen flex-col items-center justify-center">
+      <form
+        className="mx-auto flex h-screen flex-col items-center justify-center"
+        onSubmit={handleSubmit}
+      >
         <Link to="/" className="mb-40 h-45 w-248">
           <img src={logo} />
         </Link>
@@ -130,11 +133,7 @@ export default function Signup() {
               </button>
             </div>
           </div>
-          <Button
-            disabled={!isFormValid}
-            className="w-350"
-            onClick={handleSubmit}
-          >
+          <Button type="submit" disabled={!isFormValid} className="w-350">
             가입하기
           </Button>
         </div>
