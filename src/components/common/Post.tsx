@@ -9,16 +9,10 @@ import ArrowUpRed40 from '@/assets/icons/arrow-up-red40.svg';
 import ArrowUpRed30 from '@/assets/icons/arrow-up-red30.svg';
 import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
+import type { NoticeWithShopItem } from '@/api/noticeApi';
 
 interface PostProps {
-  imageUrl: string;
-  title: string;
-  startsAt: string; // 근무 시작 시간
-  workhour: number; // 근무 시간
-  location: string;
-  hourlyPay: number; // 시급
-  originalHourlyPay: number; // 전에 등록한 시급
-  closed: boolean; // 마감 여부
+  data: NoticeWithShopItem;
 }
 
 // 상태 계산
@@ -34,16 +28,17 @@ function getStatus(
   return 'ACTIVE';
 }
 
-export default function Post({
-  imageUrl,
-  title,
-  startsAt,
-  workhour,
-  location,
-  hourlyPay,
-  originalHourlyPay,
-  closed,
-}: PostProps) {
+export default function Post({ data }: PostProps) {
+  const {
+    hourlyPay,
+    workhour,
+    startsAt,
+    closed,
+    shop: {
+      item: { name, address1, imageUrl, originalHourlyPay },
+    },
+  } = data;
+
   const status = getStatus(startsAt, closed);
   const isInactive = status === 'CLOSED' || status === 'EXPIRED';
   const overlayText =
@@ -105,9 +100,9 @@ export default function Post({
         <div className="flex flex-col gap-8">
           <div
             className="truncate text-body1/20 font-bold md:text-h3/24"
-            title={`${title}`}
+            title={`${name}`}
           >
-            {title}
+            {name}
           </div>
           <div
             className={`${isInactive ? 'text-gray-30' : 'text-gray-50'} flex flex-col gap-8 text-caption/16 font-regular md:text-body2/22`}
@@ -126,7 +121,7 @@ export default function Post({
                 alt="위치 아이콘"
                 className="size-16 md:size-20"
               />
-              <span>{location}</span>
+              <span>{address1}</span>
             </div>
           </div>
         </div>
