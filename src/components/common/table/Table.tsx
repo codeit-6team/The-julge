@@ -106,14 +106,22 @@ export default function Table({
   });
 
   return (
-    <div className={`overflow-x-auto ${className}`}>
-      <table className="w-full min-w-890 border-separate border-spacing-0 overflow-hidden rounded-[10px] bg-white text-left inset-ring inset-ring-gray-20 md:min-w-948">
-        <thead className="h-40 rounded-t-[10px] bg-red-10 text-caption/16 inset-ring inset-ring-gray-20 md:h-50 md:text-body2/22">
+    <div
+      className={`overflow-x-auto rounded-[10px] border border-gray-20 bg-white ${className}`}
+    >
+      <table className="w-full min-w-890 border-separate border-spacing-0 text-left md:min-w-948">
+        <thead className="h-39 bg-red-10 text-caption/16 md:h-49 md:text-body2/22">
           <tr>
-            <th className="w-228 px-8 font-regular md:px-12">{headers[0]}</th>
-            <th className="w-300 px-8 font-regular md:px-12">{headers[1]}</th>
-            <th className="w-200 px-8 font-regular md:px-12">{headers[2]}</th>
-            <th className="min-w-162 px-8 font-regular md:min-w-220 md:px-12">
+            <th className="w-228 border-b border-gray-20 px-8 font-regular md:px-12">
+              {headers[0]}
+            </th>
+            <th className="w-300 border-b border-gray-20 px-8 font-regular md:px-12">
+              {headers[1]}
+            </th>
+            <th className="w-200 border-b border-gray-20 px-8 font-regular md:px-12">
+              {headers[2]}
+            </th>
+            <th className="min-w-162 border-b border-gray-20 px-8 font-regular md:min-w-220 md:px-12">
               {headers[3]}
             </th>
           </tr>
@@ -140,8 +148,8 @@ export default function Table({
             </tr>
           ))}
         </tbody>
-        <tfoot></tfoot>
       </table>
+      <div className="h-55 md:h-63"></div>
     </div>
   );
 }
