@@ -139,11 +139,13 @@ export default function Table({
                 {data[2]}
               </td>
               <td className="sticky right-0 border-b border-gray-20 bg-white px-8 pt-1 md:px-12">
-                {mode === 'notice' && data[3] === 'pending' ? (
-                  <TableButtons />
-                ) : (
-                  <TableStatus status={data[3]} />
-                )}
+                <div className="content-center md:min-h-67">
+                  {mode === 'notice' && data[3] === 'pending' ? (
+                    <TableButtons />
+                  ) : (
+                    <TableStatus status={data[3]} />
+                  )}
+                </div>
               </td>
             </tr>
           ))}
