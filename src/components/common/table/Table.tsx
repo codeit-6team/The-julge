@@ -151,7 +151,7 @@ export default function Table({
           ))}
         </tbody>
       </table>
-      <div className="h-55 md:h-63"></div>
+      <div className="h-55 w-full md:h-63"></div>
     </div>
   );
 }
