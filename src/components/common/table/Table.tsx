@@ -107,7 +107,7 @@ export default function Table({
 
   return (
     <div
-      className={`overflow-x-auto rounded-[10px] border border-gray-20 bg-white ${className}`}
+      className={`scrollbar-hide overflow-x-auto rounded-[10px] border border-gray-20 bg-white ${className}`}
     >
       <table className="w-full min-w-890 border-separate border-spacing-0 text-left md:min-w-948">
         <thead className="h-39 bg-red-10 text-caption/16 md:h-49 md:text-body2/22">
