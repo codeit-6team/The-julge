@@ -1,6 +1,7 @@
 import formatWorkTime from '@/utils/formatWorkTime';
 import TableStatus from './TableStatus';
 import TableButtons from './TableButtons';
+import { useEffect } from 'react';
 
 interface User {
   item: {
@@ -105,6 +106,26 @@ export default function Table({
     ];
   });
 
+  useEffect(() => {
+    const maxHeight = 52;
+    const elements = document.querySelectorAll<HTMLDivElement>('td div.t');
+
+    for (const element of elements) {
+      if (element.offsetHeight < maxHeight) continue;
+
+      const originalText = element.textContent ?? '';
+      element.textContent = originalText.slice(0, 2);
+
+      for (let i = 2; i < originalText.length; i++) {
+        element.textContent += originalText[i];
+        if (element.offsetHeight > maxHeight) {
+          element.textContent = originalText.slice(0, i - 2) + '...';
+          break;
+        }
+      }
+    }
+  }, []);
+
   return (
     <div
       className={`@container scrollbar-hide overflow-x-auto rounded-[10px] border border-gray-20 bg-white ${className}`}
@@ -130,13 +151,13 @@ export default function Table({
           {datas.map((data, index) => (
             <tr key={index}>
               <td className="border-b border-gray-20 pt-12 pr-8 pb-11 pl-7 md:pt-20 md:pr-12 md:pb-19 md:pl-11">
-                {data[0]}
+                <div className="t max-h-53 overflow-hidden">{data[0]}</div>
               </td>
               <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
-                {data[1]}
+                <div className="t max-h-53 overflow-hidden">{data[1]}</div>
               </td>
               <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
-                {data[2]}
+                <div className="t max-h-53 overflow-hidden">{data[2]}</div>
               </td>
               <td className="sticky right-0 border-b border-l border-gray-20 bg-white px-7 pt-1 md:px-11 @min-[947px]:border-l-transparent">
                 <div className="min-h-44 content-center md:min-h-67">
