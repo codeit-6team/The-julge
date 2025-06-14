@@ -121,7 +121,7 @@ export default function Table({
             <th className="w-200 border-b border-gray-20 px-8 font-regular md:px-12">
               {headers[2]}
             </th>
-            <th className="min-w-162 border-b border-gray-20 px-8 font-regular md:min-w-220 md:px-12">
+            <th className="sticky right-0 min-w-162 border-b border-gray-20 bg-red-10 px-8 font-regular md:min-w-220 md:px-12">
               {headers[3]}
             </th>
           </tr>
@@ -138,7 +138,7 @@ export default function Table({
               <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
                 {data[2]}
               </td>
-              <td className="border-b border-gray-20 px-8 pt-1 md:px-12">
+              <td className="sticky right-0 border-b border-gray-20 bg-white px-8 pt-1 md:px-12">
                 {mode === 'notice' && data[3] === 'pending' ? (
                   <TableButtons />
                 ) : (
