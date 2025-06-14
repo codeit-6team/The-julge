@@ -109,10 +109,10 @@ export default function Table({
     <div
       className={`@container scrollbar-hide overflow-x-auto rounded-[10px] border border-gray-20 bg-white ${className}`}
     >
-      <table className="w-full min-w-890 border-separate border-spacing-0 text-left md:min-w-948">
+      <table className="w-full min-w-888 border-separate border-spacing-0 text-left md:min-w-946">
         <thead className="h-39 bg-red-10 text-caption/16 md:h-49 md:text-body2/22">
           <tr>
-            <th className="w-228 border-b border-gray-20 px-8 font-regular md:px-12">
+            <th className="w-227 border-b border-gray-20 px-7 font-regular md:px-11">
               {headers[0]}
             </th>
             <th className="w-300 border-b border-gray-20 px-8 font-regular md:px-12">
@@ -121,7 +121,7 @@ export default function Table({
             <th className="w-200 border-b border-gray-20 px-8 font-regular md:px-12">
               {headers[2]}
             </th>
-            <th className="sticky right-0 min-w-162 border-b border-l border-gray-20 bg-red-10 px-8 font-regular md:min-w-220 md:px-12 @min-[947px]:border-l-transparent">
+            <th className="sticky right-0 border-b border-l border-gray-20 bg-red-10 px-7 font-regular md:px-11 @min-[947px]:border-l-transparent">
               {headers[3]}
             </th>
           </tr>
@@ -129,7 +129,7 @@ export default function Table({
         <tbody className="text-body2/22 font-regular md:text-body1/26">
           {datas.map((data, index) => (
             <tr key={index}>
-              <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
+              <td className="border-b border-gray-20 pt-12 pr-8 pb-11 pl-7 md:pt-20 md:pr-12 md:pb-19 md:pl-11">
                 {data[0]}
               </td>
               <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
@@ -138,7 +138,7 @@ export default function Table({
               <td className="border-b border-gray-20 px-8 pt-12 pb-11 md:px-12 md:pt-20 md:pb-19">
                 {data[2]}
               </td>
-              <td className="sticky right-0 border-b border-l border-gray-20 bg-white px-8 pt-1 md:px-12 @min-[947px]:border-l-transparent">
+              <td className="sticky right-0 border-b border-l border-gray-20 bg-white px-7 pt-1 md:px-11 @min-[947px]:border-l-transparent">
                 <div className="min-h-44 content-center md:min-h-67">
                   {mode === 'notice' && data[3] === 'pending' ? (
                     <TableButtons />
