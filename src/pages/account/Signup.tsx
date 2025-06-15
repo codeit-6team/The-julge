@@ -160,7 +160,7 @@ export default function Signup() {
                 />
                 <label
                   htmlFor="type-employee"
-                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 ${
+                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 text-body2/22 ${
                     values.type === 'employee'
                       ? 'border-primary bg-white'
                       : 'border-gray-30'
@@ -168,6 +168,7 @@ export default function Signup() {
                 >
                   <img
                     src={values.type === 'employee' ? checked : not_checked}
+                    className="size-20"
                   />
                   알바님
                 </label>
@@ -184,7 +185,7 @@ export default function Signup() {
                 />
                 <label
                   htmlFor="type-employer"
-                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 ${
+                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 text-body2/22 ${
                     values.type === 'employer'
                       ? 'border-primary bg-white'
                       : 'border-gray-30'
@@ -192,6 +193,7 @@ export default function Signup() {
                 >
                   <img
                     src={values.type === 'employer' ? checked : not_checked}
+                    className="size-20"
                   />
                   사장님
                 </label>
@@ -204,7 +206,7 @@ export default function Signup() {
         </div>
         <p className="mt-16">
           이미 가입하셨나요?{' '}
-          <Link to="/login" className="text-blue-500 underline">
+          <Link to="/login" className="text-[#5534DA] underline">
             로그인하기
           </Link>
         </p>
