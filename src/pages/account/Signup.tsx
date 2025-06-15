@@ -109,13 +109,13 @@ export default function Signup() {
   return (
     <>
       <form
-        className="mx-auto flex h-screen flex-col items-center justify-center"
+        className="mx-auto flex min-h-screen flex-col items-center justify-center"
         onSubmit={handleSubmit}
       >
-        <Link to="/" className="mb-40 h-45 w-248">
+        <Link to="/" className="mb-40 h-45 w-full max-w-248">
           <img src={logo} />
         </Link>
-        <div className="flex w-350 flex-col gap-28">
+        <div className="flex w-full max-w-350 flex-col gap-28">
           <Input
             type="email"
             name="email"
@@ -147,60 +147,61 @@ export default function Signup() {
             <legend className="mb-8 text-body1/26 font-regular text-black">
               회원 유형
             </legend>
-            <div className="flex justify-between">
-              <div>
-                <input
-                  type="radio"
-                  id="type-employee"
-                  name="type"
-                  value="employee"
-                  className="sr-only"
-                  checked={values.type === 'employee'}
-                  onChange={handleChange}
+            <div className="flex gap-16">
+              <input
+                type="radio"
+                id="type-employee"
+                name="type"
+                value="employee"
+                className="sr-only"
+                checked={values.type === 'employee'}
+                onChange={handleChange}
+              />
+              <label
+                htmlFor="type-employee"
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 text-body2/22 ${
+                  values.type === 'employee'
+                    ? 'border-primary bg-white'
+                    : 'border-gray-30'
+                }`}
+              >
+                <img
+                  src={values.type === 'employee' ? checked : not_checked}
+                  className="size-20"
                 />
-                <label
-                  htmlFor="type-employee"
-                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 text-body2/22 ${
-                    values.type === 'employee'
-                      ? 'border-primary bg-white'
-                      : 'border-gray-30'
-                  }`}
-                >
-                  <img
-                    src={values.type === 'employee' ? checked : not_checked}
-                    className="size-20"
-                  />
-                  알바님
-                </label>
-              </div>
-              <div>
-                <input
-                  type="radio"
-                  id="type-employer"
-                  name="type"
-                  value="employer"
-                  className="sr-only"
-                  checked={values.type === 'employer'}
-                  onChange={handleChange}
+                알바님
+              </label>
+
+              <input
+                type="radio"
+                id="type-employer"
+                name="type"
+                value="employer"
+                className="sr-only"
+                checked={values.type === 'employer'}
+                onChange={handleChange}
+              />
+              <label
+                htmlFor="type-employer"
+                className={`flex flex-1 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 text-body2/22 ${
+                  values.type === 'employer'
+                    ? 'border-primary bg-white'
+                    : 'border-gray-30'
+                }`}
+              >
+                <img
+                  src={values.type === 'employer' ? checked : not_checked}
+                  className="size-20"
                 />
-                <label
-                  htmlFor="type-employer"
-                  className={`flex w-167 cursor-pointer items-center justify-center gap-9 rounded-full border py-13 text-body2/22 ${
-                    values.type === 'employer'
-                      ? 'border-primary bg-white'
-                      : 'border-gray-30'
-                  }`}
-                >
-                  <img
-                    src={values.type === 'employer' ? checked : not_checked}
-                    className="size-20"
-                  />
-                  사장님
-                </label>
-              </div>
+                사장님
+              </label>
             </div>
           </fieldset>
-          <Button type="submit" disabled={!isFormValid} className="w-350">
+          <Button
+            type="submit"
+            disabled={!isFormValid}
+            className="w-full max-w-350"
+          >
             가입하기
           </Button>
         </div>
