@@ -143,8 +143,10 @@ export default function Signup() {
             onChange={handleChange}
             required
           />
-          <div className="flex flex-col gap-8 text-body1/26 font-regular text-black">
-            <label>회원 유형</label>
+          <fieldset>
+            <legend className="mb-8 text-body1/26 font-regular text-black">
+              회원 유형
+            </legend>
             <div className="flex justify-between">
               <div>
                 <input
@@ -188,12 +190,14 @@ export default function Signup() {
                       : 'border-gray-30'
                   }`}
                 >
-                  <img src={values.type === 'employer' ? check : not_checked} />
+                  <img
+                    src={values.type === 'employer' ? checked : not_checked}
+                  />
                   사장님
                 </label>
               </div>
             </div>
-          </div>
+          </fieldset>
           <Button type="submit" disabled={!isFormValid} className="w-350">
             가입하기
           </Button>
