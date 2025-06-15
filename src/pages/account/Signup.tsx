@@ -5,12 +5,19 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import logo from '@/assets/images/logo.svg';
-import check from '@/assets/icons/modal_check.svg';
+import checked from '@/assets/icons/modal_check.svg';
 import not_checked from '@/assets/icons/not-checked.svg';
+
+interface SignupState {
+  email: string;
+  password: string;
+  passwordCheck: string;
+  type: UserType;
+}
 
 export default function Signup() {
   const navigate = useNavigate();
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<SignupState>({
     email: '',
     password: '',
     passwordCheck: '',
@@ -77,7 +84,7 @@ export default function Signup() {
     const { email, password, type } = values;
     console.log('values', values);
     try {
-      await postUser({ email, password, type: type as UserType });
+      await postUser({ email, password, type });
       setModal({
         isOpen: true,
         message: '가입이 완료되었습니다!',
@@ -157,7 +164,9 @@ export default function Signup() {
                       : 'border-gray-30'
                   }`}
                 >
-                  <img src={values.type === 'employee' ? check : not_checked} />
+                  <img
+                    src={values.type === 'employee' ? checked : not_checked}
+                  />
                   알바님
                 </label>
               </div>
