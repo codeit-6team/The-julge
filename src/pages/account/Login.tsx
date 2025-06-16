@@ -7,15 +7,10 @@ import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import logo from '@/assets/images/logo.svg';
 
-interface LoginState {
-  email: string;
-  password: string;
-}
-
 export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [values, setValues] = useState<LoginState>({
+  const [values, setValues] = useState({
     email: '',
     password: '',
   });
@@ -108,11 +103,7 @@ export default function Login() {
             onChange={handleChange}
             required
           />
-          <Button
-            type="submit"
-            disabled={!isFormValid}
-            className="w-full max-w-350"
-          >
+          <Button type="submit" disabled={!isFormValid} className="w-full">
             로그인 하기
           </Button>
         </div>

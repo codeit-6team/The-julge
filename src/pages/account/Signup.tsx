@@ -196,11 +196,7 @@ export default function Signup() {
               </label>
             </div>
           </fieldset>
-          <Button
-            type="submit"
-            disabled={!isFormValid}
-            className="w-full max-w-350"
-          >
+          <Button type="submit" disabled={!isFormValid} className="w-full">
             가입하기
           </Button>
         </div>
