@@ -20,6 +20,11 @@ export interface ShopItem {
   originalHourlyPay: number;
 }
 
+export interface ShopInfo {
+  item: ShopItem;
+  href: string;
+}
+
 // POST /shops - 가게 등록 response
 // GET /shops/{shop_id} - 가게 정보 조회 response
 // PUT /shops/{shop_id} - 가게 정보 수정 response
