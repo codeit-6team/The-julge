@@ -32,13 +32,6 @@ export default function Signup() {
     isOpen: false,
     message: '',
   });
-  const isFormValid =
-    values.email &&
-    values.password &&
-    values.passwordCheck &&
-    !errorMessages.emailError &&
-    !errorMessages.passwordError &&
-    !errorMessages.passwordCheckError;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -47,22 +40,6 @@ export default function Signup() {
       ...prevValues,
       [name]: value,
     }));
-
-    setErrorMessages((prevErrors) => {
-      const newErrors = { ...prevErrors };
-      if (name === 'email') {
-        newErrors.emailError = '';
-      }
-      if (name === 'password') {
-        newErrors.passwordError = '';
-        newErrors.passwordCheckError = '';
-      }
-      if (name === 'passwordCheck') {
-        newErrors.passwordError = '';
-        newErrors.passwordCheckError = '';
-      }
-      return newErrors;
-    });
   }
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -233,7 +210,7 @@ export default function Signup() {
               </label>
             </div>
           </fieldset>
-          <Button type="submit" disabled={!isFormValid} className="w-full">
+          <Button type="submit" className="w-full">
             가입하기
           </Button>
         </div>

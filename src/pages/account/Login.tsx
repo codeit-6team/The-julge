@@ -22,11 +22,6 @@ export default function Login() {
     isOpen: false,
     message: '',
   });
-  const isFormValid =
-    values.email &&
-    values.password &&
-    !errorMessages.emailError &&
-    !errorMessages.passwordError;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -35,17 +30,6 @@ export default function Login() {
       ...prevValues,
       [name]: value,
     }));
-
-    setErrorMessages((prevErrors) => {
-      const newErrors = { ...prevErrors };
-      if (name === 'email') {
-        newErrors.emailError = '';
-      }
-      if (name === 'password') {
-        newErrors.passwordError = '';
-      }
-      return newErrors;
-    });
   }
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -131,7 +115,7 @@ export default function Login() {
             onBlur={handleBlur}
             required
           />
-          <Button type="submit" disabled={!isFormValid} className="w-full">
+          <Button type="submit" className="w-full">
             로그인 하기
           </Button>
         </div>
