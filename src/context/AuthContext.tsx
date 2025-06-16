@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (token: string, role: UserRole, userId: string) => {
     localStorage.setItem('accessToken', token);
-    localStorage.setItem('userRole', role);
+    localStorage.setItem('userRole', role || '');
     localStorage.setItem('userId', userId);
     setIsLoggedIn(true);
     setRole(role);
