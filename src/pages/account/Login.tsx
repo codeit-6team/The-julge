@@ -62,7 +62,6 @@ export default function Login() {
     const { email, password } = values;
     try {
       const userInfo = await postToken({ email, password });
-      console.log('userInfo', userInfo);
       login(
         userInfo.item.token,
         userInfo.item.user.item.type,
