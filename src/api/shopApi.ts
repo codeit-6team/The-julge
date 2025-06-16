@@ -5,6 +5,8 @@ export interface LinkInfo {
   href: string;
 }
 
+// POST /shops - 가게 등록 request
+// PUT /shops/{shop_id} - 가게 정보 수정 request
 export interface ShopItem {
   id: string;
   name: string;
