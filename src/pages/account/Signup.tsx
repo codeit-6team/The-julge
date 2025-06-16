@@ -47,6 +47,22 @@ export default function Signup() {
       ...prevValues,
       [name]: value,
     }));
+
+    setErrorMessages((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      if (name === 'email') {
+        newErrors.emailError = '';
+      }
+      if (name === 'password') {
+        newErrors.passwordError = '';
+        newErrors.passwordCheckError = '';
+      }
+      if (name === 'passwordCheck') {
+        newErrors.passwordError = '';
+        newErrors.passwordCheckError = '';
+      }
+      return newErrors;
+    });
   }
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {

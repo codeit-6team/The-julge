@@ -35,6 +35,17 @@ export default function Login() {
       ...prevValues,
       [name]: value,
     }));
+
+    setErrorMessages((prevErrors) => {
+      const newErrors = { ...prevErrors };
+      if (name === 'email') {
+        newErrors.emailError = '';
+      }
+      if (name === 'password') {
+        newErrors.passwordError = '';
+      }
+      return newErrors;
+    });
   }
 
   function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -55,6 +66,7 @@ export default function Login() {
       return newErrors;
     });
   }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password } = values;
