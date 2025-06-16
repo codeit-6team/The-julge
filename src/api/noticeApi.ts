@@ -1,15 +1,10 @@
-import type { ShopItem } from './shopApi';
+import type { ShopInfo } from './shopApi';
 
 // Link (공통 링크 타입)
 export interface LinkInfo {
   rel: string;
   description: string;
   method: string;
-  href: string;
-}
-
-export interface ShopInfo {
-  item: ShopItem;
   href: string;
 }
 

@@ -1,6 +1,6 @@
 import api from './api';
 import { AxiosError } from 'axios';
-import type { ShopItem } from './shopApi';
+import type { ShopInfo } from './shopApi';
 
 interface ErrorMessage {
   message: string;
@@ -13,11 +13,6 @@ export interface ApplicationItem {
 
 export interface ApplicationInfo {
   item: ApplicationItem;
-  href: string;
-}
-
-export interface ShopInfo {
-  item: ShopItem;
   href: string;
 }
 
