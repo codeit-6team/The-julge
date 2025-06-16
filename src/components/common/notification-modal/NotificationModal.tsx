@@ -1,50 +1,9 @@
 import NotificationCard from './NotificationCard';
 import close from '@/assets/icons/close.svg';
-
-interface AlertItem {
-  item: {
-    id: string;
-    createdAt: string;
-    result: 'accepted' | 'rejected';
-    read: boolean;
-    application: {
-      item: {
-        id: string;
-        status: 'pending' | 'accepted' | 'rejected';
-      };
-      href: string;
-    };
-    shop: {
-      item: {
-        id: string;
-        name: string;
-        category: string;
-        address1: string;
-        address2: string;
-        description: string;
-        imageUrl: string;
-        originalHourlyPay: number;
-      };
-      href: string;
-    };
-    notice: {
-      item: {
-        id: string;
-        hourlyPay: number;
-        description: string;
-        startsAt: string;
-        workhour: number;
-        closed: boolean;
-      };
-      href: string;
-    };
-    links: object[]; // 정확한 타입이 나와있지 않아서 우선 object로만 처리함
-  };
-  links: object[]; // 정확한 타입이 나와있지 않아서 우선 object로만 처리함
-}
+import type { AlertListItem } from '@/api/alertApi';
 
 interface NotificationModalProps {
-  data?: AlertItem[]; // 알림 데이터 배열
+  data?: AlertListItem[]; // 알림 데이터 배열
   count?: number; // 알림 개수
   onClose: () => void; // x 버튼을 누를때 실행할 함수
 }

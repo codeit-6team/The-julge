@@ -1,3 +1,10 @@
+import api from './api';
+import { AxiosError } from 'axios';
+
+interface ErrorMessage {
+  message: string;
+}
+
 export interface ApplicationItem {
   id: string;
   status: 'pending' | 'accepted' | 'rejected';
@@ -80,3 +87,19 @@ export interface AlertReadResponse {
 }
 
 /* 아래에 alert 관련 api 함수들 작성 */
+export const getAlerts = async (userId: string): Promise<AlertViewResponse> => {
+  try {
+    const response = await api.get<AlertViewResponse>(
+      `/users/${userId}/alerts`,
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
