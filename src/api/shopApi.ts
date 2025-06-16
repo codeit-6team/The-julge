@@ -1,3 +1,7 @@
+import type {
+  ADDRESS_OPTIONS,
+  CATEGORY_OPTIONS,
+} from '@/constants/dropdownOptions';
 import type { UserProfileItem } from './userApi';
 
 export interface LinkInfo {
@@ -10,8 +14,8 @@ export interface LinkInfo {
 export interface ShopItem {
   id: string;
   name: string;
-  category: string;
-  address1: string;
+  category: (typeof CATEGORY_OPTIONS)[number];
+  address1: (typeof ADDRESS_OPTIONS)[number];
   address2: string;
   description: string;
   imageUrl: string;
