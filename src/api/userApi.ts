@@ -1,6 +1,7 @@
 import { ADDRESS_OPTIONS } from '@/constants/dropdownOptions';
 import api from './api';
 import { AxiosError } from 'axios';
+import type { ShopItem } from './shopApi';
 
 interface ErrorMessage {
   message: string;
@@ -14,17 +15,6 @@ export interface LinkInfo {
 }
 
 export type UserType = 'employee' | 'employer';
-
-export interface ShopItem {
-  id: string;
-  name: string;
-  category: string;
-  address1: string;
-  address2: string;
-  description: string;
-  imageUrl: string;
-  originalHourlyPay: number;
-}
 
 export interface UserProfileItem {
   id: string;
