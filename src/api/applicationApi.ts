@@ -4,3 +4,9 @@ export interface LinkInfo {
   method: string;
   href: string;
 }
+
+export interface ApplicationItem {
+  id: string;
+  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
+  createdAt: string;
+}
