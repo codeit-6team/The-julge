@@ -82,7 +82,6 @@ export default function Signup() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password, type } = values;
-    console.log('values', values);
     try {
       await postUser({ email, password, type });
       setModal({
