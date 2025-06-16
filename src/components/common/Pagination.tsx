@@ -31,13 +31,13 @@ export default function Pagination({
 
   if (end > totalPages) {
     end = totalPages;
-    start = Math.max(end - 5, 1);
+    start = Math.max(end - 6, 1);
   }
 
   const pageNumbers = range(start, end);
 
   return (
-    <div className="flex items-center justify-center gap-5 sm:gap-3 md:gap-4">
+    <div className="flex items-center justify-center gap-3 md:gap-4 lg:gap-5">
       {/* 왼쪽 화살표 */}
       {totalPages > 7 && (
         <button type="button" onClick={() => handleClick(1)}>
@@ -48,7 +48,6 @@ export default function Pagination({
           />
         </button>
       )}
-
       {/* 페이지 버튼들 */}
       <div className="flex gap-2 sm:gap-1">
         {pageNumbers.map((page) => (
@@ -56,17 +55,16 @@ export default function Pagination({
             key={page}
             type="button"
             onClick={() => handleClick(page)}
-            className={`flex items-center justify-center rounded text-body2 ${
+            className={`flex items-center justify-center rounded ${
               currentPage === page ? 'bg-red-30 text-white' : 'text-black'
-            } size-10 text-body2 max-sm:size-8 max-sm:text-[12px]`}
+            } size-8 text-caption md:size-10 md:text-body2`}
           >
             {page}
           </button>
         ))}
       </div>
-
       {/* 오른쪽 화살표 */}
-      {totalPages > 7 && (
+      {totalPages > 7 && currentPage < totalPages && (
         <button type="button" onClick={() => handleClick(totalPages)}>
           <img src={ArrowRight} alt="다음" className="size-5" />
         </button>
