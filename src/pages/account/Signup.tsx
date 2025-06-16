@@ -108,7 +108,7 @@ export default function Signup() {
   return (
     <>
       <form
-        className="mx-auto flex min-h-screen flex-col items-center justify-center"
+        className="mx-auto flex min-h-screen flex-col items-center justify-center px-12 py-90"
         onSubmit={handleSubmit}
       >
         <Link to="/" className="mb-40 h-45 w-full max-w-248">
