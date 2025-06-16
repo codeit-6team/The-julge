@@ -46,12 +46,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (token: string, role: UserRole, userId: string) => {
     localStorage.setItem('accessToken', token);
     localStorage.setItem('userRole', role || '');
+    localStorage.setItem('userId', userId);
     setIsLoggedIn(true);
     setRole(role);
     try {
       const alertRes = await getAlerts(userId);
       setAlarms(alertRes);
-      console.log('alertRes', alertRes);
     } catch (error) {
       console.error(error);
     }
@@ -60,6 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userId');
     setIsLoggedIn(false);
     setRole(null);
     setAlarms(defaultAuthContext.alarms);
