@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postToken } from '@/api/userApi';
+import { AuthContext } from '@/context/AuthContext';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
@@ -12,6 +13,7 @@ interface LoginState {
 }
 
 export default function Login() {
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const [values, setValues] = useState<LoginState>({
     email: '',
@@ -61,6 +63,11 @@ export default function Login() {
     try {
       const userInfo = await postToken({ email, password });
       console.log('userInfo', userInfo);
+      login(
+        userInfo.item.token,
+        userInfo.item.user.item.type,
+        userInfo.item.user.item.id,
+      );
       navigate('/');
     } catch (error) {
       setModal({
