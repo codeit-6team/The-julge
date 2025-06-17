@@ -99,9 +99,9 @@ export const getNoticeApplications = async (
 export const postNoticeApplications = async (
   shopId: string,
   noticeId: string,
-): Promise<ApplicationNoticeResponse> => {
+): Promise<ApplicationNoticeInfo> => {
   try {
-    const response = await api.post<ApplicationNoticeResponse>(
+    const response = await api.post<ApplicationNoticeInfo>(
       `/shops/${shopId}/notices/${noticeId}/applications`,
     );
     return response.data;
@@ -121,9 +121,9 @@ export const putNoticeApplications = async (
   noticeId: string,
   applicationId: string,
   body: ApplicationRequest,
-): Promise<ApplicationNoticeResponse> => {
+): Promise<ApplicationNoticeInfo> => {
   try {
-    const response = await api.put<ApplicationNoticeResponse>(
+    const response = await api.put<ApplicationNoticeInfo>(
       `/shops/${shopId}/notices/${noticeId}/applications/${applicationId}`,
       body,
     );
@@ -142,13 +142,13 @@ export const putNoticeApplications = async (
 export const getUserApplications = async (
   userId: string,
   query?: { offset?: number; limit?: number },
-): Promise<ApplicationNoticeResponse> => {
+): Promise<ApplicationUserResponse> => {
   try {
     const newQuery = new URLSearchParams({
       offset: String(query?.offset ?? ''),
       limit: String(query?.limit ?? ''),
     });
-    const response = await api.get<ApplicationNoticeResponse>(
+    const response = await api.get<ApplicationUserResponse>(
       `/users/${userId}/applications?${newQuery}`,
     );
     return response.data;
