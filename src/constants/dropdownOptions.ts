@@ -35,11 +35,11 @@ export const CATEGORY_OPTIONS = [
   '카페',
   '편의점',
   '기타',
-];
+] as const;
 
 export const SORT_OPTIONS = [
   '마감임박순',
   '시급많은순',
   '시간적은순',
   '가나다순',
-];
+] as const;
