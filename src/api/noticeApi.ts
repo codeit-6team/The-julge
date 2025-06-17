@@ -1,33 +1,12 @@
+import type { ApplicationItem } from './applicationApi';
+import type { ShopInfo } from './shopApi';
+
 // Link (공통 링크 타입)
 export interface LinkInfo {
   rel: string;
   description: string;
   method: string;
   href: string;
-}
-
-// Shop 관련
-export interface ShopItem {
-  id: string;
-  name: string;
-  category: string;
-  address1: string;
-  address2: string;
-  description: string;
-  imageUrl: string;
-  originalHourlyPay: number;
-}
-
-export interface ShopInfo {
-  item: ShopItem;
-  href: string;
-}
-
-// Application (신청 상태)
-export interface ApplicationItem {
-  id: string;
-  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
-  createdAt: string;
 }
 
 // 공통 Notice Item
