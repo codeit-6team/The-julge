@@ -1,3 +1,4 @@
+import type { ApplicationItem } from './applicationApi';
 import type { ShopInfo } from './shopApi';
 
 // Link (공통 링크 타입)
@@ -6,13 +7,6 @@ export interface LinkInfo {
   description: string;
   method: string;
   href: string;
-}
-
-// Application (신청 상태)
-export interface ApplicationItem {
-  id: string;
-  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
-  createdAt: string;
 }
 
 // 공통 Notice Item
