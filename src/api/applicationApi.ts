@@ -58,3 +58,8 @@ export interface ApplicationNoticeResponse {
   items: ApplicationNoticeInfo[];
   link: LinkInfo[];
 }
+
+// PUT /shops/{shop_id}/notices/{notice_id}/applications/{application_id} - 가게의 특정 공고 지원 승인, 거절 또는 취소 request
+export interface ApplicationRequest {
+  status: 'accepted' | 'rejected' | 'canceled';
+}
