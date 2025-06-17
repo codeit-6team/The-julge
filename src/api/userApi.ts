@@ -1,4 +1,11 @@
 import { ADDRESS_OPTIONS } from '@/constants/dropdownOptions';
+import api from './api';
+import { AxiosError } from 'axios';
+import type { ShopItem } from './shopApi';
+
+interface ErrorMessage {
+  message: string;
+}
 
 export interface LinkInfo {
   rel: string;
@@ -8,17 +15,6 @@ export interface LinkInfo {
 }
 
 export type UserType = 'employee' | 'employer';
-
-export interface ShopItem {
-  id: string;
-  name: string;
-  category: string;
-  address1: string;
-  address2: string;
-  description: string;
-  imageUrl: string;
-  originalHourlyPay: number;
-}
 
 export interface UserProfileItem {
   id: string;
@@ -84,4 +80,46 @@ export interface UpdateUserRequest {
   bio: string;
 }
 
-/* 아래에 user 관련 api 함수들 작성 */
+// Post /users - 회원가입
+export const postUser = async ({
+  email,
+  password,
+  type,
+}: SignupRequest): Promise<SignupResponse> => {
+  try {
+    const response = await api.post<SignupResponse>('/users', {
+      email,
+      password,
+      type,
+    });
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage, SignupRequest>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
+
+// Post /token - 로그인
+export const postToken = async ({
+  email,
+  password,
+}: LoginRequest): Promise<LoginResponse> => {
+  try {
+    const response = await api.post<LoginResponse>('/token', {
+      email,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage, LoginRequest>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
