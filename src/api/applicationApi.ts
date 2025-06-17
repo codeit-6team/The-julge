@@ -2,6 +2,10 @@ import type { NoticeInfo } from './alertApi';
 import type { ShopInfo } from './shopApi';
 import type { UserProfileItem } from './userApi';
 
+interface ErrorMessage {
+  message: string;
+}
+
 export interface LinkInfo {
   rel: string;
   description: string;
