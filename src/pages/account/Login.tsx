@@ -22,11 +22,6 @@ export default function Login() {
     isOpen: false,
     message: '',
   });
-  const isFormValid =
-    values.email &&
-    values.password &&
-    !errorMessages.emailError &&
-    !errorMessages.passwordError;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -35,6 +30,10 @@ export default function Login() {
       ...prevValues,
       [name]: value,
     }));
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
 
     setErrorMessages((prevErrors) => {
       const newErrors = { ...prevErrors };
@@ -55,6 +54,17 @@ export default function Login() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { email, password } = values;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = emailRegex.test(email);
+    const isPasswordValid = password.length >= 8;
+
+    if (!isEmailValid || !isPasswordValid) {
+      setErrorMessages({
+        emailError: isEmailValid ? '' : '이메일 형식으로 작성해 주세요.',
+        passwordError: isPasswordValid ? '' : '8자 이상 입력해주세요.',
+      });
+      return;
+    }
     try {
       const userInfo = await postToken({ email, password });
       login(
@@ -92,6 +102,7 @@ export default function Login() {
             error={errorMessages.emailError}
             value={values.email}
             onChange={handleChange}
+            onBlur={handleBlur}
             required
           />
           <Input
@@ -101,9 +112,10 @@ export default function Login() {
             error={errorMessages.passwordError}
             value={values.password}
             onChange={handleChange}
+            onBlur={handleBlur}
             required
           />
-          <Button type="submit" disabled={!isFormValid} className="w-full">
+          <Button type="submit" className="w-full">
             로그인 하기
           </Button>
         </div>

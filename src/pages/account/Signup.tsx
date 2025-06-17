@@ -32,13 +32,6 @@ export default function Signup() {
     isOpen: false,
     message: '',
   });
-  const isFormValid =
-    values.email &&
-    values.password &&
-    values.passwordCheck &&
-    !errorMessages.emailError &&
-    !errorMessages.passwordError &&
-    !errorMessages.passwordCheckError;
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -47,6 +40,10 @@ export default function Signup() {
       ...prevValues,
       [name]: value,
     }));
+  }
+
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
 
     setErrorMessages((prevErrors) => {
       const newErrors = { ...prevErrors };
@@ -81,7 +78,21 @@ export default function Signup() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { email, password, type } = values;
+    const { email, password, passwordCheck, type } = values;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isEmailValid = emailRegex.test(email);
+    const isPasswordValid = password.length >= 8;
+    const isPasswordCheckValid = password === passwordCheck;
+    if (!isEmailValid || !isPasswordValid || !isPasswordCheckValid) {
+      setErrorMessages({
+        emailError: isEmailValid ? '' : '이메일 형식으로 작성해 주세요.',
+        passwordError: isPasswordValid ? '' : '8자 이상 입력해주세요.',
+        passwordCheckError: isPasswordCheckValid
+          ? ''
+          : '비밀번호가 일치하지 않습니다.',
+      });
+      return;
+    }
     try {
       await postUser({ email, password, type });
       setModal({
@@ -122,6 +133,7 @@ export default function Signup() {
             error={errorMessages.emailError}
             value={values.email}
             onChange={handleChange}
+            onBlur={handleBlur}
             required
           />
           <Input
@@ -131,6 +143,7 @@ export default function Signup() {
             error={errorMessages.passwordError}
             value={values.password}
             onChange={handleChange}
+            onBlur={handleBlur}
             required
           />
           <Input
@@ -140,6 +153,7 @@ export default function Signup() {
             error={errorMessages.passwordCheckError}
             value={values.passwordCheck}
             onChange={handleChange}
+            onBlur={handleBlur}
             required
           />
           <fieldset>
@@ -196,7 +210,7 @@ export default function Signup() {
               </label>
             </div>
           </fieldset>
-          <Button type="submit" disabled={!isFormValid} className="w-full">
+          <Button type="submit" className="w-full">
             가입하기
           </Button>
         </div>
