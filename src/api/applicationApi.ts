@@ -48,3 +48,13 @@ export interface ApplicationUserResponse {
   items: ApplicationUserInfo[];
   link: LinkInfo[];
 }
+
+// GET /shops/{shop_id}/notices/{notice_id}/applications - 가게의 특정 공고의 지원 목록 조회 response
+export interface ApplicationNoticeResponse {
+  offset: 'number';
+  limit: 'number';
+  count: 'number';
+  hasNext: 'boolean';
+  items: ApplicationNoticeInfo[];
+  link: LinkInfo[];
+}
