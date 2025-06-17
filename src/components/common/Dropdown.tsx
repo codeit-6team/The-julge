@@ -70,7 +70,7 @@ export default function Dropdown({
 
       {isOpen && (
         <div
-          className={`absolute right-0 left-0 mt-8 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black shadow-custom2 ${variant === 'form' ? 'h-230 w-full overflow-y-auto' : 'h-160 w-105 justify-center py-12'}`}
+          className={`absolute right-0 left-0 z-30 mt-8 flex cursor-pointer flex-col rounded-md border border-gray-20 bg-white text-black shadow-custom2 ${variant === 'form' ? 'h-230 w-full overflow-y-auto' : 'h-160 w-105 justify-center py-12'}`}
         >
           <ul
             className={`${variant === 'form' ? '' : 'flex h-136 flex-col gap-8'}`}
