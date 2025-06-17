@@ -37,36 +37,40 @@ export default function Pagination({
   const pageNumbers = range(start, end);
 
   return (
-    <div className="flex items-center justify-center gap-3 md:gap-4 lg:gap-5">
+    <div className="flex items-center justify-center gap-20 py-12">
       {/* 왼쪽 화살표 */}
       {totalPages > 7 && (
         <button type="button" onClick={() => handleClick(1)}>
           <img
             src={currentPage === 1 ? ArrowLeftGray : ArrowLeft}
             alt="이전"
-            className="size-5"
+            className="size-20"
           />
         </button>
       )}
+
       {/* 페이지 버튼들 */}
-      <div className="flex gap-2 sm:gap-1">
+      <div className="flex gap-2">
         {pageNumbers.map((page) => (
           <button
             key={page}
             type="button"
             onClick={() => handleClick(page)}
-            className={`flex items-center justify-center rounded ${
-              currentPage === page ? 'bg-red-30 text-white' : 'text-black'
-            } size-8 text-caption md:size-10 md:text-body2`}
+            className={`flex size-32 items-center justify-center rounded-md text-caption sm:size-40 sm:text-body2 ${
+              currentPage === page
+                ? 'bg-red-30 text-white'
+                : 'bg-white text-black'
+            }`}
           >
             {page}
           </button>
         ))}
       </div>
+
       {/* 오른쪽 화살표 */}
       {totalPages > 7 && currentPage < totalPages && (
         <button type="button" onClick={() => handleClick(totalPages)}>
-          <img src={ArrowRight} alt="다음" className="size-5" />
+          <img src={ArrowRight} alt="다음" className="size-20" />
         </button>
       )}
     </div>
