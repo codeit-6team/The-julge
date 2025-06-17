@@ -137,3 +137,27 @@ export const putNoticeApplications = async (
     }
   }
 };
+
+// GET /users/{user_id}/applications - 유저의 지원 목록 조회
+export const getUserApplications = async (
+  userId: string,
+  query?: { offset?: number; limit?: number },
+): Promise<ApplicationNoticeResponse> => {
+  try {
+    const newQuery = new URLSearchParams({
+      offset: String(query?.offset ?? ''),
+      limit: String(query?.limit ?? ''),
+    });
+    const response = await api.get<ApplicationNoticeResponse>(
+      `/users/${userId}/applications?${newQuery}`,
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
