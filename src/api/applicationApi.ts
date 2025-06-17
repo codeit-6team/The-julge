@@ -31,3 +31,10 @@ export interface ApplicationUserInfo {
   item: ApplicationUserItem;
   link: LinkInfo[];
 }
+
+// POST /shops/{shop_id}/notices/{notice_id}/applications - 가게의 특정 공고 지원 등록 response
+// PUT /shops/{shop_id}/notices/{notice_id}/applications/{application_id} - 가게의 특정 공고 지원 승인, 거절 또는 취소 response
+export interface ApplicationNoticeInfo {
+  item: ApplicationNoticeItem;
+  link: LinkInfo[];
+}
