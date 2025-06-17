@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postUser, type UserType } from '@/api/userApi';
 import Input from '@/components/common/Input';
@@ -135,14 +135,14 @@ export default function Signup() {
     }
   }
 
-  function handleModalConfirm() {
+  const handleModalConfirm = useCallback(() => {
     if (modal.message === '가입이 완료되었습니다!') {
       setModal({ isOpen: false, message: '' });
       navigate('/login');
     } else {
       setModal({ isOpen: false, message: '' });
     }
-  }
+  }, [modal.message, navigate]);
 
   return (
     <>
