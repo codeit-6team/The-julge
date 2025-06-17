@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postUser, type UserType } from '@/api/userApi';
 import Input from '@/components/common/Input';
@@ -32,34 +32,6 @@ export default function Signup() {
     isOpen: false,
     message: '',
   });
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  // 바깥 클릭 시 모달 닫기
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent): void {
-      const target = event.target as Node;
-      if (
-        modal.isOpen &&
-        modalRef.current &&
-        !modalRef.current.contains(target)
-      ) {
-        handleModalConfirm();
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [modal.isOpen]);
-
-  // esc로 닫기
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent): void {
-      if (event.key === 'Escape') handleModalConfirm();
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [modal.isOpen]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -251,7 +223,7 @@ export default function Signup() {
       </form>
 
       {modal.isOpen && (
-        <Modal ref={modalRef} onButtonClick={handleModalConfirm}>
+        <Modal onClose={handleModalConfirm} onButtonClick={handleModalConfirm}>
           {modal.message}
         </Modal>
       )}

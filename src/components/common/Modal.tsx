@@ -1,4 +1,9 @@
-import { type MouseEventHandler, type ReactNode, type Ref } from 'react';
+import {
+  type MouseEventHandler,
+  type ReactNode,
+  useEffect,
+  useRef,
+} from 'react';
 import Button from './Button';
 import ic_check from '@/assets/icons/modal_check.svg';
 import ic_exclamation from '@/assets/icons/modal_exclamation.svg';
@@ -14,8 +19,8 @@ interface Props {
   yesButtonContent?: string;
   /** modal 문구 */
   children?: ReactNode;
-  /** 부모로부터 전달받을 ref */
-  ref?: Ref<HTMLDivElement>;
+  /** 모달이 닫힐 때 (버튼 클릭 제외) 실행할 함수 */
+  onClose: () => void;
 }
 
 export default function Modal({
@@ -24,13 +29,38 @@ export default function Modal({
   onYesButtonClick,
   yesButtonContent,
   children,
-  ref,
+  onClose,
 }: Props) {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // 바깥 클릭 시 모달 닫기
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent): void {
+      const target = event.target as Node;
+      if (modalRef.current && !modalRef.current.contains(target)) {
+        onClose();
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [onClose]);
+
+  // esc로 닫기
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   return (
     <div className="fixed inset-0 z-40 content-center justify-items-center bg-[#000000b3]">
       {option === 'alert' ? (
         <div
-          ref={ref}
+          ref={modalRef}
           className="flex h-220 w-327 flex-col items-center justify-between rounded-lg bg-white p-28 md:h-250 md:w-540"
         >
           <div className="mt-53 text-center text-body1/19 font-regular text-[#333236] md:mt-80 md:text-[18px]/21">
@@ -45,7 +75,7 @@ export default function Modal({
         </div>
       ) : (
         <div
-          ref={ref}
+          ref={modalRef}
           className="flex h-184 w-298 flex-col items-center justify-between rounded-xl bg-white p-24"
         >
           <div className="flex flex-col items-center gap-16">
