@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { postToken } from '@/api/userApi';
 import { AuthContext } from '@/context/AuthContext';
@@ -22,6 +22,34 @@ export default function Login() {
     isOpen: false,
     message: '',
   });
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // 바깥 클릭 시 모달 닫기
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent): void {
+      const target = event.target as Node;
+      if (
+        modal.isOpen &&
+        modalRef.current &&
+        !modalRef.current.contains(target)
+      ) {
+        handleModalConfirm();
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [modal.isOpen]);
+
+  // esc로 닫기
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent): void {
+      if (event.key === 'Escape') handleModalConfirm();
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [modal.isOpen]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -81,9 +109,9 @@ export default function Login() {
     }
   }
 
-  const handleModalConfirm = () => {
+  function handleModalConfirm() {
     setModal({ isOpen: false, message: '' });
-  };
+  }
 
   return (
     <>
@@ -128,7 +156,9 @@ export default function Login() {
       </form>
 
       {modal.isOpen && (
-        <Modal onButtonClick={handleModalConfirm}>{modal.message}</Modal>
+        <Modal ref={modalRef} onButtonClick={handleModalConfirm}>
+          {modal.message}
+        </Modal>
       )}
     </>
   );
