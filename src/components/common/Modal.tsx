@@ -1,4 +1,4 @@
-import { type MouseEventHandler, type ReactNode } from 'react';
+import { type MouseEventHandler, type ReactNode, type Ref } from 'react';
 import Button from './Button';
 import ic_check from '@/assets/icons/modal_check.svg';
 import ic_exclamation from '@/assets/icons/modal_exclamation.svg';
