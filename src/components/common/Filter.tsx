@@ -129,7 +129,7 @@ export default function Filter({
 
         <HorizontalLine />
 
-        <div className="mb-6 flex items-end gap-[0.75rem]">
+        <div className="mb-40 flex items-end gap-[0.75rem]">
           <div className="flex-1">
             <Input
               label="금액"
@@ -144,7 +144,7 @@ export default function Filter({
           <span className="flex-1 pb-16 text-body1/26">이상부터</span>
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-8">
           <Button solid={false} className="w-80" onClick={handleReset}>
             초기화
           </Button>
