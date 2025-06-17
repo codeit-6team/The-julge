@@ -26,3 +26,8 @@ export interface ApplicationNoticeItem extends ApplicationUserItem {
     href: string;
   };
 }
+
+export interface ApplicationUserInfo {
+  item: ApplicationUserItem;
+  link: LinkInfo[];
+}
