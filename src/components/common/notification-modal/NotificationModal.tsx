@@ -1,27 +1,9 @@
 import NotificationCard from './NotificationCard';
 import close from '@/assets/icons/close.svg';
+import type { AlertListItem } from '@/api/alertApi';
 
-interface NotificationItem {
-  item: {
-    id: string; // 가게 id
-    createdAt: string; // 생성 일시 (ISO 8601 문자열)
-    result: 'accepted' | 'rejected'; // 결과 상태
-    read: boolean; // 읽음 여부
-    shop: {
-      item: {
-        name: string; // 가게 이름
-      };
-    };
-    notice: {
-      item: {
-        startsAt: string; // 근무 시작 시간 (ISO 8601 문자열)
-        workhour: number; // 근무 시간 (시간 단위)
-      };
-    };
-  };
-}
 interface NotificationModalProps {
-  data?: NotificationItem[]; // 알림 데이터 배열
+  data?: AlertListItem[]; // 알림 데이터 배열
   count?: number; // 알림 개수
   onClose: () => void; // x 버튼을 누를때 실행할 함수
 }
@@ -55,7 +37,7 @@ export default function NotificationModal({
               status={data.item.result}
               restaurantName={data.item.shop.item.name}
               startsAt={data.item.notice.item.startsAt}
-              workHour={data.item.notice.item.workhour}
+              workhour={data.item.notice.item.workhour}
               createdAt={data.item.createdAt}
             />
           ))}
