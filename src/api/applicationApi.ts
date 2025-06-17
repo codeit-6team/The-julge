@@ -38,3 +38,13 @@ export interface ApplicationNoticeInfo {
   item: ApplicationNoticeItem;
   link: LinkInfo[];
 }
+
+// GET /users/{user_id}/applications - 유저의 지원 목록 조회 response
+export interface ApplicationUserResponse {
+  offset: 'number';
+  limit: 'number';
+  count: 'number';
+  hasNext: 'boolean';
+  items: ApplicationUserInfo[];
+  link: LinkInfo[];
+}
