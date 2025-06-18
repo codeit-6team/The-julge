@@ -34,11 +34,11 @@ export default function TableButtons({
     });
   };
 
-  const changeStatus = async (stat: 'accepted' | 'rejected') => {
-    setStatus(stat);
+  const handleModalClick = async () => {
+    setStatus(modal.status);
     try {
       await putNoticeApplications(shopId, noticeId, applicaitonId, {
-        status: stat,
+        status: modal.status,
       });
     } catch {
       setStatus('pending');
@@ -80,7 +80,11 @@ export default function TableButtons({
         </Button>
       </div>
       {modal.isOpen && (
-        <Modal option="action" onClose={() => null}>
+        <Modal
+          option="action"
+          onYesButtonClick={handleModalClick}
+          onClose={() => null}
+        >
           신청을 {modal.status === 'accepted' ? '승인' : '거절'}하시겠어요?
         </Modal>
       )}
