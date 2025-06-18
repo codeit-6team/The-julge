@@ -35,6 +35,7 @@ export default function TableButtons({
   };
 
   const handleModalClick = async () => {
+    closeModal();
     setStatus(modal.status);
     try {
       await putNoticeApplications(shopId, noticeId, applicaitonId, {
@@ -44,6 +45,11 @@ export default function TableButtons({
       setStatus('pending');
     }
   };
+
+  const closeModal = () =>
+    setModal((prev) => {
+      return { ...prev, isOpen: false };
+    });
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,8 +88,9 @@ export default function TableButtons({
       {modal.isOpen && (
         <Modal
           option="action"
+          onButtonClick={closeModal}
           onYesButtonClick={handleModalClick}
-          onClose={() => null}
+          onClose={closeModal}
         >
           신청을 {modal.status === 'accepted' ? '승인' : '거절'}하시겠어요?
         </Modal>
