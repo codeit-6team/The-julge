@@ -90,6 +90,7 @@ export default function TableButtons({
           option="action"
           onButtonClick={closeModal}
           onYesButtonClick={handleModalClick}
+          yesButtonContent="예"
           onClose={closeModal}
         >
           신청을 {modal.status === 'accepted' ? '승인' : '거절'}하시겠어요?
