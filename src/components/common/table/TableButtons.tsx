@@ -18,9 +18,12 @@ export default function TableButtons({
   const [status, setStatus] = useState<'pending' | 'accepted' | 'rejected'>(
     'pending',
   );
-  const [modal, setModal] = useState({
+  const [modal, setModal] = useState<{
+    isOpen: boolean;
+    status: 'accepted' | 'rejected';
+  }>({
     isOpen: false,
-    message: '',
+    status: 'accepted',
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
@@ -69,7 +72,7 @@ export default function TableButtons({
       </div>
       {modal.isOpen && (
         <Modal option="action" onClose={() => null}>
-          {modal.message}
+          신청을 {modal.status === 'accepted' ? '승인' : '거절'}하시겠어요?
         </Modal>
       )}
     </>
