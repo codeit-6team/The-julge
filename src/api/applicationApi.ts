@@ -15,9 +15,15 @@ export interface LinkInfo {
   href: string;
 }
 
+export type ApplicationStatus =
+  | 'pending'
+  | 'accepted'
+  | 'rejected'
+  | 'canceled';
+
 export interface ApplicationItem {
   id: string;
-  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
+  status: ApplicationStatus;
   createdAt: string;
 }
 
@@ -35,14 +41,14 @@ export interface ApplicationNoticeItem extends ApplicationUserItem {
 
 export interface ApplicationUserInfo {
   item: ApplicationUserItem;
-  link: LinkInfo[];
+  links: LinkInfo[];
 }
 
 // POST /shops/{shop_id}/notices/{notice_id}/applications - 가게의 특정 공고 지원 등록 response
 // PUT /shops/{shop_id}/notices/{notice_id}/applications/{application_id} - 가게의 특정 공고 지원 승인, 거절 또는 취소 response
 export interface ApplicationNoticeInfo {
   item: ApplicationNoticeItem;
-  link: LinkInfo[];
+  links: LinkInfo[];
 }
 
 // GET /users/{user_id}/applications - 유저의 지원 목록 조회 response
@@ -52,7 +58,7 @@ export interface ApplicationUserResponse {
   count: number;
   hasNext: boolean;
   items: ApplicationUserInfo[];
-  link: LinkInfo[];
+  links: LinkInfo[];
 }
 
 // GET /shops/{shop_id}/notices/{notice_id}/applications - 가게의 특정 공고의 지원 목록 조회 response
@@ -62,12 +68,12 @@ export interface ApplicationNoticeResponse {
   count: number;
   hasNext: boolean;
   items: ApplicationNoticeInfo[];
-  link: LinkInfo[];
+  links: LinkInfo[];
 }
 
 // PUT /shops/{shop_id}/notices/{notice_id}/applications/{application_id} - 가게의 특정 공고 지원 승인, 거절 또는 취소 request
 export interface ApplicationRequest {
-  status: 'accepted' | 'rejected' | 'canceled';
+  status: Exclude<ApplicationStatus, 'pending'>;
 }
 
 // GET /shops/{shop_id}/notices/{notice_id}/applications - 가게의 특정 공고의 지원 목록 조회

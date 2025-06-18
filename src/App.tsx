@@ -2,12 +2,12 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Login from './pages/account/Login';
 import Signup from './pages/account/Signup';
-import Store from './pages/myprofile/Store';
-import StoreEdit from './pages/myprofile/StoreEdit';
-import StoreForm from './pages/myprofile/StoreForm';
-import StorePost from './pages/myprofile/StorePost';
-import Profile from './pages/mystore/Profile';
-import ProfileForm from './pages/mystore/ProfileForm';
+import Store from './pages/store/Store';
+import StoreEdit from './pages/store/StoreEdit';
+import StoreForm from './pages/store/StoreForm';
+import StorePost from './pages/store/StorePost';
+import Profile from './pages/profile/Profile';
+import ProfileForm from './pages/profile/ProfileForm';
 import NoticeList from './pages/notice/NoticeList';
 import Notice from './pages/notice/Notice';
 
