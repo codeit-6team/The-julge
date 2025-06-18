@@ -1,8 +1,4 @@
-export default function TableStatus({
-  status,
-}: {
-  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
-}) {
+export default function TableStatus({ status }: { status: string }) {
   return status === 'pending' ? (
     <div className="inline-block rounded-full bg-green-10 px-10 py-6 text-caption/16 text-green-20 md:text-body2/17 md:font-bold">
       대기중
