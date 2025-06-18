@@ -26,7 +26,9 @@ export default function Table(props: UserProps | NoticeProps) {
     mode === 'notice'
       ? ['신청자', '소개', '전화번호', '상태']
       : ['가게', '일자', '시급', '상태'];
-  const [datas, setDatas] = useState<(string | undefined)[][]>([]);
+  const [datas, setDatas] = useState<(string | undefined)[][]>(
+    Array(5).fill(['', '', '', '']),
+  );
 
   useEffect(() => {
     (async () => {
