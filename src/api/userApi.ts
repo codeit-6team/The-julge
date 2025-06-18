@@ -127,7 +127,7 @@ export const postToken = async ({
 // get /users/{user_id} - 회원 정보 조회
 export const getUser = async (userId: string): Promise<UserDetailResponse> => {
   try {
-    const response = await api.get(`/users/${userId}`);
+    const response = await api.get<UserDetailResponse>(`/users/${userId}`);
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
@@ -145,7 +145,10 @@ export const putUser = async (
   body: UpdateUserRequest,
 ): Promise<UserDetailResponse> => {
   try {
-    const response = await api.put(`/users/${userId}`, body);
+    const response = await api.put<UserDetailResponse>(
+      `/users/${userId}`,
+      body,
+    );
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
