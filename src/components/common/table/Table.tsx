@@ -58,6 +58,7 @@ export default function Table(props: UserProps | NoticeProps) {
                   element.item.user.item.bio,
                   element.item.user.item.phone,
                   element.item.status,
+                  element.item.id,
                 ];
               }),
           );
@@ -149,7 +150,11 @@ export default function Table(props: UserProps | NoticeProps) {
               <td className="sticky right-0 border-b border-l border-gray-20 bg-white px-7 pt-1 md:px-11 @min-[947px]:border-l-transparent">
                 <div className="min-h-44 content-center md:min-h-67">
                   {mode === 'notice' && data[3] === 'pending' ? (
-                    <TableButtons />
+                    <TableButtons
+                      shopId={props.shopId}
+                      noticeId={props.noticeId}
+                      applicaitonId={data[4] ?? ''}
+                    />
                   ) : (
                     <TableStatus status={data[3] ?? ''} />
                   )}
