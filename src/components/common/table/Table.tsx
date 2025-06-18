@@ -95,6 +95,7 @@ export default function Table(props: UserProps | NoticeProps) {
       }
     })();
 
+    // tr의 내용이 2줄 이상 넘어가는 것을 방지하기 위한 코드
     const maxHeight = 52;
     const elements = document.querySelectorAll<HTMLDivElement>('td div.t');
 
