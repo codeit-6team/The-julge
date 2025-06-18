@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEvent } from 'react';
 import Button from '../Button';
 import TableStatus from './TableStatus';
 import { putNoticeApplications } from '@/api/applicationApi';
@@ -27,6 +27,13 @@ export default function TableButtons({
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setModal({
+      isOpen: true,
+      status: e.currentTarget.value as 'accepted' | 'rejected',
+    });
+  };
+
   const changeStatus = async (stat: 'accepted' | 'rejected') => {
     setStatus(stat);
     try {
@@ -53,7 +60,8 @@ export default function TableButtons({
           solid={false}
           size={isMobile ? 'small' : 'medium'}
           className="w-69 md:w-92"
-          onClick={() => changeStatus('rejected')}
+          value="rejected"
+          onClick={handleClick}
         >
           거절하기
         </Button>
@@ -65,7 +73,8 @@ export default function TableButtons({
             color: 'var(--color-blue-20)',
             borderColor: 'var(--color-blue-20)',
           }}
-          onClick={() => changeStatus('accepted')}
+          value="accepted"
+          onClick={handleClick}
         >
           승인하기
         </Button>
