@@ -4,6 +4,10 @@ import type {
 } from '@/constants/dropdownOptions';
 import type { UserProfileItem } from './userApi';
 
+interface ErrorMessage {
+  message: string;
+}
+
 export interface LinkInfo {
   rel: string;
   description: string;
