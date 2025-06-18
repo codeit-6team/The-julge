@@ -50,13 +50,13 @@ export default function Pagination({
       )}
 
       {/* 페이지 버튼들 */}
-      <div className="flex gap-2">
+      <div className="flex gap-4 md:gap-2">
         {pageNumbers.map((page) => (
           <button
             key={page}
             type="button"
             onClick={() => handleClick(page)}
-            className={`flex size-32 items-center justify-center rounded-md text-caption sm:size-40 sm:text-body2 ${
+            className={`flex size-32 items-center justify-center rounded-sm text-caption md:size-40 md:text-body2 ${
               currentPage === page
                 ? 'bg-red-30 text-white'
                 : 'bg-white text-black'
