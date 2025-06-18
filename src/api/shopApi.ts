@@ -1,3 +1,5 @@
+import api from './api';
+import { AxiosError } from 'axios';
 import type {
   ADDRESS_OPTIONS,
   CATEGORY_OPTIONS,
@@ -47,3 +49,17 @@ export interface ShopResponse {
   };
   links: LinkInfo[];
 }
+
+export const postShop = async (body: ShopRequest): Promise<ShopResponse> => {
+  try {
+    const response = await api.post<ShopResponse>('/shops', body);
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
