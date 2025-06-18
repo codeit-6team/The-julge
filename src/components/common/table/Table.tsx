@@ -22,14 +22,11 @@ interface NoticeProps {
 
 export default function Table(props: UserProps | NoticeProps) {
   const { className, mode } = props;
-  let headers;
+  const headers =
+    mode === 'notice'
+      ? ['신청자', '소개', '전화번호', '상태']
+      : ['가게', '일자', '시급', '상태'];
   const [datas, setDatas] = useState<(string | undefined)[][]>([]);
-
-  if (mode === 'notice') {
-    headers = ['신청자', '소개', '전화번호', '상태'];
-  } else {
-    headers = ['가게', '일자', '시급', '상태'];
-  }
 
   useEffect(() => {
     (async () => {
