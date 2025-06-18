@@ -15,9 +15,15 @@ export interface LinkInfo {
   href: string;
 }
 
+export type ApplicationStatus =
+  | 'pending'
+  | 'accepted'
+  | 'rejected'
+  | 'canceled';
+
 export interface ApplicationItem {
   id: string;
-  status: 'pending' | 'accepted' | 'rejected' | 'canceled';
+  status: ApplicationStatus;
   createdAt: string;
 }
 
@@ -67,7 +73,7 @@ export interface ApplicationNoticeResponse {
 
 // PUT /shops/{shop_id}/notices/{notice_id}/applications/{application_id} - 가게의 특정 공고 지원 승인, 거절 또는 취소 request
 export interface ApplicationRequest {
-  status: 'accepted' | 'rejected' | 'canceled';
+  status: Exclude<ApplicationStatus, 'pending'>;
 }
 
 // GET /shops/{shop_id}/notices/{notice_id}/applications - 가게의 특정 공고의 지원 목록 조회
