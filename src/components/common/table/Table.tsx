@@ -87,7 +87,11 @@ export default function Table(props: UserProps | NoticeProps) {
               }),
           );
         }
-      } catch {}
+      } catch {
+        setDatas(Array(5).fill(['', '', '', '']));
+        setPage(1);
+        setTotalPage(1);
+      }
     })();
 
     const maxHeight = 52;
