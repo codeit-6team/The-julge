@@ -73,9 +73,9 @@ export default function Filter({
   if (!open) return null;
 
   return (
-    <div className="z-5 flex w-full max-w-390 flex-col gap-24 rounded-[10px] border border-gray-20 bg-white px-20 py-24 shadow-custom">
-      <div className="flex flex-row items-center justify-between text-[2rem] leading-[2.4rem]">
-        <h3 className="text-h3 font-bold">상세 필터</h3>
+    <div className="z-5 flex w-full max-w-390 flex-col gap-24 rounded-xl border border-gray-20 bg-white px-20 py-24 shadow-custom">
+      <div className="flex flex-row items-center justify-between">
+        <h3 className="text-h3 font-bold text-black">상세 필터</h3>
         <button
           className="relative size-24"
           onClick={onClose}
@@ -86,7 +86,7 @@ export default function Filter({
       </div>
       <div className="flex flex-col">
         <p className="text-body1 font-regular">위치</p>
-        <div className="custom-scrollbar my-[0.75rem] grid h-258 w-full max-w-348 grid-cols-2 gap-32 overflow-y-auto rounded-[0.6rem] border border-[#e5e4e7] px-28 py-20 text-[1.4rem]">
+        <div className="custom-scrollbar my-12 grid h-258 w-full max-w-348 grid-cols-2 gap-32 overflow-y-auto rounded-md border border-gray-20 px-28 py-20">
           {ADDRESS_OPTIONS.map((item) => (
             <button
               key={item}
@@ -104,7 +104,7 @@ export default function Filter({
             <button
               key={option}
               type="button"
-              className="flex flex-row items-center rounded-[2rem] bg-[#ffebe7] px-10 py-6 text-body2 leading-[1.68rem] font-semibold text-[#ea3c12]"
+              className="flex flex-row items-center rounded-3xl bg-red-10 px-10 py-6 text-body2 font-bold text-primary"
               onClick={() => handleDeleteLocation(option)}
             >
               {option}
@@ -129,7 +129,7 @@ export default function Filter({
 
         <HorizontalLine />
 
-        <div className="mb-40 flex items-end gap-[0.75rem]">
+        <div className="mb-40 flex items-end gap-12">
           <div className="flex-1">
             <Input
               label="금액"
