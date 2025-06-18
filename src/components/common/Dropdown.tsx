@@ -7,23 +7,23 @@ import {
 } from 'react';
 import Down from '@/assets/icons/dropdown.svg';
 
-interface DropdownProps {
-  options: string[];
-  selected: string;
-  setSelect: Dispatch<SetStateAction<string>>; // Dispatch<SetStateAction<string>>는 set함수 타입
+interface DropdownProps<T extends string> {
+  options: readonly T[];
+  selected: T;
+  setSelect: Dispatch<SetStateAction<T>>; // Dispatch<SetStateAction<T>>는 set함수 타입
   placeholder?: string;
   variant: 'form' | 'filter';
   id?: string;
 }
 
-export default function Dropdown({
+export default function Dropdown<T extends string>({
   options,
   selected,
   setSelect,
   placeholder = '선택',
   variant,
   id,
-}: DropdownProps) {
+}: DropdownProps<T>) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +35,7 @@ export default function Dropdown({
     setIsOpen(false);
   };
 
-  const handleSelect = (options: string) => {
+  const handleSelect = (options: T) => {
     setSelect(options);
     closeDropdown();
   };
