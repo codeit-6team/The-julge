@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getUser, putUser } from '@/api/userApi';
+import { getUser, putUser, type SeoulDistrict } from '@/api/userApi';
 import Dropdown from '@/components/common/Dropdown';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
@@ -13,10 +13,11 @@ export default function ProfileForm() {
   const [profileInfo, setProfileInfo] = useState({
     name: '',
     phone: '',
-    address: '',
     bio: '',
   });
-
+  const [selectedAddress, setSelectedAddress] = useState<SeoulDistrict | ''>(
+    '',
+  ); // dropdown 컴포넌트에 set함수를 전달하기 위해 address는 따로 분리
   const [modal, setModal] = useState({
     isOpen: false,
     message: '',
@@ -37,9 +38,9 @@ export default function ProfileForm() {
         setProfileInfo({
           name: userInfo.item.name ?? '',
           phone: userInfo.item.phone ?? '',
-          address: userInfo.item.address ?? '',
           bio: userInfo.item.bio ?? '',
         });
+        setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
       } catch (error) {
         console.error(error);
       }
@@ -60,16 +61,9 @@ export default function ProfileForm() {
     }));
   }
 
-  function handleSelect(value: string) {
-    setProfileInfo((prev) => ({
-      ...prev,
-      address: value,
-    }));
-  }
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { name, phone, address, bio } = profileInfo;
+    const { name, phone, bio } = profileInfo;
 
     if (!userId) {
       setModal({
@@ -83,7 +77,7 @@ export default function ProfileForm() {
       await putUser(userId, {
         name,
         phone,
-        address,
+        address: selectedAddress,
         bio,
       });
       setModal({
@@ -91,14 +85,9 @@ export default function ProfileForm() {
         message: '등록이 완료되었습니다.',
       });
     } catch (error) {
-      const rawMessage = (error as Error).message;
-      const friendlyMessage = rawMessage.includes('시군구')
-        ? '선호 지역을 선택해주세요.'
-        : rawMessage;
-
       setModal({
         isOpen: true,
-        message: friendlyMessage,
+        message: (error as Error).message,
       });
     }
   }
@@ -149,8 +138,8 @@ export default function ProfileForm() {
                 id="region"
                 variant="form"
                 options={ADDRESS_OPTIONS}
-                selected={profileInfo.address}
-                setSelect={handleSelect}
+                selected={selectedAddress}
+                setSelect={setSelectedAddress}
               />
             </div>
           </div>
