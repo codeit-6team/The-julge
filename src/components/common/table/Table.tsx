@@ -2,71 +2,83 @@ import { useEffect, useState } from 'react';
 import TableStatus from './TableStatus';
 import TableButtons from './TableButtons';
 import formatWorkTime from '@/utils/formatWorkTime';
-import type {
-  ApplicationNoticeInfo,
-  ApplicationUserInfo,
+import {
+  getNoticeApplications,
+  getUserApplications,
 } from '@/api/applicationApi';
 
 interface UserProps {
   className?: string;
   mode: 'user';
-  applications: ApplicationUserInfo[];
+  userId: string;
 }
 
 interface NoticeProps {
   className?: string;
   mode: 'notice';
-  applications: ApplicationNoticeInfo[];
+  shopId: string;
+  noticeId: string;
 }
 
-export default function Table({
-  className = '',
-  mode,
-  applications: initialApplications,
-}: UserProps | NoticeProps) {
+export default function Table(props: UserProps | NoticeProps) {
+  const { className, mode } = props;
   let headers;
   const [datas, setDatas] = useState<(string | undefined)[][]>([]);
 
   if (mode === 'notice') {
     headers = ['신청자', '소개', '전화번호', '상태'];
-
-    setDatas(
-      [...initialApplications, ...[null, null, null, null, null]]
-        .slice(0, 5)
-        .map((element) => {
-          if (!element) return ['', '', '', ''];
-
-          return [
-            element.item.user.item.name,
-            element.item.user.item.bio,
-            element.item.user.item.phone,
-            element.item.status,
-          ];
-        }),
-    );
   } else {
     headers = ['가게', '일자', '시급', '상태'];
-
-    setDatas(
-      [...initialApplications, ...[null, null, null, null, null]]
-        .slice(0, 5)
-        .map((element) => {
-          if (!element) return ['', '', '', ''];
-
-          return [
-            element.item.shop.item.name,
-            `${formatWorkTime({
-              startsAt: element.item.notice.item.startsAt,
-              workhour: element.item.notice.item.workhour,
-            })} (${element.item.notice.item.workhour}시간)`,
-            element.item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
-            element.item.status,
-          ];
-        }),
-    );
   }
 
   useEffect(() => {
+    (async () => {
+      try {
+        if (mode === 'notice') {
+          const { items } = await getNoticeApplications(
+            props.shopId,
+            props.noticeId,
+          );
+
+          setDatas(
+            [...items, ...[null, null, null, null, null]]
+              .slice(0, 5)
+              .map((element) => {
+                if (!element) return ['', '', '', ''];
+
+                return [
+                  element.item.user.item.name,
+                  element.item.user.item.bio,
+                  element.item.user.item.phone,
+                  element.item.status,
+                ];
+              }),
+          );
+        } else {
+          const { items } = await getUserApplications(props.userId);
+
+          setDatas(
+            [...items, ...[null, null, null, null, null]]
+              .slice(0, 5)
+              .map((element) => {
+                if (!element) return ['', '', '', ''];
+
+                return [
+                  element.item.shop.item.name,
+                  `${formatWorkTime({
+                    startsAt: element.item.notice.item.startsAt,
+                    workhour: element.item.notice.item.workhour,
+                  })} (${element.item.notice.item.workhour}시간)`,
+                  element.item.notice.item.hourlyPay.toLocaleString('ko-KR') +
+                    '원',
+                  element.item.status,
+                ];
+              }),
+          );
+        }
+      } catch {}
+    })();
+
     const maxHeight = 52;
     const elements = document.querySelectorAll<HTMLDivElement>('td div.t');
 
@@ -84,7 +96,7 @@ export default function Table({
         }
       }
     }
-  }, []);
+  }, [mode]);
 
   return (
     <div
