@@ -45,7 +45,7 @@ export default function Table(props: UserProps | NoticeProps) {
             },
           );
 
-          setTotalPage(Math.ceil(count / 5));
+          setTotalPage(count ? Math.ceil(count / 5) : 1);
           setDatas(
             [...items, ...[null, null, null, null, null]]
               .slice(0, 5)
@@ -66,7 +66,7 @@ export default function Table(props: UserProps | NoticeProps) {
             limit: 5,
           });
 
-          setTotalPage(Math.ceil(count / 5));
+          setTotalPage(count ? Math.ceil(count / 5) : 1);
           setDatas(
             [...items, ...[null, null, null, null, null]]
               .slice(0, 5)
