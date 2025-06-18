@@ -30,12 +30,13 @@ export default function Table(props: UserProps | NoticeProps) {
     Array(5).fill(['', '', '', '']),
   );
   const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     (async () => {
       try {
         if (mode === 'notice') {
-          const { items } = await getNoticeApplications(
+          const { items, count } = await getNoticeApplications(
             props.shopId,
             props.noticeId,
             {
@@ -44,6 +45,7 @@ export default function Table(props: UserProps | NoticeProps) {
             },
           );
 
+          setTotalPage(Math.ceil(count / 5));
           setDatas(
             [...items, ...[null, null, null, null, null]]
               .slice(0, 5)
@@ -59,11 +61,12 @@ export default function Table(props: UserProps | NoticeProps) {
               }),
           );
         } else {
-          const { items } = await getUserApplications(props.userId, {
+          const { items, count } = await getUserApplications(props.userId, {
             offset: (page - 1) * 5,
             limit: 5,
           });
 
+          setTotalPage(Math.ceil(count / 5));
           setDatas(
             [...items, ...[null, null, null, null, null]]
               .slice(0, 5)
