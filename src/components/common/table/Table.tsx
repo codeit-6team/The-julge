@@ -29,6 +29,7 @@ export default function Table(props: UserProps | NoticeProps) {
   const [datas, setDatas] = useState<(string | undefined)[][]>(
     Array(5).fill(['', '', '', '']),
   );
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     (async () => {
@@ -37,6 +38,10 @@ export default function Table(props: UserProps | NoticeProps) {
           const { items } = await getNoticeApplications(
             props.shopId,
             props.noticeId,
+            {
+              offset: (page - 1) * 5,
+              limit: 5,
+            },
           );
 
           setDatas(
@@ -54,7 +59,10 @@ export default function Table(props: UserProps | NoticeProps) {
               }),
           );
         } else {
-          const { items } = await getUserApplications(props.userId);
+          const { items } = await getUserApplications(props.userId, {
+            offset: (page - 1) * 5,
+            limit: 5,
+          });
 
           setDatas(
             [...items, ...[null, null, null, null, null]]
@@ -95,7 +103,7 @@ export default function Table(props: UserProps | NoticeProps) {
         }
       }
     }
-  }, [mode]);
+  }, [mode, page]);
 
   return (
     <div
