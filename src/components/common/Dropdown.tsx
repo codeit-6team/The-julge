@@ -13,6 +13,7 @@ interface DropdownProps {
   setSelect: Dispatch<SetStateAction<string>>; // Dispatch<SetStateAction<string>>는 set함수 타입
   placeholder?: string;
   variant: 'form' | 'filter';
+  id?: string;
 }
 
 export default function Dropdown({
@@ -21,6 +22,7 @@ export default function Dropdown({
   setSelect,
   placeholder = '선택',
   variant,
+  id,
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -54,6 +56,7 @@ export default function Dropdown({
   return (
     <div ref={dropdownRef} className="relative">
       <button
+        id={id}
         type="button"
         onClick={toggleDropdown}
         className={`flex items-center justify-between rounded-md ${variant === 'form' ? 'h-58 w-full border border-gray-30 bg-white px-20 py-16 text-body1 font-regular' : 'h-30 w-105 justify-center gap-6 rounded-[5px] bg-gray-10 px-12 text-body2 font-bold'}`}
