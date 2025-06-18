@@ -33,7 +33,8 @@ export default function StoreEdit() {
   };
   // 공통 문자열 핸들러
   const handleChange =
-    (key: keyof StoreEditForm) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    (key: keyof StoreEditForm) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setEdit((prev) => ({ ...prev, [key]: e.target.value }));
     };
 
@@ -103,11 +104,28 @@ export default function StoreEdit() {
           unit="원"
         />
       </div>
+
       <ImageInput
         label="가게 이미지"
         imageUrl={edit.imageUrl}
         onImageChange={(_, previewUrl) => handleImageChange(previewUrl)}
       />
+
+      <div className="mt-20 flex flex-col gap-8">
+        <label
+          htmlFor="description"
+          className="text-body1/26 font-regular text-black"
+        >
+          가게 설명
+        </label>
+        <textarea
+          id="description"
+          value={edit.description}
+          onChange={handleChange('description')}
+          placeholder="입력"
+          className="h-153 rounded-[5] border border-gray-30 bg-white px-20 py-16"
+        />
+      </div>
     </div>
   );
 }
