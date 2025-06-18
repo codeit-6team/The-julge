@@ -98,7 +98,7 @@ export default function Table({
             item.shop.item.name,
             `${formatWorkTime({
               startsAt: item.notice.item.startsAt,
-              workHour: item.notice.item.workhour,
+              workhour: item.notice.item.workhour,
             })} (${item.notice.item.workhour}시간)`,
             item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
           ]),
