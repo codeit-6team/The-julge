@@ -73,6 +73,22 @@ export default function ProfileForm() {
       return;
     }
 
+    if (!name.trim()) {
+      setModal({
+        isOpen: true,
+        message: '이름을 입력해주세요.',
+      });
+      return;
+    }
+
+    if (!selectedAddress) {
+      setModal({
+        isOpen: true,
+        message: '선호 지역을 선택해주세요',
+      });
+      return;
+    }
+
     try {
       await putUser(userId, {
         name,
