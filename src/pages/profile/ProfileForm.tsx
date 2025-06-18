@@ -24,6 +24,13 @@ export default function ProfileForm() {
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
+    if (!userId) {
+      setModal({
+        isOpen: true,
+        message: '로그인 먼저 해주세요.',
+      });
+      return;
+    }
     const fetchUserInfo = async () => {
       try {
         const userInfo = await getUser(userId);
@@ -41,7 +48,9 @@ export default function ProfileForm() {
     fetchUserInfo();
   }, [userId]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
     const { name, value } = e.target;
     const sanitized = name === 'phone' ? value.replace(/[^0-9]/g, '') : value; // phone은 숫자만
 
@@ -51,7 +60,7 @@ export default function ProfileForm() {
     }));
   }
 
-  function handleSelect(value) {
+  function handleSelect(value: string) {
     setProfileInfo((prev) => ({
       ...prev,
       address: value,
@@ -62,10 +71,10 @@ export default function ProfileForm() {
     e.preventDefault();
     const { name, phone, address, bio } = profileInfo;
 
-    if (name === '') {
+    if (!userId) {
       setModal({
         isOpen: true,
-        message: '이름을 입력해주세요.',
+        message: '로그인 먼저 해주세요.',
       });
       return;
     }
@@ -98,6 +107,9 @@ export default function ProfileForm() {
     if (modal.message === '등록이 완료되었습니다.') {
       setModal({ isOpen: false, message: '' });
       navigate('/profile');
+    } else if (modal.message === '로그인 먼저 해주세요.') {
+      setModal({ isOpen: false, message: '' });
+      navigate('/login');
     } else {
       setModal({ isOpen: false, message: '' });
     }
@@ -155,7 +167,7 @@ export default function ProfileForm() {
             ></textarea>
           </div>
         </div>
-        <Button onClick={handleSubmit} className="md:mx-auto md:w-312">
+        <Button type="submit" className="md:mx-auto md:w-312">
           등록하기
         </Button>
       </form>
