@@ -1,7 +1,7 @@
-import formatWorkTime from '@/utils/formatWorkTime';
+import { useEffect } from 'react';
 import TableStatus from './TableStatus';
 import TableButtons from './TableButtons';
-import { useEffect } from 'react';
+import formatWorkTime from '@/utils/formatWorkTime';
 
 interface User {
   item: {
