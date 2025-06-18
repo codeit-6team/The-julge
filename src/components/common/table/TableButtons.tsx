@@ -1,18 +1,33 @@
 import { useEffect, useState } from 'react';
 import Button from '../Button';
 import TableStatus from './TableStatus';
+import { putNoticeApplications } from '@/api/applicationApi';
 
-export default function TableButtons() {
+interface Props {
+  shopId: string;
+  noticeId: string;
+  applicaitonId: string;
+}
+
+export default function TableButtons({
+  shopId,
+  noticeId,
+  applicaitonId,
+}: Props) {
   const [status, setStatus] = useState<'pending' | 'accepted' | 'rejected'>(
     'pending',
   );
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const handleClickReject = () => {
-    setStatus('rejected');
-  };
-  const handleClickAccept = () => {
-    setStatus('accepted');
+  const changeStatus = async (stat: 'accepted' | 'rejected') => {
+    setStatus(stat);
+    try {
+      await putNoticeApplications(shopId, noticeId, applicaitonId, {
+        status: stat,
+      });
+    } catch {
+      setStatus('pending');
+    }
   };
 
   useEffect(() => {
@@ -29,7 +44,7 @@ export default function TableButtons() {
         solid={false}
         size={isMobile ? 'small' : 'medium'}
         className="w-69 md:w-92"
-        onClick={handleClickReject}
+        onClick={() => changeStatus('rejected')}
       >
         거절하기
       </Button>
@@ -41,7 +56,7 @@ export default function TableButtons() {
           color: 'var(--color-blue-20)',
           borderColor: 'var(--color-blue-20)',
         }}
-        onClick={handleClickAccept}
+        onClick={() => changeStatus('accepted')}
       >
         승인하기
       </Button>
