@@ -33,27 +33,29 @@ export default function Modal({
 }: Props) {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // 바깥 클릭 시 모달 닫기
   useEffect(() => {
+    // 1. 바깥 클릭 시 닫기
     function handleClickOutside(event: MouseEvent): void {
       const target = event.target as Node;
       if (modalRef.current && !modalRef.current.contains(target)) {
         onClose();
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
 
-  // esc로 닫기
-  useEffect(() => {
+    // 2. ESC 키로 닫기
     function handleKeyDown(event: KeyboardEvent): void {
       if (event.key === 'Escape') {
         onClose();
       }
     }
+
+    document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [onClose]);
 
   return (
