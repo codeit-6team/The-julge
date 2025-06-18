@@ -135,7 +135,7 @@ export default function Table(props: UserProps | NoticeProps) {
                   {mode === 'notice' && data[3] === 'pending' ? (
                     <TableButtons />
                   ) : (
-                    <TableStatus status={data[3]} />
+                    <TableStatus status={data[3] ?? ''} />
                   )}
                 </div>
               </td>
