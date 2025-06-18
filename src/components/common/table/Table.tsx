@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import TableStatus from './TableStatus';
 import TableButtons from './TableButtons';
+import Pagination from '../Pagination';
 import formatWorkTime from '@/utils/formatWorkTime';
 import {
   getNoticeApplications,
@@ -154,7 +155,13 @@ export default function Table(props: UserProps | NoticeProps) {
           ))}
         </tbody>
       </table>
-      <div className="h-55 w-full md:h-63"></div>
+      <div className="sticky right-0 bottom-0 left-0">
+        <Pagination
+          currentPage={page}
+          setCurrentPage={setPage}
+          totalPages={totalPage}
+        />
+      </div>
     </div>
   );
 }
