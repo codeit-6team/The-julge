@@ -32,7 +32,7 @@ export default function Table({
     datas = [...initialApplications, ...[null, null, null, null, null]]
       .slice(0, 5)
       .map((element) => {
-        if (!element) return [null, null, null, null];
+        if (!element) return ['', '', '', ''];
 
         return [
           element.item.user.item.name,
@@ -47,7 +47,7 @@ export default function Table({
     datas = [...initialApplications, ...[null, null, null, null, null]]
       .slice(0, 5)
       .map((element) => {
-        if (!element) return [null, null, null, null];
+        if (!element) return ['', '', '', ''];
 
         return [
           element.item.shop.item.name,
