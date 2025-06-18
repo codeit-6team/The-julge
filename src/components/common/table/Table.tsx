@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import TableStatus from './TableStatus';
 import TableButtons from './TableButtons';
 import formatWorkTime from '@/utils/formatWorkTime';
@@ -24,41 +24,46 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: UserProps | NoticeProps) {
-  let headers, datas;
+  let headers;
+  const [datas, setDatas] = useState<(string | undefined)[][]>([]);
 
   if (mode === 'notice') {
     headers = ['신청자', '소개', '전화번호', '상태'];
 
-    datas = [...initialApplications, ...[null, null, null, null, null]]
-      .slice(0, 5)
-      .map((element) => {
-        if (!element) return ['', '', '', ''];
+    setDatas(
+      [...initialApplications, ...[null, null, null, null, null]]
+        .slice(0, 5)
+        .map((element) => {
+          if (!element) return ['', '', '', ''];
 
-        return [
-          element.item.user.item.name,
-          element.item.user.item.bio,
-          element.item.user.item.phone,
-          element.item.status,
-        ];
-      });
+          return [
+            element.item.user.item.name,
+            element.item.user.item.bio,
+            element.item.user.item.phone,
+            element.item.status,
+          ];
+        }),
+    );
   } else {
     headers = ['가게', '일자', '시급', '상태'];
 
-    datas = [...initialApplications, ...[null, null, null, null, null]]
-      .slice(0, 5)
-      .map((element) => {
-        if (!element) return ['', '', '', ''];
+    setDatas(
+      [...initialApplications, ...[null, null, null, null, null]]
+        .slice(0, 5)
+        .map((element) => {
+          if (!element) return ['', '', '', ''];
 
-        return [
-          element.item.shop.item.name,
-          `${formatWorkTime({
-            startsAt: element.item.notice.item.startsAt,
-            workhour: element.item.notice.item.workhour,
-          })} (${element.item.notice.item.workhour}시간)`,
-          element.item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
-          element.item.status,
-        ];
-      });
+          return [
+            element.item.shop.item.name,
+            `${formatWorkTime({
+              startsAt: element.item.notice.item.startsAt,
+              workhour: element.item.notice.item.workhour,
+            })} (${element.item.notice.item.workhour}시간)`,
+            element.item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
+            element.item.status,
+          ];
+        }),
+    );
   }
 
   useEffect(() => {
