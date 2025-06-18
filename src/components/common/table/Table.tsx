@@ -2,76 +2,28 @@ import { useEffect } from 'react';
 import TableStatus from './TableStatus';
 import TableButtons from './TableButtons';
 import formatWorkTime from '@/utils/formatWorkTime';
+import type {
+  ApplicationNoticeInfo,
+  ApplicationUserInfo,
+} from '@/api/applicationApi';
 
-interface User {
-  item: {
-    id: string;
-    email: string;
-    type: 'employer' | 'employee';
-    name?: string;
-    phone?: string;
-    address?: string;
-    bio?: string;
-  };
-  href: string;
-}
-
-interface Shop {
-  item: {
-    id: string;
-    name: string;
-    category: string;
-    address1: string;
-    address2: string;
-    description: string;
-    imageUrl: string;
-    originalHourlyPay: number;
-  };
-  href: string;
-}
-
-interface Notice {
-  item: {
-    id: string;
-    hourlyPay: number;
-    description: string;
-    startsAt: string;
-    workhour: number;
-    closed: boolean;
-  };
-  href: string;
-}
-
-interface Link {
-  rel: string;
-  description: string;
-  method: string;
-  href: string;
-}
-
-interface Application {
-  item: {
-    id: string;
-    status: 'pending' | 'accepted' | 'rejected' | 'canceled';
-    createdAt: string;
-    user?: User;
-    shop: Shop;
-    notice: Notice;
-  };
-  links: Link[];
-}
-
-interface Props {
+interface UserProps {
   className?: string;
-  mode: 'user' | 'notice';
-  applications: Application[];
+  mode: 'user';
+  applications: ApplicationUserInfo[];
+}
+
+interface NoticeProps {
+  className?: string;
+  mode: 'notice';
+  applications: ApplicationNoticeInfo[];
 }
 
 export default function Table({
   className = '',
   mode,
   applications: initialApplications,
-}: Props) {
+}: UserProps | NoticeProps) {
   const applications = [
     ...initialApplications,
     ...[null, null, null, null, null],
