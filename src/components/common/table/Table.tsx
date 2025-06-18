@@ -24,39 +24,42 @@ export default function Table({
   mode,
   applications: initialApplications,
 }: UserProps | NoticeProps) {
-  const applications = [
-    ...initialApplications,
-    ...[null, null, null, null, null],
-  ].slice(0, 5);
+  let headers, datas;
 
-  const headers =
-    mode === 'notice'
-      ? ['신청자', '소개', '전화번호', '상태']
-      : ['가게', '일자', '시급', '상태'];
+  if (mode === 'notice') {
+    headers = ['신청자', '소개', '전화번호', '상태'];
 
-  const datas = applications.map((app) => {
-    if (!app) return Array(5).fill([null, null, null, null]);
+    datas = [...initialApplications, ...[null, null, null, null, null]]
+      .slice(0, 5)
+      .map((element) => {
+        if (!element) return [null, null, null, null];
 
-    const { item } = app;
+        return [
+          element.item.user.item.name,
+          element.item.user.item.bio,
+          element.item.user.item.phone,
+          element.item.status,
+        ];
+      });
+  } else {
+    headers = ['가게', '일자', '시급', '상태'];
 
-    return [
-      ...(mode === 'notice'
-        ? [
-            item?.user?.item?.name,
-            item?.user?.item?.bio,
-            item?.user?.item?.phone,
-          ]
-        : [
-            item.shop.item.name,
-            `${formatWorkTime({
-              startsAt: item.notice.item.startsAt,
-              workhour: item.notice.item.workhour,
-            })} (${item.notice.item.workhour}시간)`,
-            item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
-          ]),
-      item.status,
-    ];
-  });
+    datas = [...initialApplications, ...[null, null, null, null, null]]
+      .slice(0, 5)
+      .map((element) => {
+        if (!element) return [null, null, null, null];
+
+        return [
+          element.item.shop.item.name,
+          `${formatWorkTime({
+            startsAt: element.item.notice.item.startsAt,
+            workhour: element.item.notice.item.workhour,
+          })} (${element.item.notice.item.workhour}시간)`,
+          element.item.notice.item.hourlyPay.toLocaleString('ko-KR') + '원',
+          element.item.status,
+        ];
+      });
+  }
 
   useEffect(() => {
     const maxHeight = 52;
