@@ -44,7 +44,7 @@ export interface NoticeInfo {
 
 // POST /shops/{shop_id}/notices 공고 등록 - Response
 // PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정 - Response
-export interface NoticeUpsertResponse {
+export interface NoticeShopInfo {
   item: NoticeShopItem;
   links: LinkInfo[];
 }
@@ -63,7 +63,7 @@ export interface GetNoticesResponse {
   hasNext: boolean;
   address: string[];
   keyword?: string;
-  items: NoticeUpsertResponse[];
+  items: NoticeShopInfo[];
   links: LinkInfo[];
 }
 
@@ -143,9 +143,9 @@ export const getShopNotices = async (
 export const postShopNotice = async (
   shopId: string,
   body: NoticeUpsertRequest,
-): Promise<NoticeUpsertResponse> => {
+): Promise<NoticeShopInfo> => {
   try {
-    const response = await api.post<NoticeUpsertResponse>(
+    const response = await api.post<NoticeShopInfo>(
       `/shops/${shopId}/notices`,
       body,
     );
@@ -185,9 +185,9 @@ export const putShopNotice = async (
   shopId: string,
   noticeId: string,
   body: NoticeUpsertRequest,
-): Promise<NoticeUpsertResponse> => {
+): Promise<NoticeShopInfo> => {
   try {
-    const response = await api.put<NoticeUpsertResponse>(
+    const response = await api.put<NoticeShopInfo>(
       `/shops/${shopId}/notices/${noticeId}`,
       body,
     );
