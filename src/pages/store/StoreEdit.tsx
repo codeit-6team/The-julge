@@ -1,13 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Input from '@/components/common/Input';
 import Dropdown from '@/components/common/Dropdown';
 import { ADDRESS_OPTIONS, CATEGORY_OPTIONS } from '@/constants/dropdownOptions';
 import Close from '@/assets/icons/close.svg';
-import { useEffect, useState } from 'react';
-import type { ShopRequest } from '@/api/shopApi';
+import { useCallback, useContext, useMemo, useState } from 'react';
+import {
+  postShop,
+  putShop,
+  type ShopItem,
+  type ShopRequest,
+} from '@/api/shopApi';
 import ImageInput from '@/components/common/ImageInput';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
+import { getPresignedUrl, uploadImageToS3 } from '@/api/imageAPi';
+import { AuthContext } from '@/context/AuthContext';
 
 type Category = (typeof CATEGORY_OPTIONS)[number];
 type Address1 = (typeof ADDRESS_OPTIONS)[number];
@@ -17,54 +24,165 @@ interface StoreEditForm extends Omit<ShopRequest, 'category' | 'address1'> {
   address1: Address1 | '';
 }
 
+type InitialData = ShopItem | undefined;
+
+type ModalType = 'success' | 'warning' | 'auth';
+
 export default function StoreEdit() {
-  const [edit, setEdit] = useState<StoreEditForm>({
-    name: '',
-    category: '',
-    address1: '',
-    address2: '',
-    description: '',
-    originalHourlyPay: 0,
-    imageUrl: '',
-  });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const initialData = location.state as InitialData;
+  const { isLoggedIn } = useContext(AuthContext);
+
+  const isEditMode =
+    initialData !== undefined && typeof initialData?.id === 'string';
+
+  const [edit, setEdit] = useState<StoreEditForm>(
+    initialData
+      ? {
+          name: initialData.name,
+          category: initialData.category,
+          address1: initialData.address1,
+          address2: initialData.address2,
+          description: initialData.description,
+          originalHourlyPay: initialData.originalHourlyPay,
+          imageUrl: initialData.imageUrl,
+        }
+      : {
+          name: '',
+          category: '',
+          address1: '',
+          address2: '',
+          description: '',
+          originalHourlyPay: 0,
+          imageUrl: '',
+        },
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
+  const [modalContent, setModalContent] = useState('');
+  const [modalType, setModalType] = useState<ModalType>('success');
 
+  // x 버튼 눌렀을 때
   const handleClose = () => {
-    navigate('/store');
+    navigate('/owner/store');
   };
 
   // 공통 문자열 핸들러
-  const handleChange =
+  const handleChange = useCallback(
     (key: keyof StoreEditForm) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setEdit((prev) => ({ ...prev, [key]: e.target.value }));
-    };
+      (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setEdit((prev) => ({ ...prev, [key]: e.target.value }));
+      },
+    [],
+  );
 
   // 숫자 전용 핸들러
-  const handleNumberChange =
+  const handleNumberChange = useCallback(
     (key: keyof StoreEditForm) => (e: React.ChangeEvent<HTMLInputElement>) => {
       const raw = e.target.value.replace(/[^0-9]/g, '');
       setEdit((prev) => ({ ...prev, [key]: Number(raw) }));
-    };
+    },
+    [],
+  );
 
   // 이미지 핸들러
-  const handleImageChange = (previewUrl: string) => {
-    setEdit((prev) => ({ ...prev, imageUrl: previewUrl }));
+  const handleImageChange = async (file: File) => {
+    try {
+      const presignedUrl = await getPresignedUrl(file.name);
+      const fileUrl = presignedUrl.split('?')[0]; // S3 저장용 URL(쿼리 제거)
+
+      await uploadImageToS3(presignedUrl, file);
+
+      setEdit((prev) => ({ ...prev, imageUrl: fileUrl }));
+    } catch (error) {
+      alert((error as Error).message);
+    }
   };
 
-  const formatNumber = (value: string) => {
-    return Number(value).toLocaleString();
-  };
+  const formatNumber = useMemo(
+    () => (value: string) => {
+      return Number(value).toLocaleString();
+    },
+    [],
+  );
 
-  const handleSubmit = () => {
-    setIsModalOpen(true);
+  // 등록 버튼 처리
+  const handleSubmit = async () => {
+    if (!isLoggedIn) {
+      setModalType('auth');
+      setModalContent('로그인 정보가 없습니다. 다시 로그인해주세요.');
+      setIsModalOpen(true);
+      return;
+    }
+
+    // 필수 입력 값
+    const requiredFields = [
+      { key: 'name', label: '가게 이름' },
+      { key: 'category', label: '분류' },
+      { key: 'address1', label: '주소' },
+      { key: 'address2', label: '상세 주소' },
+      { key: 'originalHourlyPay', label: '기본 시급' },
+      { key: 'imageUrl', label: '가게 이미지' },
+      { key: 'description', label: '가게 설명' },
+    ];
+
+    // 입력 안할 시 모달로 알려줌
+    for (const { key, label } of requiredFields) {
+      const value = edit[key as keyof StoreEditForm];
+      if (
+        value === '' ||
+        value === 0 ||
+        value === undefined ||
+        value === null
+      ) {
+        setModalType('warning');
+        setModalContent(`${label}을(를) 입력해주세요.`);
+        setIsModalOpen(true);
+        return;
+      }
+    }
+
+    try {
+      const requestBody: ShopRequest = {
+        ...edit,
+        category: edit.category as ShopRequest['category'],
+        address1: edit.address1 as ShopRequest['address1'],
+      };
+
+      // 등록, 수정을 구분
+      if (isEditMode && initialData?.id) {
+        await putShop(initialData.id, requestBody);
+      } else {
+        await postShop(requestBody);
+      }
+
+      setModalType('success');
+      setModalContent(
+        isEditMode ? '수정이 완료되었습니다.' : '등록이 완료되었습니다.',
+      );
+      setIsModalOpen(true);
+    } catch (error) {
+      setModalType('warning');
+      setModalContent((error as Error).message);
+      setIsModalOpen(true);
+    }
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
-    navigate('/store');
+
+    switch (modalType) {
+      case 'success':
+        navigate('/owner/store');
+        break;
+      case 'auth':
+        navigate('/login');
+        break;
+      case 'warning':
+      default:
+        break;
+    }
   };
 
   return (
@@ -78,6 +196,7 @@ export default function StoreEdit() {
             <img src={Close} alt="닫기" className="md:size-32" />
           </button>
         </div>
+
         <div className="mb-20 flex flex-col gap-20 md:mb-24 md:flex-row md:gap-20">
           <div className="md:max-w-472 md:basis-1/2">
             <Input
@@ -100,6 +219,7 @@ export default function StoreEdit() {
             />
           </div>
         </div>
+
         <div className="mb-20 flex flex-col gap-20 md:mb-24 md:gap-24">
           <div className="flex flex-col gap-20 md:flex-row md:gap-20">
             <div className="flex flex-col gap-8 md:max-w-472 md:basis-1/2">
@@ -127,7 +247,11 @@ export default function StoreEdit() {
             <div className="md:max-w-472 md:basis-1/2">
               <Input
                 label="기본 시급*"
-                value={formatNumber(String(edit.originalHourlyPay))}
+                value={
+                  edit.originalHourlyPay === 0
+                    ? ''
+                    : formatNumber(String(edit.originalHourlyPay))
+                }
                 onChange={handleNumberChange('originalHourlyPay')}
                 unit="원"
               />
@@ -140,7 +264,8 @@ export default function StoreEdit() {
           <ImageInput
             label="가게 이미지"
             imageUrl={edit.imageUrl}
-            onImageChange={(_, previewUrl) => handleImageChange(previewUrl)}
+            onImageChange={handleImageChange}
+            mode={isEditMode ? 'edit' : 'create'}
           />
         </div>
 
@@ -164,14 +289,12 @@ export default function StoreEdit() {
           onClick={handleSubmit}
           className="md:mx-auto md:w-312"
         >
-          {mode === 'edit' ? '수정하기' : '등록하기'}
+          {isEditMode ? '수정하기' : '등록하기'}
         </Button>
 
         {isModalOpen && (
           <Modal onClose={handleModalClose} onButtonClick={handleModalClose}>
-            {mode === 'edit'
-              ? '수정이 완료되었습니다.'
-              : '등록이 완료되었습니다.'}
+            {modalContent}
           </Modal>
         )}
       </div>
