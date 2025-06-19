@@ -20,8 +20,8 @@ export default function ProfileForm() {
   });
 
   // dropdown 컴포넌트에 set함수를 전달하기 위해 address는 따로 분리
-  const [selectedAddress, setSelectedAddress] = useState<SeoulDistrict | ''>(
-    '',
+  const [selectedAddress, setSelectedAddress] = useState<SeoulDistrict | null>(
+    null,
   );
 
   const [modal, setModal] = useState({
@@ -61,7 +61,7 @@ export default function ProfileForm() {
     } else {
       setModal({
         isOpen: true,
-        message: '로그인 먼저 해주세요.',
+        message: '로그인이 필요합니다.',
       });
     }
   }, [isLoggedIn]);
@@ -86,7 +86,7 @@ export default function ProfileForm() {
     if (!isLoggedIn || !userId) {
       setModal({
         isOpen: true,
-        message: '로그인 먼저 해주세요.',
+        message: '로그인이 필요합니다.',
       });
       return;
     }
@@ -141,61 +141,62 @@ export default function ProfileForm() {
   }, [modal.message, navigate]);
 
   return (
-    <div className="min-h-screen bg-gray-5">
-      <form
-        className="mx-12 flex flex-col gap-24 pt-40 pb-80 md:mx-32 md:gap-32 md:py-60 lg:mx-auto lg:w-964"
-        onSubmit={handleSubmit}
-      >
+    <div className="min-h-[calc(100vh-102px)] bg-gray-5 md:min-h-[calc(100vh-70px)]">
+      <div className="mx-12 flex flex-col gap-24 pt-40 pb-80 md:mx-32 md:gap-32 md:py-60 lg:mx-auto lg:w-964">
         <div className="flex items-center justify-between">
-          <h1 className="text-h3 font-bold md:text-h1">내 프로필</h1>
+          <h1 className="text-h3/24 font-bold md:text-h1/34">내 프로필</h1>
           <Link to="/profile">
             <img src={close} alt="닫기" className="md:size-32" />
           </Link>
         </div>
-        <div className="flex flex-col gap-20 md:gap-24">
-          <div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-y-24 lg:grid-cols-3">
-            <Input
-              label="이름*"
-              name="name"
-              value={profileInfo.name}
-              onChange={handleChange}
-            />
-            <Input
-              label="연락처*"
-              type="tel"
-              name="phone"
-              maxLength={11}
-              value={profileInfo.phone}
-              onChange={handleChange}
-            />
-            <div className="flex flex-col gap-8 text-body1/26 font-regular">
-              <label htmlFor="region">선호 지역*</label>
-              <Dropdown
-                id="region"
-                variant="form"
-                options={ADDRESS_OPTIONS}
-                selected={selectedAddress}
-                setSelect={setSelectedAddress}
+        <form
+          className="flex flex-col gap-24 md:gap-32"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex flex-col gap-20 md:gap-24">
+            <div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-y-24 lg:grid-cols-3">
+              <Input
+                label="이름*"
+                name="name"
+                value={profileInfo.name}
+                onChange={handleChange}
               />
+              <Input
+                label="연락처*"
+                type="tel"
+                name="phone"
+                maxLength={11}
+                value={profileInfo.phone}
+                onChange={handleChange}
+              />
+              <div className="flex flex-col gap-8 text-body1/26 font-regular">
+                <label htmlFor="region">선호 지역*</label>
+                <Dropdown
+                  id="region"
+                  variant="form"
+                  options={ADDRESS_OPTIONS}
+                  selected={selectedAddress}
+                  setSelect={setSelectedAddress}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-8 text-body1/26 font-regular">
+              <label htmlFor="bio">소개</label>
+              <textarea
+                name="bio"
+                id="bio"
+                className="h-153 resize-none rounded-[5px] border border-gray-30 bg-white px-20 py-16 placeholder-gray-40"
+                placeholder="입력"
+                value={profileInfo.bio}
+                onChange={handleChange}
+              ></textarea>
             </div>
           </div>
-
-          <div className="flex flex-col gap-8 text-body1/26 font-regular">
-            <label htmlFor="bio">소개</label>
-            <textarea
-              name="bio"
-              id="bio"
-              className="h-153 resize-none rounded-[5px] border border-gray-30 bg-white px-20 py-16 placeholder-gray-40"
-              placeholder="입력"
-              value={profileInfo.bio}
-              onChange={handleChange}
-            ></textarea>
-          </div>
-        </div>
-        <Button type="submit" className="md:mx-auto md:w-312">
-          등록하기
-        </Button>
-      </form>
+          <Button type="submit" className="md:mx-auto md:w-312">
+            등록하기
+          </Button>
+        </form>
+      </div>
       {modal.isOpen && (
         <Modal onClose={handleModalConfirm} onButtonClick={handleModalConfirm}>
           {modal.message}
