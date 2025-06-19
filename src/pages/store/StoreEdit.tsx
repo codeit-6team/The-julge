@@ -142,7 +142,7 @@ export default function StoreEdit() {
         value === null
       ) {
         setModalType('warning');
-        setModalContent(`${label}을(를) 입력해주세요.`);
+        setModalContent(`${label} 내용을 추가해 주세요.`);
         setIsModalOpen(true);
         return;
       }
