@@ -37,7 +37,7 @@ export default function RegisterLayout({
   const { header, content, buttonText, link } = TEXT_MAP[type];
 
   return (
-    <div className="mx-12 flex flex-col gap-16 py-40 md:mx-32 md:gap-24 md:py-60 lg:mx-auto lg:w-964">
+    <div className="mx-12 flex flex-col gap-16 pt-40 pb-80 md:mx-32 md:gap-24 md:pt-60 md:pb-120 lg:mx-auto lg:w-964">
       <h1 className="text-h3 font-bold md:text-h1">{header}</h1>
       <div className="flex flex-col items-center gap-16 rounded-[12px] border border-gray-20 px-24 py-60 md:gap-24">
         <p className="text-body2/22 md:text-body1/26">{content}</p>
