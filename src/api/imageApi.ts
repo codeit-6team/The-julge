@@ -38,15 +38,18 @@ export const uploadImageToS3 = async (
   uploadUrl: string,
   file: File,
 ): Promise<void> => {
-  const response = await fetch(uploadUrl, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': file.type,
-    },
-    body: file,
-  });
-
-  if (!response.ok) {
-    throw new Error('이미지 업로드를 실패했습니다.');
+  try {
+    await api.put(uploadUrl, file, {
+      headers: {
+        'Content-Type': file.type,
+      },
+    });
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
   }
 };
