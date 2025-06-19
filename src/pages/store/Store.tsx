@@ -16,8 +16,10 @@ export default function Store() {
 
   return (
     <>
-      <section className="w-full bg-white"></section>
-      {shop && <section className="w-full bg-gray-5"></section>}
+      <section className="w-full bg-white px-12 py-40 md:px-32 md:py-60"></section>
+      {shop && (
+        <section className="w-full bg-gray-5 px-12 pt-40 pb-80 md:px-32 md:pt-60 md:pb-120"></section>
+      )}
     </>
   );
 }
