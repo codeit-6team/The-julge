@@ -42,7 +42,10 @@ export default function ProfileForm() {
         });
         setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
       } catch (error) {
-        console.error(error);
+        setModal({
+          isOpen: true,
+          message: (error as Error).message,
+        });
       }
     };
 
