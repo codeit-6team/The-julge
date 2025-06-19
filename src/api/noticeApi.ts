@@ -42,6 +42,19 @@ export interface NoticeInfo {
   links: LinkInfo[];
 }
 
+// POST /shops/{shop_id}/notices 공고 등록 - Response
+// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정 - Response
+export interface NoticeUpsertResponse {
+  item: NoticeWithShopItem;
+  links: LinkInfo[];
+}
+
+// GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회 - Response
+export interface GetNoticeDetailResponse {
+  item: NoticeDetailItem;
+  links: LinkInfo[];
+}
+
 // GET /notices 공고 조회 - Response
 export interface GetNoticesResponse {
   offset: number;
@@ -61,19 +74,6 @@ export interface GetShopNoticesResponse {
   count: number;
   hasNext: boolean;
   items: NoticeInfo[];
-  links: LinkInfo[];
-}
-
-// POST /shops/{shop_id}/notices 공고 등록 - Response
-// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정 - Response
-export interface NoticeUpsertResponse {
-  item: NoticeWithShopItem;
-  links: LinkInfo[];
-}
-
-// GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회 - Response
-export interface GetNoticeDetailResponse {
-  item: NoticeDetailItem;
   links: LinkInfo[];
 }
 
