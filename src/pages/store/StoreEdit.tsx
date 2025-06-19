@@ -111,17 +111,9 @@ export default function StoreEdit() {
   useEffect(() => {
     const userId = localStorage.getItem('userId');
 
-    // 따로 구현해야 적용
-    if (!isLoggedIn) {
-      setModalType('auth');
-      setModalContent('로그인이 필요합니다.');
-      setIsModalOpen(true);
-      return;
-    }
-
     if (!userId) {
       setModalType('auth');
-      setModalContent('사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.');
+      setModalContent('로그인이 필요합니다.');
       setIsModalOpen(true);
       return;
     }
