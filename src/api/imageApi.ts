@@ -6,10 +6,6 @@ interface ErrorMessage {
   message: string;
 }
 
-interface ImageRequest {
-  name: string;
-}
-
 interface ImageResponse {
   item: {
     url: string; // ✅ 쿼리 스트링 포함된 presigned S3 PUT URL
@@ -20,8 +16,9 @@ interface ImageResponse {
 // Presigned URL 발급 요청
 export const getPresignedUrl = async (filename: string): Promise<string> => {
   try {
-    const body: ImageRequest = { name: filename };
-    const response = await api.post<ImageResponse>('/images', body);
+    const response = await api.post<ImageResponse>('/images', {
+      name: filename,
+    });
     return response.data.item.url;
   } catch (error) {
     const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
