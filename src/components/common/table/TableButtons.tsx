@@ -27,12 +27,10 @@ export default function TableButtons({
   });
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    setModal({
-      isOpen: true,
-      status: e.currentTarget.value as 'accepted' | 'rejected',
+  const closeModal = () =>
+    setModal((prev) => {
+      return { ...prev, isOpen: false };
     });
-  };
 
   const handleModalClick = async () => {
     closeModal();
@@ -46,10 +44,12 @@ export default function TableButtons({
     }
   };
 
-  const closeModal = () =>
-    setModal((prev) => {
-      return { ...prev, isOpen: false };
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    setModal({
+      isOpen: true,
+      status: e.currentTarget.value as 'accepted' | 'rejected',
     });
+  };
 
   useEffect(() => {
     const handleResize = () => {
