@@ -31,8 +31,7 @@ export interface NoticeDetailItem extends NoticeWithShopItem {
   };
 }
 
-// GET /notices 공고 조회
-// Response
+// GET /notices 공고 조회 - Response
 export interface GetNoticesResponse {
   offset: number;
   limit: number;
@@ -47,8 +46,7 @@ export interface GetNoticesResponse {
   links: LinkInfo[];
 }
 
-// GET /shops/{shop_id}/notices 가게별 공고 조회
-// Response
+// GET /shops/{shop_id}/notices 가게별 공고 조회 - Response
 export interface GetShopNoticesResponse {
   offset: number;
   limit: number;
@@ -61,25 +59,24 @@ export interface GetShopNoticesResponse {
   links: LinkInfo[];
 }
 
-// POST /shops/{shop_id}/notices 공고 등록
-// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정
-// Request Body
-export interface NoticeUpsertRequest {
-  hourlyPay: number;
-  startsAt: string;
-  workhour: number;
-  description: string;
-}
-
-// Response
+// POST /shops/{shop_id}/notices 공고 등록 - Response
+// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정 - Response
 export interface NoticeUpsertResponse {
   item: NoticeWithShopItem;
   links: LinkInfo[];
 }
 
-// GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회
-// Response
+// GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회 - Response
 export interface GetNoticeDetailResponse {
   item: NoticeDetailItem;
   links: LinkInfo[];
+}
+
+// POST /shops/{shop_id}/notices 공고 등록 - Request Body
+// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정 - Request Body
+export interface NoticeUpsertRequest {
+  hourlyPay: number;
+  startsAt: string;
+  workhour: number;
+  description: string;
 }
