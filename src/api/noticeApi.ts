@@ -1,6 +1,10 @@
 import type { ApplicationItem } from './applicationApi';
 import type { ShopInfo } from './shopApi';
 
+interface ErrorMessage {
+  message: string;
+}
+
 // Link (공통 링크 타입)
 export interface LinkInfo {
   rel: string;
