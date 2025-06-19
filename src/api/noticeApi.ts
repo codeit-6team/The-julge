@@ -182,3 +182,25 @@ export const getShopNotice = async (
     }
   }
 };
+
+// PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정
+export const putShopNotice = async (
+  shopId: string,
+  noticeId: string,
+  body: NoticeUpsertRequest,
+): Promise<NoticeUpsertResponse> => {
+  try {
+    const response = await api.put<NoticeUpsertResponse>(
+      `/shops/${shopId}/notices/${noticeId}`,
+      body,
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
