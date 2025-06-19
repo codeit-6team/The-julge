@@ -1,5 +1,5 @@
 import api from './api';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import type { LinkInfo } from './shopApi';
 
 interface ImageResponse {
@@ -32,7 +32,7 @@ export const uploadImageToS3 = async (
   file: File,
 ): Promise<void> => {
   try {
-    await api.put(uploadUrl, file, {
+    await axios.put(uploadUrl, file, {
       headers: {
         'Content-Type': file.type,
       },
