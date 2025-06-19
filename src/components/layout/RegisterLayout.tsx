@@ -14,12 +14,24 @@ const TEXT_MAP = {
     buttonText: '가게 등록하기',
     link: '/owner/store/edit',
   },
+  application: {
+    header: '신청 내역',
+    content: '아직 신청 내역이 없어요.',
+    buttonText: '공고 보러가기',
+    link: '/',
+  },
+  notice: {
+    header: '등록한 공고',
+    content: '공고를 등록해 보세요.',
+    buttonText: '공고 등록하기',
+    link: '/owner/post',
+  },
 };
 
 export default function RegisterLayout({
   type,
 }: {
-  type: 'profile' | 'store';
+  type: 'profile' | 'store' | 'application' | 'notice';
 }) {
   const navigate = useNavigate();
   const { header, content, buttonText, link } = TEXT_MAP[type];
