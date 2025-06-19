@@ -162,3 +162,23 @@ export const postShopNotice = async (
     }
   }
 };
+
+// GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회
+export const getShopNotice = async (
+  shopId: string,
+  noticeId: string,
+): Promise<GetNoticeDetailResponse> => {
+  try {
+    const response = await api.get<GetNoticeDetailResponse>(
+      `/shops/${shopId}/notices/${noticeId}`,
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
