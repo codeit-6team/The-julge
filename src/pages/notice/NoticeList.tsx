@@ -6,21 +6,33 @@ import { SORT_OPTIONS } from '@/constants/dropdownOptions';
 import Pagination from '@/components/common/Pagination';
 import Filter from '@/components/common/Filter';
 
+// ===================== 타입 선언 ======================
+type FilterValues = {
+  address?: string[] | null;
+  startsAt?: string | null;
+  hourlyPay?: number | null;
+};
+
+type NoticeListProps = {
+  search?: string;
+};
+
+// ===================== 데이터 ========================
 const dummyNotices: NoticeWithShopItem[] = [
   {
     id: '1',
     hourlyPay: 12000,
     startsAt: '2025-07-01T12:00:00Z',
     workhour: 5,
-    description: '김밥천국 강남점 공고',
+    description: '서울시 종로구',
     closed: false,
     shop: {
       item: {
         id: 'shop-1',
-        name: '김밥천국 강남점',
+        name: '이승민',
         category: '한식',
         address1: '서울시 종로구',
-        address2: '',
+        address2: '서울시 종로구',
         description: '',
         imageUrl: null,
         originalHourlyPay: 11000,
@@ -156,9 +168,13 @@ const dummyNotices: NoticeWithShopItem[] = [
   },
 ];
 
+// ===================== 헬퍼 함수 =====================
 const ITEMS_PER_PAGE = 6;
 
-function sortNotices(notices: NoticeWithShopItem[], sort: string) {
+function sortNotices(
+  notices: NoticeWithShopItem[],
+  sort: string,
+): NoticeWithShopItem[] {
   if (sort === '마감임박순') {
     return [...notices].sort(
       (a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime(),
@@ -178,33 +194,62 @@ function sortNotices(notices: NoticeWithShopItem[], sort: string) {
   return notices;
 }
 
-export default function NoticeList() {
+function countAppliedFilters(filterValues: FilterValues): number {
+  let count = 0;
+  if (Array.isArray(filterValues.address) && filterValues.address.length > 0)
+    count += filterValues.address.length;
+  if (filterValues.startsAt) count += 1;
+  if (filterValues.hourlyPay) count += 1;
+  return count;
+}
+
+function filterNotices(
+  notices: NoticeWithShopItem[],
+  filter: FilterValues,
+  search: string,
+): NoticeWithShopItem[] {
+  return notices.filter((n) => {
+    if (filter.address && filter.address.length > 0) {
+      if (!filter.address.includes(n.shop.item.address1)) return false;
+    }
+    if (filter.startsAt) {
+      if (new Date(n.startsAt) < new Date(filter.startsAt)) return false;
+    }
+    if (filter.hourlyPay) {
+      if (n.hourlyPay < filter.hourlyPay) return false;
+    }
+    if (search && !n.shop.item.name.includes(search)) return false;
+    return true;
+  });
+}
+
+// ================== 컴포넌트 =========================
+export default function NoticeList({ search = '' }: NoticeListProps) {
   const [allNotices, setAllNotices] = useState<NoticeWithShopItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number]>(
     SORT_OPTIONS[0],
   );
-  // ↓ 정렬도 이렇게
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filterOpen, setFilterOpen] = useState(false);
-  const [filterValues, setFilterValues] = useState({});
+  const [filterValues, setFilterValues] = useState<FilterValues>({});
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [filterOpen, setFilterOpen] = useState<boolean>(false);
+  const appliedFilterCount = countAppliedFilters(filterValues);
 
   useEffect(() => {
     setAllNotices(dummyNotices);
     setLoading(false);
   }, []);
 
-  // 정렬은 렌더링 때마다 계산 (필터 추가시에도 적용 편함)
-  const sortedNotices = sortNotices(allNotices, sort); // sort는 string!
+  const filteredNotices = filterNotices(allNotices, filterValues, search);
+  const sortedNotices = sortNotices(filteredNotices, sort);
   const totalPages = Math.ceil(sortedNotices.length / ITEMS_PER_PAGE);
   const pageNotices = sortedNotices.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE,
   );
 
-  const handleApplyFilter = (values: any) => {
+  const handleApplyFilter = (values: FilterValues) => {
     setFilterValues(values);
-    // 여기에 조건 맞게 allNotices를 setAllNotices로 변경해주면 됨(필터 완성 시)
     setCurrentPage(1);
   };
 
@@ -214,23 +259,36 @@ export default function NoticeList() {
   return (
     <main>
       {/* 맞춤 공고 */}
-      <article className="bg-red-10 py-60">
-        <section className="mx-auto flex max-w-964 flex-col">
-          <h2 className="mb-32 text-h1 font-bold">맞춤 공고</h2>
-          <div className="flex gap-14 overflow-hidden">
-            {sortedNotices.slice(0, 3).map((notice) => (
-              <Post key={notice.id + Math.random()} data={notice} />
-            ))}
-          </div>
-        </section>
-      </article>
+      {!search && (
+        <article className="bg-red-10 px-32 py-60">
+          <section className="mx-auto flex max-w-964 flex-col">
+            <h2 className="mb-32 text-h1 font-bold">맞춤 공고</h2>
+            <div className="flex gap-14 overflow-hidden">
+              {sortedNotices.slice(0, 3).map((notice) => (
+                <Post key={notice.id + Math.random()} data={notice} />
+              ))}
+            </div>
+          </section>
+        </article>
+      )}
 
       {/* 전체 공고 */}
-      <article className="py-60">
-        <section className="mx-auto flex max-w-964 flex-col gap-32">
-          <div className="flex justify-between">
-            <h2 className="mb-32 text-h1 font-bold">전체 공고</h2>
-            <div className="flex items-center gap-10">
+      <article className="px-32 py-60">
+        <section className="mx-auto flex max-w-full flex-col gap-32 sm:max-w-964">
+          <div className="flex flex-col gap-12 sm:flex-row sm:justify-between">
+            <h2 className="mb-4 text-h1 font-bold sm:mb-0">
+              {search ? (
+                <>
+                  <span className="text-h1 font-bold text-primary">
+                    {search}
+                  </span>
+                  <span className="text-h1 font-bold">에 대한 공고 목록</span>
+                </>
+              ) : (
+                '전체 공고'
+              )}
+            </h2>
+            <div className="flex gap-10">
               <Dropdown
                 options={SORT_OPTIONS}
                 placeholder="마감임박순"
@@ -238,16 +296,33 @@ export default function NoticeList() {
                 selected={sort}
                 setSelect={setSort}
               />
-              <button
-                className="rounded-md bg-red-30 px-12 py-8 text-body2 text-white"
-                type="button"
-                onClick={() => setFilterOpen(true)}
-              >
-                상세필터
-              </button>
+              <div className="relative">
+                <button
+                  className="rounded-md bg-red-30 px-12 py-8 text-body2 text-white"
+                  type="button"
+                  onClick={() => setFilterOpen(true)}
+                >
+                  상세필터
+                  {appliedFilterCount > 0 && (
+                    <span className="ml-2">({appliedFilterCount})</span>
+                  )}
+                </button>
+                {filterOpen && (
+                  <div className="absolute top-full right-365 z-50 mt-8">
+                    <div className="absolute z-50 mt-2">
+                      <Filter
+                        open={filterOpen}
+                        onClose={() => setFilterOpen(false)}
+                        onApply={handleApplyFilter}
+                        defaultValues={filterValues}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-x-14 gap-y-32">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:grid-cols-2 sm:gap-x-14 sm:gap-y-32 lg:grid-cols-3">
             {pageNotices.map((notice) => (
               <Post key={notice.id + Math.random()} data={notice} />
             ))}
@@ -261,16 +336,6 @@ export default function NoticeList() {
           </div>
         </section>
       </article>
-      {filterOpen && (
-        <div className="fixed top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-black/20">
-          <Filter
-            open={filterOpen}
-            onClose={() => setFilterOpen(false)}
-            onApply={handleApplyFilter}
-            defaultValues={filterValues}
-          />
-        </div>
-      )}
     </main>
   );
 }
