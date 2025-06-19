@@ -50,10 +50,7 @@ export interface GetNoticesResponse {
   hasNext: boolean;
   address: string[];
   keyword?: string;
-  items: {
-    item: NoticeWithShopItem;
-    links: LinkInfo[];
-  }[];
+  items: NoticeUpsertResponse[];
   links: LinkInfo[];
 }
 
