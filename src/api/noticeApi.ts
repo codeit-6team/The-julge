@@ -50,7 +50,7 @@ export interface NoticeShopInfo {
 }
 
 // GET /shops/{shop_id}/notices/{notice_id} 가게의 특정 공고 조회 - Response
-export interface GetNoticeDetailResponse {
+export interface NoticeDetailInfo {
   item: NoticeDetailItem;
   links: LinkInfo[];
 }
@@ -164,9 +164,9 @@ export const postShopNotice = async (
 export const getShopNotice = async (
   shopId: string,
   noticeId: string,
-): Promise<GetNoticeDetailResponse> => {
+): Promise<NoticeDetailInfo> => {
   try {
-    const response = await api.get<GetNoticeDetailResponse>(
+    const response = await api.get<NoticeDetailInfo>(
       `/shops/${shopId}/notices/${noticeId}`,
     );
     return response.data;
