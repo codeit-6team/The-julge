@@ -26,12 +26,12 @@ export interface NoticeItem {
 }
 
 // shop 포함된 확장형 Notice (리스트, 등록, 수정에 사용)
-export interface NoticeWithShopItem extends NoticeItem {
+export interface NoticeShopItem extends NoticeItem {
   shop: ShopInfo;
 }
 
 // application까지 포함된 상세형 Notice (상세 조회 시 사용)
-export interface NoticeDetailItem extends NoticeWithShopItem {
+export interface NoticeDetailItem extends NoticeShopItem {
   currentUserApplication?: {
     item: ApplicationItem;
   };
@@ -45,7 +45,7 @@ export interface NoticeInfo {
 // POST /shops/{shop_id}/notices 공고 등록 - Response
 // PUT /shops/{shop_id}/notices/{notice_id} 특정 공고 수정 - Response
 export interface NoticeUpsertResponse {
-  item: NoticeWithShopItem;
+  item: NoticeShopItem;
   links: LinkInfo[];
 }
 
