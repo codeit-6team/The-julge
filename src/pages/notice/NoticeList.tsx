@@ -8,7 +8,6 @@ import { getNotices } from '@/api/noticeApi';
 import type { NoticeWithShopItem } from '@/api/noticeApi';
 import { Link } from 'react-router-dom';
 
-// ===================== 타입 선언 ======================
 type FilterValues = {
   address?: string[] | null;
   startsAt?: string | null;
@@ -33,7 +32,7 @@ const sortMap: Record<
   가나다순: 'shop',
 };
 
-// ===================== 헬퍼 함수 =====================
+// 필터가 몇 개 적용되었는지 계산해서 뱃지 등에 표시해줌
 function countAppliedFilters(filterValues: FilterValues): number {
   let count = 0;
   if (Array.isArray(filterValues.address) && filterValues.address.length > 0)
@@ -45,20 +44,17 @@ function countAppliedFilters(filterValues: FilterValues): number {
 
 // ================== 컴포넌트 =========================
 export default function NoticeList({ search = '' }: NoticeListProps) {
-  const [allNotices, setAllNotices] = useState<NoticeWithShopItem[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
+  const [allNotices, setAllNotices] = useState<NoticeWithShopItem[]>([]); // 현재 페이지에 노출할 공고 목록
+  const [totalCount, setTotalCount] = useState(0); // 전체 공고 수
   const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number]>(
     SORT_OPTIONS[0],
-  );
-  const [filterValues, setFilterValues] = useState<FilterValues>({});
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [filterOpen, setFilterOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  ); //정렬(드롭다운값)
+  const [filterValues, setFilterValues] = useState<FilterValues>({}); // 상세필터 상태값
+  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지(페이지네이션)
+  const [filterOpen, setFilterOpen] = useState<boolean>(false); // 필터 모달 오픈
+  const [loading, setLoading] = useState(false); // 로딩 에러처리
+  const [error, setError] = useState<string | null>(null); // 로딩 에러처리
 
-  const appliedFilterCount = countAppliedFilters(filterValues);
-
-  // ===== 실제 API 호출 useEffect =====
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -80,7 +76,8 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       .finally(() => setLoading(false));
   }, [search, sort, filterValues, currentPage]);
 
-  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE); // 페이지네이션
+  const appliedFilterCount = countAppliedFilters(filterValues); // 필터 적용
 
   // 필터 적용
   const handleApplyFilter = (values: FilterValues) => {
@@ -92,7 +89,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
   if (loading)
     return (
       <div className="flex h-500 items-center justify-center text-h3 text-black">
-        로딩 중...
+        잠시만 기다려주세요
       </div>
     );
   if (error)
@@ -104,7 +101,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
 
   return (
     <main>
-      {/* 맞춤 공고 (검색 아닐 때만 노출) */}
+      {/* 맞춤 공고 */}
       {!search && (
         <article className="bg-red-10 px-32 py-60">
           <section className="mx-auto flex max-w-964 flex-col">
