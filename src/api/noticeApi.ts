@@ -63,10 +63,7 @@ export interface GetShopNoticesResponse {
   limit: number;
   count: number;
   hasNext: boolean;
-  items: {
-    item: NoticeItem;
-    links: LinkInfo[];
-  }[];
+  items: NoticeInfo[];
   links: LinkInfo[];
 }
 
