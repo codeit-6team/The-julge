@@ -135,12 +135,10 @@ export default function StoreEdit() {
     // 입력 안할 시 모달로 알려줌
     for (const { key, label } of requiredFields) {
       const value = edit[key as keyof StoreEditForm];
-      if (
-        value === '' ||
-        value === 0 ||
-        value === undefined ||
-        value === null
-      ) {
+
+      const isEmpty = typeof value === 'string' ? value.trim() === '' : !value;
+
+      if (isEmpty) {
         setModalType('warning');
         setModalContent(`${label} 내용을 추가해 주세요.`);
         setIsModalOpen(true);
