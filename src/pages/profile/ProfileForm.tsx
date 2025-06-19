@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '@/context/AuthContext';
 import { getUser, putUser, type SeoulDistrict } from '@/api/userApi';
 import Dropdown from '@/components/common/Dropdown';
 import Input from '@/components/common/Input';
@@ -10,7 +11,7 @@ import { ADDRESS_OPTIONS } from '@/constants/dropdownOptions';
 
 export default function ProfileForm() {
   const navigate = useNavigate();
-
+  const { isLoggedIn } = useContext(AuthContext);
   // 사용자 입력값 상태 (이름, 전화번호, 소개글)
   const [profileInfo, setProfileInfo] = useState({
     name: '',
@@ -27,36 +28,43 @@ export default function ProfileForm() {
     isOpen: false,
     message: '',
   });
-  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    // 로그인이 안된 상태에 대한 처리
-    if (!userId) {
+    if (isLoggedIn) {
+      const userId = localStorage.getItem('userId');
+
+      if (!userId) {
+        setModal({
+          isOpen: true,
+          message: '사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.',
+        });
+        return;
+      }
+
+      const fetchUserInfo = async () => {
+        try {
+          const userInfo = await getUser(userId);
+          setProfileInfo({
+            name: userInfo.item.name ?? '',
+            phone: userInfo.item.phone ?? '',
+            bio: userInfo.item.bio ?? '',
+          });
+          setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
+        } catch (error) {
+          setModal({
+            isOpen: true,
+            message: (error as Error).message,
+          });
+        }
+      };
+      fetchUserInfo();
+    } else {
       setModal({
         isOpen: true,
         message: '로그인 먼저 해주세요.',
       });
-      return;
     }
-    const fetchUserInfo = async () => {
-      try {
-        const userInfo = await getUser(userId);
-        setProfileInfo({
-          name: userInfo.item.name ?? '',
-          phone: userInfo.item.phone ?? '',
-          bio: userInfo.item.bio ?? '',
-        });
-        setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
-      } catch (error) {
-        setModal({
-          isOpen: true,
-          message: (error as Error).message,
-        });
-      }
-    };
-
-    fetchUserInfo();
-  }, [userId]);
+  }, [isLoggedIn]);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -73,9 +81,9 @@ export default function ProfileForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { name, phone, bio } = profileInfo;
-
+    const userId = localStorage.getItem('userId');
     // 로그인이 안된 상태에 대한 처리
-    if (!userId) {
+    if (!isLoggedIn || !userId) {
       setModal({
         isOpen: true,
         message: '로그인 먼저 해주세요.',
@@ -124,7 +132,7 @@ export default function ProfileForm() {
     if (modal.message === '등록이 완료되었습니다.') {
       setModal({ isOpen: false, message: '' });
       navigate('/profile');
-    } else if (modal.message === '로그인 먼저 해주세요.') {
+    } else if (modal.message.includes('로그인')) {
       setModal({ isOpen: false, message: '' });
       navigate('/login');
     } else {
