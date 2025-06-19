@@ -10,14 +10,19 @@ import { ADDRESS_OPTIONS } from '@/constants/dropdownOptions';
 
 export default function ProfileForm() {
   const navigate = useNavigate();
+
+  // 사용자 입력값 상태 (이름, 전화번호, 소개글)
   const [profileInfo, setProfileInfo] = useState({
     name: '',
     phone: '',
     bio: '',
   });
+
+  // dropdown 컴포넌트에 set함수를 전달하기 위해 address는 따로 분리
   const [selectedAddress, setSelectedAddress] = useState<SeoulDistrict | ''>(
     '',
-  ); // dropdown 컴포넌트에 set함수를 전달하기 위해 address는 따로 분리
+  );
+
   const [modal, setModal] = useState({
     isOpen: false,
     message: '',
@@ -25,6 +30,7 @@ export default function ProfileForm() {
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
+    // 로그인이 안된 상태에 대한 처리
     if (!userId) {
       setModal({
         isOpen: true,
@@ -56,7 +62,7 @@ export default function ProfileForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     const { name, value } = e.target;
-    const sanitized = name === 'phone' ? value.replace(/[^0-9]/g, '') : value; // phone은 숫자만
+    const sanitized = name === 'phone' ? value.replace(/[^0-9]/g, '') : value; // phone은 숫자만 입력 가능하도록 설정
 
     setProfileInfo((prev) => ({
       ...prev,
@@ -68,6 +74,7 @@ export default function ProfileForm() {
     e.preventDefault();
     const { name, phone, bio } = profileInfo;
 
+    // 로그인이 안된 상태에 대한 처리
     if (!userId) {
       setModal({
         isOpen: true,
@@ -76,6 +83,7 @@ export default function ProfileForm() {
       return;
     }
 
+    // 이름이 입력되지 않은 경우
     if (!name.trim()) {
       setModal({
         isOpen: true,
@@ -84,6 +92,7 @@ export default function ProfileForm() {
       return;
     }
 
+    // 지역이 선택되지 않은 경우
     if (!selectedAddress) {
       setModal({
         isOpen: true,
