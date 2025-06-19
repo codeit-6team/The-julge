@@ -1,5 +1,24 @@
 import type { ApplicationItem } from './applicationApi';
 import type { ShopInfo } from './shopApi';
+import api from './api';
+
+export const getNotices = async (params: {
+  offset?: number;
+  limit?: number;
+  address?: string;
+  keyword?: string;
+  startsAtGte?: string;
+  hourlyPayGte?: number;
+  sort?: 'time' | 'pay' | 'hour' | 'shop';
+}) => {
+  const query = new URLSearchParams(
+    Object.entries(params)
+      .filter(([, v]) => v !== undefined && v !== '')
+      .map(([k, v]) => [k, String(v)]),
+  );
+  const response = await api.get<GetNoticesResponse>(`/notices?${query}`);
+  return response.data;
+};
 
 // Link (공통 링크 타입)
 export interface LinkInfo {
