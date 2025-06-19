@@ -3,7 +3,7 @@ import Input from '@/components/common/Input';
 import Dropdown from '@/components/common/Dropdown';
 import { ADDRESS_OPTIONS, CATEGORY_OPTIONS } from '@/constants/dropdownOptions';
 import Close from '@/assets/icons/close.svg';
-import { useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   postShop,
   putShop,
@@ -13,7 +13,7 @@ import {
 import ImageInput from '@/components/common/ImageInput';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
-import { getPresignedUrl, uploadImageToS3 } from '@/api/imageAPi';
+import { getPresignedUrl, uploadImageToS3 } from '@/api/imageApi';
 import { AuthContext } from '@/context/AuthContext';
 
 type Category = (typeof CATEGORY_OPTIONS)[number];
@@ -107,15 +107,28 @@ export default function StoreEdit() {
     [],
   );
 
-  // 등록 버튼 처리
-  const handleSubmit = async () => {
+  // 로그아웃 시 모달 창 뜸
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+
+    // 따로 구현해야 적용
     if (!isLoggedIn) {
       setModalType('auth');
-      setModalContent('로그인 정보가 없습니다. 다시 로그인해주세요.');
+      setModalContent('로그인이 필요합니다.');
       setIsModalOpen(true);
       return;
     }
 
+    if (!userId) {
+      setModalType('auth');
+      setModalContent('사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.');
+      setIsModalOpen(true);
+      return;
+    }
+  }, [isLoggedIn]);
+
+  // 등록 버튼 처리
+  const handleSubmit = async () => {
     // 필수 입력 값
     const requiredFields = [
       { key: 'name', label: '가게 이름' },
@@ -169,6 +182,7 @@ export default function StoreEdit() {
     }
   };
 
+  // 모달 버튼 기능
   const handleModalClose = () => {
     setIsModalOpen(false);
 
