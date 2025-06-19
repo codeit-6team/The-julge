@@ -37,6 +37,11 @@ export interface NoticeDetailItem extends NoticeWithShopItem {
   };
 }
 
+export interface NoticeInfo {
+  item: NoticeItem;
+  links: LinkInfo[];
+}
+
 // GET /notices 공고 조회 - Response
 export interface GetNoticesResponse {
   offset: number;
