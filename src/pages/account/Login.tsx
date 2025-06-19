@@ -81,9 +81,9 @@ export default function Login() {
     }
   }
 
-  const handleModalConfirm = () => {
+  function handleModalConfirm() {
     setModal({ isOpen: false, message: '' });
-  };
+  }
 
   return (
     <>
@@ -128,7 +128,9 @@ export default function Login() {
       </form>
 
       {modal.isOpen && (
-        <Modal onButtonClick={handleModalConfirm}>{modal.message}</Modal>
+        <Modal onClose={handleModalConfirm} onButtonClick={handleModalConfirm}>
+          {modal.message}
+        </Modal>
       )}
     </>
   );

@@ -123,3 +123,39 @@ export const postToken = async ({
     }
   }
 };
+
+// get /users/{user_id} - 회원 정보 조회
+export const getUser = async (userId: string): Promise<UserDetailResponse> => {
+  try {
+    const response = await api.get<UserDetailResponse>(`/users/${userId}`);
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
+
+// put /users/{user_id} - 회원 정보 수정
+export const putUser = async (
+  userId: string,
+  body: UpdateUserRequest,
+): Promise<UserDetailResponse> => {
+  try {
+    const response = await api.put<UserDetailResponse>(
+      `/users/${userId}`,
+      body,
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
