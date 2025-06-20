@@ -1,10 +1,6 @@
 import api from './api';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import type { LinkInfo } from './shopApi';
-
-interface ErrorMessage {
-  message: string;
-}
 
 interface ImageResponse {
   item: {
@@ -21,9 +17,9 @@ export const getPresignedUrl = async (filename: string): Promise<string> => {
     });
     return response.data.item.url;
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    const axiosError = error as AxiosError; // 에러 타입 명시
     if (axiosError.response) {
-      throw new Error(axiosError.response.data.message);
+      throw new Error('URL 생성에 실패했습니다.');
     } else {
       throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
     }
@@ -36,15 +32,15 @@ export const uploadImageToS3 = async (
   file: File,
 ): Promise<void> => {
   try {
-    await api.put(uploadUrl, file, {
+    await axios.put(uploadUrl, file, {
       headers: {
         'Content-Type': file.type,
       },
     });
   } catch (error) {
-    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+    const axiosError = error as AxiosError; // 에러 타입 명시
     if (axiosError.response) {
-      throw new Error(axiosError.response.data.message);
+      throw new Error('이미지 업로드에 실패했습니다.');
     } else {
       throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
     }
