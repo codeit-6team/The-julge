@@ -71,11 +71,32 @@ export interface AlertReadResponse {
   links: LinkInfo[];
 }
 
-/* 아래에 alert 관련 api 함수들 작성 */
+// GET /users/{user_id}/alerts - 유저의 알림 목록 조회
 export const getAlerts = async (userId: string): Promise<AlertViewResponse> => {
   try {
     const response = await api.get<AlertViewResponse>(
       `/users/${userId}/alerts`,
+    );
+    return response.data;
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorMessage>; // 에러 타입 명시
+
+    if (axiosError.response) {
+      throw new Error(axiosError.response.data.message);
+    } else {
+      throw new Error('서버에 연결할 수 없습니다. 인터넷 연결을 확인해주세요.');
+    }
+  }
+};
+
+// PUT /users/{user_id}/alerts/{alert_id} - 알림 읽음 처리
+export const putAlerts = async (
+  userId: string,
+  alertId: string,
+): Promise<AlertReadResponse> => {
+  try {
+    const response = await api.put<AlertReadResponse>(
+      `/users/${userId}/alerts/${alertId}`,
     );
     return response.data;
   } catch (error) {
