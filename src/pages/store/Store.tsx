@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '@/api/userApi';
 import type { ShopItem } from '@/api/shopApi';
@@ -15,15 +15,15 @@ export default function Store() {
   const [modalContent, setModalContent] = useState('');
   const noticesOffset = useRef(0);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (modalContent.startsWith('로그인')) {
       navigate('/login');
     } else {
       setIsModalOpen(false);
     }
-  };
+  }, [navigate, modalContent]);
 
-  const loadNotices = async () => {
+  const loadNotices = useCallback(async () => {
     if (!shop || noticesOffset.current < 0) return;
     const noticesResponse = await getShopNotices(shop.id, {
       offset: noticesOffset.current,
@@ -32,7 +32,7 @@ export default function Store() {
     setNotices((prev) => [...prev, ...noticesResponse.items]);
     if (noticesResponse.hasNext) noticesOffset.current += NOTICES_LIMIT;
     else noticesOffset.current = -1;
-  };
+  }, [shop]);
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
