@@ -10,6 +10,7 @@ import ImageInput from '@/components/common/ImageInput';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import { AuthContext } from '@/context/AuthContext';
+import { getUser } from '@/api/userApi';
 
 type Category = (typeof CATEGORY_OPTIONS)[number];
 type Address1 = (typeof ADDRESS_OPTIONS)[number];
@@ -25,9 +26,6 @@ export default function StoreEdit() {
   const navigate = useNavigate();
   const { isLoggedIn } = useContext(AuthContext);
 
-  const shopId = localStorage.getItem('shopId');
-  const isEditMode = !!shopId;
-
   const [edit, setEdit] = useState<StoreEditForm>({
     name: '',
     category: null,
@@ -42,46 +40,38 @@ export default function StoreEdit() {
   const [modalContent, setModalContent] = useState('');
   const [modalType, setModalType] = useState<ModalType>('success');
 
+  const [shopId, setShopId] = useState<string | null>(null);
+
   // 로그아웃 처리 및 등록 수정 모드
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
+    const fetchInitialData = async () => {
+      const userId = localStorage.getItem('userId');
 
-    if (!userId) {
-      setModalType('auth');
-      setModalContent('로그인이 필요합니다.');
-      setIsModalOpen(true);
-      return;
-    }
+      if (!userId) {
+        setModalType('auth');
+        setModalContent('로그인이 필요합니다.');
+        setIsModalOpen(true);
+        return;
+      }
 
-    if (isEditMode && !shopId) {
-      setModalType('warning');
-      setModalContent('가게 정보를 찾을 수 없습니다.');
-      setIsModalOpen(true);
-      return;
-    }
-
-    if (!isEditMode) return;
-
-    const fetchShopInfo = async () => {
       try {
-        const shopInfo = await getShop(shopId);
-        setEdit({
-          name: shopInfo.item.name ?? '',
-          category: shopInfo.item.category ?? null,
-          address1: shopInfo.item.address1 ?? null,
-          address2: shopInfo.item.address2 ?? '',
-          description: shopInfo.item.description ?? '',
-          originalHourlyPay: shopInfo.item.originalHourlyPay ?? 0,
-          imageUrl: shopInfo.item.imageUrl ?? '',
-        });
+        const user = await getUser(userId);
+        const id = user.item.shop?.item.id ?? null;
+        setShopId(id);
+
+        if (!id) return; // 등록 모드
+
+        const shopInfo = await getShop(id);
+        setEdit(shopInfo.item);
       } catch (error) {
         setModalType('warning');
         setModalContent('가게 정보를 불러오는 데 실패했습니다.');
         setIsModalOpen(true);
       }
     };
-    fetchShopInfo();
-  }, [isLoggedIn, shopId, isEditMode]);
+
+    fetchInitialData();
+  }, [isLoggedIn]);
 
   // x 버튼 눌렀을 때
   const handleClose = () => {
@@ -156,7 +146,7 @@ export default function StoreEdit() {
       };
 
       // 등록, 수정을 구분
-      if (isEditMode && shopId) {
+      if (shopId) {
         await putShop(shopId, requestBody);
         setModalType('success');
         setModalContent('수정이 완료되었습니다.');
@@ -191,10 +181,10 @@ export default function StoreEdit() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-5">
+    <div className="min-h-[calc(100vh-102px)] bg-gray-5 md:min-h-[calc(100vh-70px)]">
       <div className="flex flex-col gap-24 px-12 pt-40 pb-80 md:gap-32 md:px-32 md:pb-60 lg:mx-auto lg:max-w-964 lg:px-0">
         <div className="flex items-center justify-between">
-          <h2 className="text-h3/25 font-bold text-black md:text-h1">
+          <h2 className="text-h3/24 font-bold text-black md:text-h1/34">
             가게 정보
           </h2>
           <button onClick={handleClose}>
@@ -254,7 +244,7 @@ export default function StoreEdit() {
                 value={
                   edit.originalHourlyPay === 0
                     ? ''
-                    : Number(edit.originalHourlyPay).toLocaleString()
+                    : edit.originalHourlyPay.toLocaleString()
                 }
                 onChange={handleNumberChange('originalHourlyPay')}
                 unit="원"
@@ -266,7 +256,7 @@ export default function StoreEdit() {
                 label="가게 이미지"
                 imageUrl={edit.imageUrl}
                 onImageChange={handleImageChange}
-                mode={isEditMode ? 'edit' : 'create'}
+                mode={shopId ? 'edit' : 'create'}
               />
             </div>
 
@@ -287,7 +277,7 @@ export default function StoreEdit() {
             </div>
           </div>
           <Button type="submit" className="md:mx-auto md:w-312">
-            {isEditMode ? '수정하기' : '등록하기'}
+            {shopId ? '수정하기' : '등록하기'}
           </Button>
         </form>
         {isModalOpen && (
