@@ -73,7 +73,7 @@ export default function Filter({
   if (!open) return null;
 
   return (
-    <div className="z-5 flex w-full max-w-390 flex-col gap-24 rounded-xl border border-gray-20 bg-white px-12 py-24 shadow-custom md:px-20">
+    <div className="fixed inset-0 z-5 flex w-full flex-col gap-24 overflow-y-auto rounded-xl border border-gray-20 bg-white px-12 py-24 shadow-custom md:static md:max-w-390 md:px-19">
       <div className="flex flex-row items-center justify-between">
         <h3 className="text-h3 font-bold text-black">상세 필터</h3>
         <button
@@ -86,7 +86,7 @@ export default function Filter({
       </div>
       <div className="flex flex-col">
         <p className="text-body1 font-regular">위치</p>
-        <div className="custom-scrollbar my-12 grid h-258 w-full max-w-348 grid-cols-2 gap-32 overflow-y-auto rounded-md border border-gray-20 px-28 py-20">
+        <div className="custom-scrollbar my-12 grid h-258 w-full grid-cols-2 gap-32 overflow-y-auto rounded-md border border-gray-20 px-28 py-20 md:max-w-348">
           {ADDRESS_OPTIONS.map((item) => (
             <button
               key={item}
@@ -145,10 +145,14 @@ export default function Filter({
         </div>
 
         <div className="fixed right-0 bottom-0 left-0 flex w-full gap-8 border-t border-gray-20 bg-white px-12 py-16 md:static md:border-none md:p-0">
-          <Button solid={false} className="w-82" onClick={handleReset}>
+          <Button
+            solid={false}
+            className="w-full flex-[0.5] md:max-w-82"
+            onClick={handleReset}
+          >
             초기화
           </Button>
-          <Button className="w-260" onClick={handleApply}>
+          <Button className="w-full flex-1 md:max-w-260" onClick={handleApply}>
             적용하기
           </Button>
         </div>
