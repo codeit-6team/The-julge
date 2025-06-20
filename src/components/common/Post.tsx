@@ -9,7 +9,7 @@ import ArrowUpRed40 from '@/assets/icons/arrow-up-red40.svg';
 import ArrowUpRed30 from '@/assets/icons/arrow-up-red30.svg';
 import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
-import type { NoticeWithShopItem } from '@/api/noticeApi';
+import type { NoticeShopItem } from '@/api/noticeApi';
 
 // 상태 계산
 function getStatus(
@@ -24,7 +24,7 @@ function getStatus(
   return 'ACTIVE';
 }
 
-export default function Post({ data }: { data: NoticeWithShopItem }) {
+export default function Post({ data }: { data: NoticeShopItem }) {
   const {
     hourlyPay,
     workhour,

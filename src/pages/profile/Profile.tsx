@@ -1,3 +1,8 @@
+import { Link } from 'react-router-dom';
 export default function Profile() {
-  return <div>내 프로필 상세 (알바님)</div>;
+  return (
+    <>
+      <Link to="/profile/edit">등록하기</Link>
+    </>
+  );
 }
