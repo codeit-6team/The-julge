@@ -11,6 +11,11 @@ import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
 import type { NoticeShopItem } from '@/api/noticeApi';
 
+interface PostProps {
+  data: NoticeShopItem;
+  className?: string;
+}
+
 // 상태 계산
 function getStatus(
   startsAt: string,
@@ -24,7 +29,7 @@ function getStatus(
   return 'ACTIVE';
 }
 
-export default function Post({ data }: { data: NoticeShopItem }) {
+export default function Post({ data, className = '' }: PostProps) {
   const {
     hourlyPay,
     workhour,
@@ -80,7 +85,7 @@ export default function Post({ data }: { data: NoticeShopItem }) {
   }
 
   return (
-    <div className="flex h-261 w-171 cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:w-332 md:gap-20 md:p-16 lg:h-348 lg:w-312">
+    <div className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348">
       <div className="relative">
         <div
           className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
@@ -127,18 +132,16 @@ export default function Post({ data }: { data: NoticeShopItem }) {
           className="flex flex-col justify-between md:flex-row md:items-center"
           title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
         >
-          <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
+          <div className="w-full truncate text-lg/23 font-bold md:text-h2/29">
             {hourlyPay.toLocaleString()}원
           </div>
           {isHigherPay && (
             <>
               {/*데스크탑, 태블릿*/}
               <div
-                className={`hidden h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white md:flex ${badgeBgColor}`}
+                className={`hidden h-36 w-full items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white md:flex ${badgeBgColor}`}
               >
-                <div className="max-w-168 truncate">
-                  기존 시급보다 {percent}%
-                </div>
+                <div className="w-full truncate">기존 시급보다 {percent}%</div>
                 <img src={ArrowUpWhite} alt="위 화살표" className="h-20 w-20" />
               </div>
               {/*모바일*/}
