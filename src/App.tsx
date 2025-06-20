@@ -10,7 +10,6 @@ import Profile from './pages/profile/Profile';
 import ProfileForm from './pages/profile/ProfileForm';
 import NoticeList from './pages/notice/NoticeList';
 import Notice from './pages/notice/Notice';
-import Footer from './components/layout/Footer';
 
 export default function App() {
   const { pathname } = useLocation();
@@ -43,12 +42,6 @@ export default function App() {
           <Route path="edit" element={<ProfileForm />} />
         </Route>
       </Routes>
-
-      {pathname !== '/login' &&
-        pathname !== '/signup' &&
-        pathname !== '/owner/store/edit' &&
-        pathname !== '/profile/edit' &&
-        pathname !== '/owner/post' && <Footer />}
     </>
   );
 }
