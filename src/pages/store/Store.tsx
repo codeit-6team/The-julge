@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getUser } from '@/api/userApi';
 import type { ShopItem } from '@/api/shopApi';
 import { getShopNotices, type NoticeInfo } from '@/api/noticeApi';
@@ -7,6 +7,7 @@ import Modal from '@/components/common/Modal';
 import RegisterLayout from '@/components/layout/RegisterLayout';
 import Button from '@/components/common/Button';
 import ic_location from '@/assets/icons/location-red.svg';
+import Post from '@/components/common/Post';
 
 const NOTICES_LIMIT = 12;
 
@@ -148,10 +149,26 @@ export default function Store() {
             <h1 className="mb-16 text-h1/34 font-bold md:mb-32">
               {notices[0] && '내가 '}등록한 공고
             </h1>
+            {notices[0] ? (
+              <div className="grid grid-cols-2 gap-x-9 gap-y-16 md:gap-x-14 md:gap-y-32 lg:grid-cols-3">
+                {notices.map((notice) => (
+                  <Link
+                    key={notice.item.id}
+                    to={`/owner/post/${notice.item.id}`}
+                  >
+                    <Post
+                      data={{ ...notice.item, shop: { item: shop, href: '' } }}
+                    />
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <RegisterLayout type="notice" />
+            )}
           </div>
           {/* 스크롤 감지 요소 */}
           <div
-            className="text-center text-caption text-gray-30"
+            className="mt-32 text-center text-caption text-gray-30"
             ref={observerRef}
           >
             {isLoading === 'error'
