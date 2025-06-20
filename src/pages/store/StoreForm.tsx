@@ -9,12 +9,9 @@ import close from '@/assets/icons/close.svg';
 
 export default function StoreForm() {
   const navigate = useNavigate();
-  const [noticeInfo, setNoticeInfo] = useState<NoticeUpsertRequest>({
-    hourlyPay: 0,
-    startsAt: '',
-    workhour: 0,
-    description: '',
-  });
+  const [noticeInfo, setNoticeInfo] = useState<Partial<NoticeUpsertRequest>>(
+    {},
+  );
   const shopId = useRef('');
   const noticeId = useRef('');
 
@@ -70,7 +67,6 @@ export default function StoreForm() {
       return;
     }
 
-    // 시작 일시가 선택되지 않은 경우
     if (!noticeInfo?.startsAt) {
       setModal({
         isOpen: true,
@@ -82,8 +78,10 @@ export default function StoreForm() {
     try {
       const startsTime = new Date(noticeInfo?.startsAt).toISOString();
       const { item } = await postShopNotice(shopId.current, {
-        ...noticeInfo,
+        hourlyPay: noticeInfo?.hourlyPay ?? 0,
         startsAt: startsTime,
+        workhour: noticeInfo?.workhour ?? 0,
+        description: noticeInfo?.description ?? '',
       });
       noticeId.current = item.id;
       setModal({
