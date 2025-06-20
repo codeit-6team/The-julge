@@ -1,26 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { getUser, putUser, type SeoulDistrict } from '@/api/userApi';
-import Dropdown from '@/components/common/Dropdown';
+import { getUser } from '@/api/userApi';
+import { postShopNotice, type NoticeUpsertRequest } from '@/api/noticeApi';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import close from '@/assets/icons/close.svg';
-import { ADDRESS_OPTIONS } from '@/constants/dropdownOptions';
 
 export default function StoreForm() {
   const navigate = useNavigate();
-  // 사용자 입력값 상태 (이름, 전화번호, 소개글)
-  const [profileInfo, setProfileInfo] = useState({
-    name: '',
-    phone: '',
-    bio: '',
+  const [noticeInfo, setNoticeInfo] = useState<NoticeUpsertRequest>({
+    hourlyPay: 0,
+    startsAt: '',
+    workhour: 0,
+    description: '',
   });
-
-  // dropdown 컴포넌트에 set함수를 전달하기 위해 address는 따로 분리
-  const [selectedAddress, setSelectedAddress] = useState<SeoulDistrict | null>(
-    null,
-  );
+  const shopId = useRef('');
 
   const [modal, setModal] = useState({
     isOpen: false,
@@ -38,40 +33,32 @@ export default function StoreForm() {
       return;
     }
 
-    const fetchUserInfo = async () => {
+    (async () => {
       try {
         const userInfo = await getUser(userId);
-        setProfileInfo({
-          name: userInfo.item.name ?? '',
-          phone: userInfo.item.phone ?? '',
-          bio: userInfo.item.bio ?? '',
-        });
-        setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
+        shopId.current = userInfo.item.shop?.item.id ?? '';
       } catch (error) {
         setModal({
           isOpen: true,
           message: (error as Error).message,
         });
       }
-    };
-    fetchUserInfo();
+    })();
   }, []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     const { name, value } = e.target;
-    const sanitized = name === 'phone' ? value.replace(/[^0-9]/g, '') : value; // phone은 숫자만 입력 가능하도록 설정
 
-    setProfileInfo((prev) => ({
+    setNoticeInfo((prev) => ({
       ...prev,
-      [name]: sanitized,
+      [name]: value,
     }));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { name, phone, bio } = profileInfo;
     const userId = localStorage.getItem('userId');
     // 로그인이 안된 상태에 대한 처리
     if (!userId) {
@@ -82,30 +69,20 @@ export default function StoreForm() {
       return;
     }
 
-    // 이름이 입력되지 않은 경우
-    if (!name.trim()) {
+    // 시작 일시가 선택되지 않은 경우
+    if (!noticeInfo?.startsAt) {
       setModal({
         isOpen: true,
-        message: '이름을 입력해주세요.',
-      });
-      return;
-    }
-
-    // 지역이 선택되지 않은 경우
-    if (!selectedAddress) {
-      setModal({
-        isOpen: true,
-        message: '선호 지역을 선택해주세요',
+        message: '시작 일시를 설정해주세요',
       });
       return;
     }
 
     try {
-      await putUser(userId, {
-        name,
-        phone,
-        address: selectedAddress,
-        bio,
+      const startsTime = new Date(noticeInfo?.startsAt).toISOString();
+      await postShopNotice(shopId.current, {
+        ...noticeInfo,
+        startsAt: startsTime,
       });
       setModal({
         isOpen: true,
@@ -147,40 +124,39 @@ export default function StoreForm() {
           <div className="flex flex-col gap-20 md:gap-24">
             <div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-y-24 lg:grid-cols-3">
               <Input
-                label="이름*"
-                name="name"
-                value={profileInfo.name}
+                label="시급*"
+                type="number"
+                name="hourlyPay"
+                unit="원"
+                value={noticeInfo?.hourlyPay}
                 onChange={handleChange}
               />
               <Input
-                label="연락처*"
-                type="tel"
-                name="phone"
-                maxLength={11}
-                value={profileInfo.phone}
+                label="시작 일시*"
+                type="datetime-local"
+                name="startsAt"
+                value={noticeInfo?.startsAt}
                 onChange={handleChange}
               />
-              <div className="flex flex-col gap-8 text-body1/26 font-regular">
-                <label htmlFor="region">선호 지역*</label>
-                <Dropdown
-                  id="region"
-                  variant="form"
-                  options={ADDRESS_OPTIONS}
-                  selected={selectedAddress}
-                  setSelect={setSelectedAddress}
-                />
-              </div>
+              <Input
+                label="업무 시간*"
+                type="number"
+                name="workhour"
+                unit="시간"
+                value={noticeInfo?.workhour}
+                onChange={handleChange}
+              />
             </div>
             <div className="flex flex-col gap-8 text-body1/26 font-regular">
-              <label htmlFor="bio">소개</label>
+              <label htmlFor="description">공고 설명</label>
               <textarea
-                name="bio"
-                id="bio"
+                name="description"
+                id="description"
                 className="h-153 resize-none rounded-[5px] border border-gray-30 bg-white px-20 py-16 placeholder-gray-40"
                 placeholder="입력"
-                value={profileInfo.bio}
+                value={noticeInfo?.description}
                 onChange={handleChange}
-              ></textarea>
+              />
             </div>
           </div>
           <Button type="submit" className="md:mx-auto md:w-312">
