@@ -1,19 +1,14 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import Close from '@/assets/icons/close.svg';
+import { ADDRESS_OPTIONS, CATEGORY_OPTIONS } from '@/constants/dropdownOptions';
+import { getShop, postShop, putShop, type ShopRequest } from '@/api/shopApi';
+import { getPresignedUrl, uploadImageToS3 } from '@/api/imageApi';
 import Input from '@/components/common/Input';
 import Dropdown from '@/components/common/Dropdown';
-import { ADDRESS_OPTIONS, CATEGORY_OPTIONS } from '@/constants/dropdownOptions';
-import Close from '@/assets/icons/close.svg';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import {
-  postShop,
-  putShop,
-  type ShopItem,
-  type ShopRequest,
-} from '@/api/shopApi';
 import ImageInput from '@/components/common/ImageInput';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
-import { getPresignedUrl, uploadImageToS3 } from '@/api/imageApi';
 import { AuthContext } from '@/context/AuthContext';
 
 type Category = (typeof CATEGORY_OPTIONS)[number];
@@ -24,44 +19,69 @@ interface StoreEditForm extends Omit<ShopRequest, 'category' | 'address1'> {
   address1: Address1 | '';
 }
 
-type InitialData = ShopItem | undefined;
-
 type ModalType = 'success' | 'warning' | 'auth';
 
 export default function StoreEdit() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const initialData = location.state as InitialData;
   const { isLoggedIn } = useContext(AuthContext);
 
-  const isEditMode =
-    initialData !== undefined && typeof initialData?.id === 'string';
+  const shopId = localStorage.getItem('shopId');
+  const isEditMode = !!shopId;
 
-  const [edit, setEdit] = useState<StoreEditForm>(
-    initialData
-      ? {
-          name: initialData.name,
-          category: initialData.category,
-          address1: initialData.address1,
-          address2: initialData.address2,
-          description: initialData.description,
-          originalHourlyPay: initialData.originalHourlyPay,
-          imageUrl: initialData.imageUrl,
-        }
-      : {
-          name: '',
-          category: '',
-          address1: '',
-          address2: '',
-          description: '',
-          originalHourlyPay: 0,
-          imageUrl: '',
-        },
-  );
+  const [edit, setEdit] = useState<StoreEditForm>({
+    name: '',
+    category: '',
+    address1: '',
+    address2: '',
+    description: '',
+    originalHourlyPay: 0,
+    imageUrl: '',
+  });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
   const [modalType, setModalType] = useState<ModalType>('success');
+
+  // 로그아웃 처리 및 등록 수정 모드
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      setModalType('auth');
+      setModalContent('로그인이 필요합니다.');
+      setIsModalOpen(true);
+      return;
+    }
+
+    if (isEditMode && !shopId) {
+      setModalType('warning');
+      setModalContent('가게 정보를 찾을 수 없습니다.');
+      setIsModalOpen(true);
+      return;
+    }
+
+    if (!isEditMode) return;
+
+    const fetchShopInfo = async () => {
+      try {
+        const shopInfo = await getShop(shopId);
+        setEdit({
+          name: shopInfo.item.name ?? '',
+          category: shopInfo.item.category ?? '',
+          address1: shopInfo.item.address1 ?? '',
+          address2: shopInfo.item.address2 ?? '',
+          description: shopInfo.item.description ?? '',
+          originalHourlyPay: shopInfo.item.originalHourlyPay ?? 0,
+          imageUrl: shopInfo.item.imageUrl ?? '',
+        });
+      } catch (error) {
+        setModalType('warning');
+        setModalContent('가게 정보를 불러오는 데 실패했습니다.');
+        setIsModalOpen(true);
+      }
+    };
+    fetchShopInfo();
+  }, [isLoggedIn, shopId, isEditMode]);
 
   // x 버튼 눌렀을 때
   const handleClose = () => {
@@ -100,27 +120,10 @@ export default function StoreEdit() {
     }
   };
 
-  const formatNumber = useMemo(
-    () => (value: string) => {
-      return Number(value).toLocaleString();
-    },
-    [],
-  );
-
-  // 로그아웃 시 모달 창 뜸
-  useEffect(() => {
-    const userId = localStorage.getItem('userId');
-
-    if (!userId) {
-      setModalType('auth');
-      setModalContent('로그인이 필요합니다.');
-      setIsModalOpen(true);
-      return;
-    }
-  }, [isLoggedIn]);
-
   // 등록 버튼 처리
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     // 필수 입력 값
     const requiredFields = [
       { key: 'name', label: '가게 이름' },
@@ -129,7 +132,6 @@ export default function StoreEdit() {
       { key: 'address2', label: '상세 주소' },
       { key: 'originalHourlyPay', label: '기본 시급' },
       { key: 'imageUrl', label: '가게 이미지' },
-      { key: 'description', label: '가게 설명' },
     ];
 
     // 입력 안할 시 모달로 알려줌
@@ -154,16 +156,16 @@ export default function StoreEdit() {
       };
 
       // 등록, 수정을 구분
-      if (isEditMode && initialData?.id) {
-        await putShop(initialData.id, requestBody);
+      if (isEditMode && shopId) {
+        await putShop(shopId, requestBody);
+        setModalType('success');
+        setModalContent('수정이 완료되었습니다.');
       } else {
         await postShop(requestBody);
+        setModalType('success');
+        setModalContent('등록이 완료되었습니다.');
       }
 
-      setModalType('success');
-      setModalContent(
-        isEditMode ? '수정이 완료되었습니다.' : '등록이 완료되었습니다.',
-      );
       setIsModalOpen(true);
     } catch (error) {
       setModalType('warning');
@@ -183,7 +185,6 @@ export default function StoreEdit() {
       case 'auth':
         navigate('/login');
         break;
-      case 'warning':
       default:
         break;
     }
@@ -191,8 +192,8 @@ export default function StoreEdit() {
 
   return (
     <div className="min-h-screen bg-gray-5">
-      <div className="flex flex-col px-12 pt-40 pb-80 md:px-32 md:pb-60 lg:mx-auto lg:max-w-964 lg:px-0">
-        <div className="mb-24 flex items-center justify-between md:mb-32">
+      <div className="flex flex-col gap-24 px-12 pt-40 pb-80 md:gap-32 md:px-32 md:pb-60 lg:mx-auto lg:max-w-964 lg:px-0">
+        <div className="flex items-center justify-between">
           <h2 className="text-h3/25 font-bold text-black md:text-h1">
             가게 정보
           </h2>
@@ -200,102 +201,95 @@ export default function StoreEdit() {
             <img src={Close} alt="닫기" className="md:size-32" />
           </button>
         </div>
-
-        <div className="mb-20 flex flex-col gap-20 md:mb-24 md:flex-row md:gap-20">
-          <div className="md:max-w-472 md:basis-1/2">
-            <Input
-              label="가게 이름*"
-              value={edit.name}
-              onChange={handleChange('name')}
-            />
-          </div>
-          <div className="flex flex-col gap-8 md:max-w-472 md:basis-1/2">
-            <label className="text-body1/26 font-regular text-black">
-              분류*
-            </label>
-            <Dropdown<Category>
-              options={CATEGORY_OPTIONS}
-              selected={edit.category}
-              setSelect={(value) =>
-                setEdit((prev) => ({ ...prev, category: value as Category }))
-              }
-              variant="form"
-            />
-          </div>
-        </div>
-
-        <div className="mb-20 flex flex-col gap-20 md:mb-24 md:gap-24">
-          <div className="flex flex-col gap-20 md:flex-row md:gap-20">
-            <div className="flex flex-col gap-8 md:max-w-472 md:basis-1/2">
-              <label className="text-body1/26 font-regular text-black">
-                주소*
-              </label>
-              <Dropdown<Address1>
-                options={ADDRESS_OPTIONS}
-                selected={edit.address1}
-                setSelect={(value) =>
-                  setEdit((prev) => ({ ...prev, address1: value as Address1 }))
-                }
-                variant="form"
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-24 md:gap-32"
+        >
+          <div className="flex flex-col gap-20 md:gap-24">
+            <div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-y-24">
+              <Input
+                label="가게 이름*"
+                value={edit.name}
+                onChange={handleChange('name')}
               />
-            </div>
-            <div className="md:max-w-472 md:basis-1/2">
+              <div className="flex flex-col gap-8">
+                <label className="text-body1/26 font-regular text-black">
+                  분류*
+                </label>
+                <Dropdown<Category>
+                  options={CATEGORY_OPTIONS}
+                  selected={edit.category}
+                  setSelect={(value) =>
+                    setEdit((prev) => ({
+                      ...prev,
+                      category: value as Category,
+                    }))
+                  }
+                  variant="form"
+                />
+              </div>
+              <div className="flex flex-col gap-8">
+                <label className="text-body1/26 font-regular text-black">
+                  주소*
+                </label>
+                <Dropdown<Address1>
+                  options={ADDRESS_OPTIONS}
+                  selected={edit.address1}
+                  setSelect={(value) =>
+                    setEdit((prev) => ({
+                      ...prev,
+                      address1: value as Address1,
+                    }))
+                  }
+                  variant="form"
+                />
+              </div>
               <Input
                 label="상세 주소*"
                 value={edit.address2}
                 onChange={handleChange('address2')}
               />
-            </div>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-center md:gap-20">
-            <div className="md:max-w-472 md:basis-1/2">
               <Input
                 label="기본 시급*"
                 value={
                   edit.originalHourlyPay === 0
                     ? ''
-                    : formatNumber(String(edit.originalHourlyPay))
+                    : Number(edit.originalHourlyPay).toLocaleString()
                 }
                 onChange={handleNumberChange('originalHourlyPay')}
                 unit="원"
               />
             </div>
-            <div className="hidden md:block md:max-w-472 md:basis-1/2"></div>
+
+            <div className="md:w-483">
+              <ImageInput
+                label="가게 이미지"
+                imageUrl={edit.imageUrl}
+                onImageChange={handleImageChange}
+                mode={isEditMode ? 'edit' : 'create'}
+              />
+            </div>
+
+            <div className="flex flex-col gap-8">
+              <label
+                htmlFor="description"
+                className="text-body1/26 font-regular text-black"
+              >
+                가게 설명
+              </label>
+              <textarea
+                id="description"
+                value={edit.description}
+                onChange={handleChange('description')}
+                placeholder="입력"
+                className="h-153 w-full resize-none rounded-[5px] border border-gray-30 bg-white px-20 py-16 text-body1/26 font-regular text-black"
+              />
+            </div>
           </div>
-        </div>
-
-        <div className="md:w-483">
-          <ImageInput
-            label="가게 이미지"
-            imageUrl={edit.imageUrl}
-            onImageChange={handleImageChange}
-            mode={isEditMode ? 'edit' : 'create'}
-          />
-        </div>
-
-        <div className="mt-20 mb-24 flex flex-col gap-8 md:mt-24 md:mb-32">
-          <label
-            htmlFor="description"
-            className="text-body1/26 font-regular text-black"
-          >
-            가게 설명
-          </label>
-          <textarea
-            id="description"
-            value={edit.description}
-            onChange={handleChange('description')}
-            placeholder="입력"
-            className="h-153 w-full rounded-[5px] border border-gray-30 bg-white px-20 py-16 text-body1/26 font-regular text-black"
-          />
-        </div>
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          className="md:mx-auto md:w-312"
-        >
-          {isEditMode ? '수정하기' : '등록하기'}
-        </Button>
-
+          <Button type="submit" className="md:mx-auto md:w-312">
+            {isEditMode ? '수정하기' : '등록하기'}
+          </Button>
+        </form>
         {isModalOpen && (
           <Modal onClose={handleModalClose} onButtonClick={handleModalClose}>
             {modalContent}
