@@ -51,10 +51,12 @@ export default function StoreForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     const { name, value } = e.target;
+    const sanitized =
+      name === 'hourlyPay' ? Number(value.replace(/[^0-9]/g, '')) : value;
 
     setNoticeInfo((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: sanitized,
     }));
   }
 
@@ -128,17 +130,16 @@ export default function StoreForm() {
             <div className="grid grid-cols-1 gap-20 md:grid-cols-2 md:gap-y-24 lg:grid-cols-3">
               <Input
                 label="시급*"
-                type="number"
                 name="hourlyPay"
                 unit="원"
-                value={noticeInfo?.hourlyPay}
+                value={noticeInfo.hourlyPay?.toLocaleString('ko-KR')}
                 onChange={handleChange}
               />
               <Input
                 label="시작 일시*"
                 type="datetime-local"
                 name="startsAt"
-                value={noticeInfo?.startsAt}
+                value={noticeInfo.startsAt}
                 onChange={handleChange}
               />
               <Input
@@ -146,7 +147,7 @@ export default function StoreForm() {
                 type="number"
                 name="workhour"
                 unit="시간"
-                value={noticeInfo?.workhour}
+                value={noticeInfo.workhour}
                 onChange={handleChange}
               />
             </div>
@@ -157,7 +158,7 @@ export default function StoreForm() {
                 id="description"
                 className="h-153 resize-none rounded-[5px] border border-gray-30 bg-white px-20 py-16 placeholder-gray-40"
                 placeholder="입력"
-                value={noticeInfo?.description}
+                value={noticeInfo.description}
                 onChange={handleChange}
               />
             </div>
