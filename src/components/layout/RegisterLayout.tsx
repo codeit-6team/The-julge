@@ -32,7 +32,7 @@ export default function RegisterLayout({
 }) {
   const navigate = useNavigate();
   const { content, buttonText, link } = TEXT_MAP[type];
-  const [buttonSize, setButtonSize] = useState('medium');
+  const [buttonSize, setButtonSize] = useState<'large' | 'medium'>('medium');
 
   useEffect(() => {
     const handleResize = () => {
