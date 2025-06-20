@@ -1,6 +1,5 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '@/context/AuthContext';
 import { getUser, putUser, type SeoulDistrict } from '@/api/userApi';
 import Dropdown from '@/components/common/Dropdown';
 import Input from '@/components/common/Input';
@@ -11,7 +10,6 @@ import { ADDRESS_OPTIONS } from '@/constants/dropdownOptions';
 
 export default function StoreForm() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
   // 사용자 입력값 상태 (이름, 전화번호, 소개글)
   const [profileInfo, setProfileInfo] = useState({
     name: '',
@@ -30,41 +28,34 @@ export default function StoreForm() {
   });
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
 
-      if (!userId) {
-        setModal({
-          isOpen: true,
-          message: '사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.',
-        });
-        return;
-      }
-
-      const fetchUserInfo = async () => {
-        try {
-          const userInfo = await getUser(userId);
-          setProfileInfo({
-            name: userInfo.item.name ?? '',
-            phone: userInfo.item.phone ?? '',
-            bio: userInfo.item.bio ?? '',
-          });
-          setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
-        } catch (error) {
-          setModal({
-            isOpen: true,
-            message: (error as Error).message,
-          });
-        }
-      };
-      fetchUserInfo();
-    } else {
+    if (!userId) {
       setModal({
         isOpen: true,
         message: '로그인이 필요합니다.',
       });
+      return;
     }
-  }, [isLoggedIn]);
+
+    const fetchUserInfo = async () => {
+      try {
+        const userInfo = await getUser(userId);
+        setProfileInfo({
+          name: userInfo.item.name ?? '',
+          phone: userInfo.item.phone ?? '',
+          bio: userInfo.item.bio ?? '',
+        });
+        setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
+      } catch (error) {
+        setModal({
+          isOpen: true,
+          message: (error as Error).message,
+        });
+      }
+    };
+    fetchUserInfo();
+  }, []);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -83,7 +74,7 @@ export default function StoreForm() {
     const { name, phone, bio } = profileInfo;
     const userId = localStorage.getItem('userId');
     // 로그인이 안된 상태에 대한 처리
-    if (!isLoggedIn || !userId) {
+    if (!userId) {
       setModal({
         isOpen: true,
         message: '로그인이 필요합니다.',
