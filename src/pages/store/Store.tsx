@@ -4,6 +4,9 @@ import { getUser } from '@/api/userApi';
 import type { ShopItem } from '@/api/shopApi';
 import { getShopNotices, type NoticeInfo } from '@/api/noticeApi';
 import Modal from '@/components/common/Modal';
+import RegisterLayout from '@/components/layout/RegisterLayout';
+import Button from '@/components/common/Button';
+import ic_location from '@/assets/icons/location-red.svg';
 
 const NOTICES_LIMIT = 12;
 
@@ -16,6 +19,7 @@ export default function Store() {
   const [modalContent, setModalContent] = useState('');
   const [isLoading, setIsLoading] = useState<boolean | 'error'>(false);
   const observerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const handleClose = useCallback(() => {
     if (modalContent.startsWith('로그인')) {
@@ -81,11 +85,61 @@ export default function Store() {
     };
   }, [loadNotices, isLoading]);
 
+  // 반응형
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       <section className="w-full bg-white px-12 py-40 md:px-32 md:py-60">
         <div className="mx-auto max-w-964">
           <h1 className="mb-16 text-h1/34 font-bold md:mb-24">내 가게</h1>
+          {shop ? (
+            <div className="flex min-h-356 flex-col items-stretch justify-between rounded-xl bg-red-10 p-20 md:p-24 lg:flex-row">
+              <div
+                className="h-178 rounded-xl bg-cover bg-center md:h-360 lg:h-auto lg:w-539"
+                style={{ backgroundImage: `url(${shop.imageUrl})` }}
+              />
+              <div className="mt-12 flex flex-col justify-between gap-24 md:mt-16 md:gap-40 lg:w-346">
+                <div className="flex flex-col gap-8 text-body2/22 font-regular md:gap-12 md:text-body1/26">
+                  <div className="font-bold">
+                    <div className="mb-8 leading-17 text-primary md:leading-20">
+                      식당
+                    </div>
+                    <div className="text-h2/29 md:text-h1/34">{shop.name}</div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <img className="size-16 md:size-20" src={ic_location} />
+                    <span className="text-gray-50">{shop.address1}</span>
+                  </div>
+                  <div className="text-[#000]">{shop.description}</div>
+                </div>
+                <div className="grid grid-cols-2 gap-8">
+                  <Button
+                    size={isMobile ? 'medium' : 'large'}
+                    solid={false}
+                    onClick={() => navigate('/owner/store/edit')}
+                  >
+                    편집하기
+                  </Button>
+                  <Button
+                    size={isMobile ? 'medium' : 'large'}
+                    solid={true}
+                    onClick={() => navigate('/owner/post')}
+                  >
+                    공고 등록하기
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <RegisterLayout type="store" />
+          )}
         </div>
       </section>
       {shop && (
