@@ -141,8 +141,8 @@ export default function Profile() {
             </div>
           )}
 
-          {hasInfo ? (
-            <div className="bg-gray-5">
+          {hasInfo && (
+            <div className="flex-1 bg-gray-5">
               <div className="mx-12 flex flex-col gap-16 pt-40 pb-80 md:mx-32 md:gap-24 md:pt-60 md:pb-120 lg:mx-auto lg:w-964">
                 <h1 className="text-h3 font-bold md:text-h1">신청 내역</h1>
                 {!hasApplications ? (
@@ -155,8 +155,6 @@ export default function Profile() {
                 )}
               </div>
             </div>
-          ) : (
-            <div className="h-355 md:h-463" />
           )}
           <Footer />
           {modal.isOpen && (
