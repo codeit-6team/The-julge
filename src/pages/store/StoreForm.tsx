@@ -9,9 +9,12 @@ import close from '@/assets/icons/close.svg';
 
 export default function StoreForm() {
   const navigate = useNavigate();
-  const [noticeInfo, setNoticeInfo] = useState<Partial<NoticeUpsertRequest>>(
-    {},
-  );
+  const [noticeInfo, setNoticeInfo] = useState<Partial<NoticeUpsertRequest>>({
+    hourlyPay: undefined,
+    startsAt: '',
+    workhour: undefined,
+    description: '',
+  });
   const shopId = useRef('');
   const noticeId = useRef('');
 
