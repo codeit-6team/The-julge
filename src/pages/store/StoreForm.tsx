@@ -16,6 +16,7 @@ export default function StoreForm() {
     description: '',
   });
   const shopId = useRef('');
+  const noticeId = useRef('');
 
   const [modal, setModal] = useState({
     isOpen: false,
@@ -80,10 +81,11 @@ export default function StoreForm() {
 
     try {
       const startsTime = new Date(noticeInfo?.startsAt).toISOString();
-      await postShopNotice(shopId.current, {
+      const { item } = await postShopNotice(shopId.current, {
         ...noticeInfo,
         startsAt: startsTime,
       });
+      noticeId.current = item.id;
       setModal({
         isOpen: true,
         message: '등록이 완료되었습니다.',
@@ -99,7 +101,7 @@ export default function StoreForm() {
   const handleModalConfirm = useCallback(() => {
     if (modal.message === '등록이 완료되었습니다.') {
       setModal({ isOpen: false, message: '' });
-      navigate('/profile');
+      navigate(`/owner/post/${noticeId.current}`);
     } else if (modal.message.includes('로그인')) {
       setModal({ isOpen: false, message: '' });
       navigate('/login');
