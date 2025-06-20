@@ -8,21 +8,33 @@ export default function Store() {
   const navigate = useNavigate();
   const [shop, setShop] = useState<ShopItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState('');
 
   const handleClose = () => {
-    navigate('/login');
+    if (modalContent.startsWith('로그인')) {
+      navigate('/login');
+    } else {
+      setIsModalOpen(false);
+    }
   };
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     if (!userId) {
       setIsModalOpen(true);
+      setModalContent('로그인이 필요합니다.');
       return;
     }
-    (async () => {
-      const userResponse = await getUser(userId);
-      setShop(userResponse.item.shop?.item ?? null);
-    })();
+
+    try {
+      (async () => {
+        const userResponse = await getUser(userId);
+        setShop(userResponse.item.shop?.item ?? null);
+      })();
+    } catch (error) {
+      setIsModalOpen(true);
+      setModalContent((error as Error).message);
+    }
   }, []);
 
   return (
@@ -37,7 +49,7 @@ export default function Store() {
       )}
       {isModalOpen && (
         <Modal onButtonClick={handleClose} onClose={handleClose}>
-          로그인이 필요합니다.
+          {modalContent}
         </Modal>
       )}
     </>
