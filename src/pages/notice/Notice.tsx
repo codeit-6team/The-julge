@@ -3,7 +3,9 @@ import LocationRed from '@/assets/icons/location-red.svg';
 import ArrowUpWhite from '@/assets/icons/arrow-up-white.svg';
 import Button from '@/components/common/Button';
 import Post from '@/components/common/Post';
-import { useState, useEffect } from 'react';
+import Modal from '@/components/common/Modal';
+import { useContext, useState, useEffect } from 'react';
+import { AuthContext } from '@/context/AuthContext';
 
 const dummyData: NoticeWithShopItem = {
   id: '1',
@@ -159,6 +161,8 @@ const recentDummies: NoticeWithShopItem[] = [
 
 export default function NoticeList({ data }: { data?: NoticeWithShopItem }) {
   const [recentNotices, setRecentNotices] = useState<NoticeWithShopItem[]>([]);
+  const { isLoggedIn } = useContext(AuthContext);
+  const [modalOpen, setModalOpen] = useState(false);
   const displayData = data ?? dummyData;
 
   // 구조분해
@@ -178,9 +182,9 @@ export default function NoticeList({ data }: { data?: NoticeWithShopItem }) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-white">
-      <div className="flex flex-col gap-32 py-60">
-        <div className="flex flex-col items-start">
+    <div className="flex flex-col items-center justify-center bg-gray-5">
+      <div className="flex flex-col gap-32 bg-gray-5 py-60">
+        <div className="flex flex-col items-start gap-8">
           <h2 className="text-body1 font-bold text-primary">식당</h2>
           <div className="text-h1 text-black">{name}</div>
         </div>
@@ -216,14 +220,32 @@ export default function NoticeList({ data }: { data?: NoticeWithShopItem }) {
                 {description}
               </div>
             </div>
-            <Button size="large" solid={true} className="">
+            <Button
+              size="large"
+              solid={true}
+              className=""
+              onClick={() => {
+                if (!isLoggedIn) {
+                  setModalOpen(true);
+                  return;
+                }
+              }}
+            >
               신청하기
             </Button>
+            {modalOpen && (
+              <Modal
+                onClose={() => setModalOpen(false)}
+                onButtonClick={() => setModalOpen(false)}
+              >
+                로그인이 필요한 서비스입니다.
+              </Modal>
+            )}
           </div>
         </div>
         <div className="flex w-963 flex-col gap-12 rounded-xl bg-gray-10 p-32">
-          <div>공고 설명</div>
-          <div>공고 내용</div>
+          <div className="text-body1 font-bold text-black">공고 설명</div>
+          <div className="text-body1 font-regular text-black">공고 내용</div>
         </div>
       </div>
       <div className="w-963">
