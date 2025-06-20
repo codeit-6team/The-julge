@@ -9,8 +9,8 @@ import Down from '@/assets/icons/dropdown.svg';
 
 interface DropdownProps<T extends string> {
   options: readonly T[];
-  selected: T | '';
-  setSelect: Dispatch<SetStateAction<T>>; // Dispatch<SetStateAction<T>>는 set함수 타입
+  selected: T | null;
+  setSelect: Dispatch<SetStateAction<T | null>>; // Dispatch<SetStateAction<T>>는 set함수 타입
   placeholder?: string;
   variant: 'form' | 'filter';
 }
