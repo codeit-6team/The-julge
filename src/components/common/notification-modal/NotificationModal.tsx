@@ -33,7 +33,8 @@ export default function NotificationModal({
           data.map((data) => (
             <NotificationCard
               key={data.item.id}
-              id={data.item.id}
+              alertId={data.item.id}
+              noticeId={data.item.notice.item.id}
               status={data.item.result}
               restaurantName={data.item.shop.item.name}
               startsAt={data.item.notice.item.startsAt}
