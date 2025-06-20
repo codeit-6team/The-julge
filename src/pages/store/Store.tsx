@@ -8,6 +8,7 @@ import RegisterLayout from '@/components/layout/RegisterLayout';
 import Button from '@/components/common/Button';
 import ic_location from '@/assets/icons/location-red.svg';
 import Post from '@/components/common/Post';
+import Footer from '@/components/layout/Footer';
 
 const NOTICES_LIMIT = 12;
 
@@ -96,7 +97,7 @@ export default function Store() {
   }, []);
 
   return (
-    <>
+    <div className="flex min-h-[calc(100vh-108px)] flex-col justify-between md:min-h-[calc(100vh_-_70px)]">
       <section className="w-full bg-white px-12 py-40 md:px-32 md:py-60">
         <div className="mx-auto max-w-964">
           <h1 className="mb-16 text-h1/34 font-bold md:mb-24">내 가게</h1>
@@ -144,7 +145,7 @@ export default function Store() {
         </div>
       </section>
       {shop && (
-        <section className="w-full bg-gray-5 px-12 pt-40 pb-80 md:px-32 md:pt-60 md:pb-120">
+        <section className="w-full flex-1 bg-gray-5 px-12 pt-40 pb-80 md:px-32 md:pt-60 md:pb-120">
           <div className="mx-auto max-w-964">
             <h1 className="mb-16 text-h1/34 font-bold md:mb-32">
               {notices[0] && '내가 '}등록한 공고
@@ -168,20 +169,25 @@ export default function Store() {
           </div>
           {/* 스크롤 감지 요소 */}
           <div
-            className="mt-32 text-center text-caption text-gray-30"
+            className="text-center text-caption text-gray-30"
             ref={observerRef}
           >
-            {isLoading === 'error'
-              ? '데이터를 불러오는데 실패했습니다.'
-              : isLoading && '로딩 중...'}
+            {isLoading && (
+              <div className="mt-32">
+                {isLoading === 'error'
+                  ? '데이터를 불러오는데 실패했습니다.'
+                  : '로딩 중...'}
+              </div>
+            )}
           </div>
         </section>
       )}
+      <Footer />
       {isModalOpen && (
         <Modal onButtonClick={handleClose} onClose={handleClose}>
           {modalContent}
         </Modal>
       )}
-    </>
+    </div>
   );
 }
