@@ -96,7 +96,7 @@ export default function Profile() {
           <div className="size-100 animate-spin rounded-full border-8 border-gray-200 border-t-primary" />
         </div>
       ) : (
-        <div className="min-h-[calc(100vh-102px)] md:min-h-[calc(100vh-70px)]">
+        <div className="flex min-h-[calc(100vh-102px)] flex-col justify-between md:min-h-[calc(100vh-70px)]">
           {!hasInfo ? (
             <div className="mx-12 flex flex-col gap-16 py-40 md:mx-32 md:gap-24 md:py-60 lg:mx-auto lg:w-964">
               <h1 className="text-h3 font-bold md:text-h1">내 프로필</h1>
