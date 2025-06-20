@@ -84,11 +84,17 @@ export default function Store() {
   return (
     <>
       <section className="w-full bg-white px-12 py-40 md:px-32 md:py-60">
-        <div className="mx-auto max-w-964"></div>
+        <div className="mx-auto max-w-964">
+          <h1 className="mb-16 text-h1/34 font-bold md:mb-24">내 가게</h1>
+        </div>
       </section>
       {shop && (
         <section className="w-full bg-gray-5 px-12 pt-40 pb-80 md:px-32 md:pt-60 md:pb-120">
-          <div className="mx-auto max-w-964"></div>
+          <div className="mx-auto max-w-964">
+            <h1 className="mb-16 text-h1/34 font-bold md:mb-32">
+              {notices[0] && '내가 '}등록한 공고
+            </h1>
+          </div>
           {/* 스크롤 감지 요소 */}
           <div
             className="text-center text-caption text-gray-30"
