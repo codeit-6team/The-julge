@@ -30,40 +30,33 @@ export default function ProfileForm() {
   });
 
   useEffect(() => {
-    if (isLoggedIn) {
-      const userId = localStorage.getItem('userId');
+    const userId = localStorage.getItem('userId');
 
-      if (!userId) {
-        setModal({
-          isOpen: true,
-          message: '사용자 정보를 가져올 수 없습니다. 다시 로그인해주세요.',
-        });
-        return;
-      }
-
-      const fetchUserInfo = async () => {
-        try {
-          const userInfo = await getUser(userId);
-          setProfileInfo({
-            name: userInfo.item.name ?? '',
-            phone: userInfo.item.phone ?? '',
-            bio: userInfo.item.bio ?? '',
-          });
-          setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
-        } catch (error) {
-          setModal({
-            isOpen: true,
-            message: (error as Error).message,
-          });
-        }
-      };
-      fetchUserInfo();
-    } else {
+    if (!userId) {
       setModal({
         isOpen: true,
         message: '로그인이 필요합니다.',
       });
+      return;
     }
+
+    const fetchUserInfo = async () => {
+      try {
+        const userInfo = await getUser(userId);
+        setProfileInfo({
+          name: userInfo.item.name ?? '',
+          phone: userInfo.item.phone ?? '',
+          bio: userInfo.item.bio ?? '',
+        });
+        setSelectedAddress((userInfo.item.address as SeoulDistrict) ?? '');
+      } catch (error) {
+        setModal({
+          isOpen: true,
+          message: (error as Error).message,
+        });
+      }
+    };
+    fetchUserInfo();
   }, [isLoggedIn]);
 
   function handleChange(
