@@ -15,8 +15,8 @@ type Category = (typeof CATEGORY_OPTIONS)[number];
 type Address1 = (typeof ADDRESS_OPTIONS)[number];
 
 interface StoreEditForm extends Omit<ShopRequest, 'category' | 'address1'> {
-  category: Category | '';
-  address1: Address1 | '';
+  category: Category | null;
+  address1: Address1 | null;
 }
 
 type ModalType = 'success' | 'warning' | 'auth';
@@ -30,8 +30,8 @@ export default function StoreEdit() {
 
   const [edit, setEdit] = useState<StoreEditForm>({
     name: '',
-    category: '',
-    address1: '',
+    category: null,
+    address1: null,
     address2: '',
     description: '',
     originalHourlyPay: 0,
@@ -67,8 +67,8 @@ export default function StoreEdit() {
         const shopInfo = await getShop(shopId);
         setEdit({
           name: shopInfo.item.name ?? '',
-          category: shopInfo.item.category ?? '',
-          address1: shopInfo.item.address1 ?? '',
+          category: shopInfo.item.category ?? null,
+          address1: shopInfo.item.address1 ?? null,
           address2: shopInfo.item.address2 ?? '',
           description: shopInfo.item.description ?? '',
           originalHourlyPay: shopInfo.item.originalHourlyPay ?? 0,
