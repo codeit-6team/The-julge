@@ -11,11 +11,6 @@ import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
 import type { NoticeShopItem } from '@/api/noticeApi';
 
-interface PostProps {
-  data: NoticeShopItem;
-  className?: string;
-}
-
 // 상태 계산
 function getStatus(
   startsAt: string,
@@ -29,7 +24,7 @@ function getStatus(
   return 'ACTIVE';
 }
 
-export default function Post({ data, className = '' }: PostProps) {
+export default function Post({ data }: { data: NoticeShopItem }) {
   const {
     hourlyPay,
     workhour,
@@ -132,16 +127,18 @@ export default function Post({ data, className = '' }: PostProps) {
           className="flex flex-col justify-between md:flex-row md:items-center"
           title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
         >
-          <div className="w-full truncate text-lg/23 font-bold md:text-h2/29">
+          <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
             {hourlyPay.toLocaleString()}원
           </div>
           {isHigherPay && (
             <>
               {/*데스크탑, 태블릿*/}
               <div
-                className={`hidden h-36 w-full items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white md:flex ${badgeBgColor}`}
+                className={`hidden h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white md:flex ${badgeBgColor}`}
               >
-                <div className="w-full truncate">기존 시급보다 {percent}%</div>
+                <div className="max-w-168 truncate">
+                  기존 시급보다 {percent}%
+                </div>
                 <img src={ArrowUpWhite} alt="위 화살표" className="h-20 w-20" />
               </div>
               {/*모바일*/}
