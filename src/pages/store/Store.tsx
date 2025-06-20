@@ -1,14 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '@/api/userApi';
 import type { ShopItem } from '@/api/shopApi';
+import { getShopNotices, type NoticeInfo } from '@/api/noticeApi';
 import Modal from '@/components/common/Modal';
+
+const NOTICES_LIMIT = 12;
 
 export default function Store() {
   const navigate = useNavigate();
   const [shop, setShop] = useState<ShopItem | null>(null);
+  const [notices, setNotices] = useState<NoticeInfo[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
+  const noticesOffset = useRef(0);
 
   const handleClose = () => {
     if (modalContent.startsWith('로그인')) {
@@ -16,6 +21,17 @@ export default function Store() {
     } else {
       setIsModalOpen(false);
     }
+  };
+
+  const loadNotices = async () => {
+    if (!shop || noticesOffset.current < 0) return;
+    const noticesResponse = await getShopNotices(shop.id, {
+      offset: noticesOffset.current,
+      limit: NOTICES_LIMIT,
+    });
+    setNotices((prev) => [...prev, ...noticesResponse.items]);
+    if (noticesResponse.hasNext) noticesOffset.current += NOTICES_LIMIT;
+    else noticesOffset.current = -1;
   };
 
   useEffect(() => {
