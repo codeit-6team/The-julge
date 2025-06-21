@@ -1,8 +1,6 @@
 import formatWorkTime from '@/utils/formatWorkTime';
 import ClockRed from '@/assets/icons/clock-red.svg';
-import ClockGray from '@/assets/icons/clock-gray.svg';
 import LocationRed from '@/assets/icons/location-red.svg';
-import LocationGray from '@/assets/icons/location-gray.svg';
 import ArrowUpWhite from '@/assets/icons/arrow-up-white.svg';
 import PostImg from '@/assets/images/post-default.png';
 import type { NoticeDetailItem } from '@/api/noticeApi';
@@ -45,9 +43,6 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
     ((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100,
   );
   const isHigherPay = percent > 0; // 이전 시급보다 높을 때만 표시
-
-  const clockIcon = isInactive ? ClockGray : ClockRed;
-  const locationIcon = isInactive ? LocationGray : LocationRed;
 
   const background = imageUrl ?? PostImg;
 
@@ -93,7 +88,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           >
             <div className="flex items-center gap-6">
               <img
-                src={clockIcon}
+                src={ClockRed}
                 alt="시계 아이콘"
                 className="size-16 md:size-20"
               />
@@ -101,7 +96,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
             </div>
             <div className="flex items-center gap-6">
               <img
-                src={locationIcon}
+                src={LocationRed}
                 alt="위치 아이콘"
                 className="size-16 md:size-20"
               />
