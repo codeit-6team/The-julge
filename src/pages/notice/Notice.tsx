@@ -6,7 +6,7 @@ import PostLarge from '@/components/common/PostLarge';
 import Modal from '@/components/common/Modal';
 import Button from '@/components/common/Button';
 import { getUser } from '@/api/userApi';
-import { getShopNotice } from '@/api/noticeApi';
+import { getShopNotice, type NoticeDetailItem } from '@/api/noticeApi';
 import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import {
   getUserApplications,
@@ -14,20 +14,32 @@ import {
   putNoticeApplications,
 } from '@/api/applicationApi';
 
+interface ApplicationInfoState {
+  isApplied: boolean;
+  applicationId: string | null;
+}
+
+type ModalType = 'alert' | 'confirm' | 'action';
+
+interface ModalState {
+  isOpen: boolean;
+  message: string;
+  type?: ModalType;
+}
+
 export default function Notice() {
   const navigate = useNavigate();
   const { shopId, noticeId } = useParams();
-  const { recentlyViewed } = useRecentlyViewed();
-  const [noticeData, setNoticeData] = useState(null);
+  const { recentlyViewed, refreshRecentlyViewed } = useRecentlyViewed();
+  const [noticeData, setNoticeData] = useState<NoticeDetailItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [applicationInfo, setApplicationInfo] = useState({
+  const [applicationInfo, setApplicationInfo] = useState<ApplicationInfoState>({
     isApplied: false,
     applicationId: null,
   });
-  const [modal, setModal] = useState({
+  const [modal, setModal] = useState<ModalState>({
     isOpen: false,
     message: '',
-    type: '',
   });
   const [buttonSize, setButtonSize] = useState<'large' | 'medium'>('medium');
 
@@ -51,10 +63,12 @@ export default function Notice() {
     const fetchNotice = async () => {
       setIsLoading(true);
       // notice 컴포넌트 재사용 문제 해결을 위한 데이터 초기화
+      refreshRecentlyViewed();
       setNoticeData(null);
       setApplicationInfo({ isApplied: false, applicationId: null });
+
       try {
-        const data = await getShopNotice(shopId, noticeId);
+        const data = await getShopNotice(shopId!, noticeId!);
         setNoticeData(data.item);
         if (userId) {
           const applicationsResult = await getUserApplications(userId);
@@ -96,9 +110,17 @@ export default function Notice() {
   const handleApply = async () => {
     try {
       const userId = localStorage.getItem('userId');
+      if (!userId) {
+        setModal({
+          isOpen: true,
+          message: '로그인이 필요합니다.',
+          type: 'alert',
+        });
+        return;
+      }
       const userInfo = await getUser(userId);
       if (userInfo.item.name) {
-        const result = await postNoticeApplications(shopId, noticeId);
+        const result = await postNoticeApplications(shopId!, noticeId!);
         const newApplicationId = result.item.id;
         setApplicationInfo({
           isApplied: true,
@@ -125,8 +147,8 @@ export default function Notice() {
     if (!applicationInfo.applicationId) return;
     try {
       await putNoticeApplications(
-        shopId,
-        noticeId,
+        shopId!,
+        noticeId!,
         applicationInfo.applicationId,
         { status: 'canceled' },
       );
@@ -134,7 +156,6 @@ export default function Notice() {
       setModal({
         isOpen: false,
         message: '',
-        type: '',
       });
     } catch (error) {
       setModal({
@@ -156,6 +177,9 @@ export default function Notice() {
 
   // 버튼 렌더링 로직
   const renderApplyButton = () => {
+    if (!noticeData) {
+      return null;
+    }
     if (noticeData.closed) {
       return (
         <Button size={buttonSize} disabled>
@@ -181,10 +205,10 @@ export default function Notice() {
 
   const handleModalClick = useCallback(() => {
     if (modal.message.includes('로그인')) {
-      setModal({ isOpen: false, message: '', type: '' });
+      setModal({ isOpen: false, message: '' });
       navigate('/login');
     } else if (modal.message.includes('프로필')) {
-      setModal({ isOpen: false, message: '', type: '' });
+      setModal({ isOpen: false, message: '' });
       navigate('/profile');
     } else {
       setModal({ isOpen: false, message: '' });
