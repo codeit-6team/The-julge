@@ -68,7 +68,7 @@ export default function PostLarge({
 
   return (
     <div className={`text-body2/22 font-regular md:text-body1/26 ${className}`}>
-      <div className="flex min-h-356 flex-col items-stretch justify-between rounded-xl border border-gray-20 bg-white p-20 md:p-24 lg:flex-row">
+      <div className="flex min-h-356 flex-col items-stretch justify-between rounded-xl border border-gray-20 bg-white p-19 md:p-23 lg:flex-row">
         <div className="relative h-178 md:h-360 lg:h-auto lg:w-539">
           <div
             className="h-full w-full rounded-xl bg-cover bg-center"
