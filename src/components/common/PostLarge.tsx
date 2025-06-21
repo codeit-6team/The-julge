@@ -25,7 +25,12 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
     startsAt,
     closed,
     shop: {
-      item: { address1, imageUrl, originalHourlyPay },
+      item: {
+        address1,
+        imageUrl,
+        originalHourlyPay,
+        description: shopDescription,
+      },
     },
   } = data;
 
@@ -64,7 +69,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           </div>
         )}
       </div>
-      <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346">
+      <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346 lg:gap-0">
         <div className="flex flex-col gap-8 text-body2/22 font-regular md:gap-12 md:text-body1/26">
           <div>
             <div className="mb-8 leading-17 font-bold text-primary md:leading-20">
@@ -109,6 +114,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
             />
             {address1}
           </div>
+          {shopDescription}
         </div>
       </div>
     </div>
