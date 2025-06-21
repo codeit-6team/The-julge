@@ -80,7 +80,7 @@ export default function Post({ data }: { data: NoticeShopItem }) {
   }
 
   return (
-    <div className="flex h-261 w-171 cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:w-332 md:gap-20 md:p-16 lg:h-348 lg:w-312">
+    <div className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348">
       <div className="relative">
         <div
           className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
