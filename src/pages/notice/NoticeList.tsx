@@ -103,15 +103,15 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     <main>
       {/* 맞춤 공고 */}
       {!search && (
-        <article className="bg-red-10 px-32 py-60">
-          <section className="mx-auto flex max-w-964 flex-col">
-            <h2 className="mb-32 text-h1 font-bold">맞춤 공고</h2>
-            <div className="flex gap-14 overflow-hidden">
-              {allNotices.slice(0, 3).map((notice) => (
+        <article className="bg-red-10 py-40 pl-12">
+          <section className="flex flex-col gap-16">
+            <h2 className="text-h3/24 font-bold">맞춤 공고</h2>
+            <div className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth">
+              {allNotices.slice(0, 9).map((notice) => (
                 <Link
                   key={notice.id}
                   to={`/shops/${notice.shop.item.id}/notices/${notice.id}`}
-                  className="block"
+                  className="block last:pr-12"
                 >
                   <Post data={notice} />
                 </Link>
@@ -122,16 +122,18 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       )}
 
       {/* 전체 공고 */}
-      <article className="px-32 py-60">
-        <section className="mx-auto flex max-w-full flex-col gap-32 sm:max-w-964">
-          <div className="flex flex-col gap-12 sm:flex-row sm:justify-between">
-            <h2 className="mb-4 text-h1 font-bold sm:mb-0">
+      <article className="px-12 pt-40 pb-80">
+        <section className="flex flex-col gap-16">
+          <div className="flex flex-col gap-16">
+            <h2 className="text-h3/25 font-bold">
               {search ? (
                 <>
-                  <span className="text-h1 font-bold text-primary">
+                  <span className="text-h3/24 font-bold text-primary">
                     {search}
                   </span>
-                  <span className="text-h1 font-bold">에 대한 공고 목록</span>
+                  <span className="text-h3/24 font-bold">
+                    에 대한 공고 목록
+                  </span>
                 </>
               ) : (
                 '전체 공고'
@@ -140,14 +142,13 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
             <div className="flex gap-10">
               <Dropdown
                 options={SORT_OPTIONS}
-                placeholder="마감임박순"
                 variant="filter"
                 selected={sort}
                 setSelect={setSort}
               />
               <div className="relative">
                 <button
-                  className="rounded-md bg-red-30 px-12 py-8 text-body2 text-white"
+                  className="rounded-[5px] bg-red-30 px-12 py-6 text-body2/18 text-white"
                   type="button"
                   onClick={() => setFilterOpen(true)}
                 >
