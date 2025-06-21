@@ -83,7 +83,7 @@ export default function Post({ data }: { data: NoticeShopItem }) {
   }
 
   const handleClick = () => {
-    const isOwnerPage = location.pathname.startsWith('/owner/store');
+    const isOwnerPage = location.pathname.startsWith('/owner');
 
     const path = isOwnerPage
       ? `/owner/post/${shopId}/${noticeId}`
