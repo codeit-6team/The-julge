@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getShopNotice, type NoticeDetailItem } from '@/api/noticeApi';
 import Footer from '@/components/layout/Footer';
 import PostLarge from '@/components/common/PostLarge';
@@ -13,10 +13,16 @@ const MODAL_MESSAGE = {
 };
 
 export default function StorePost() {
+  const navigate = useNavigate();
   const { shopId, noticeId } = useParams();
   const [notice, setNotice] = useState<NoticeDetailItem>();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [modalType, setModalType] = useState<'notice' | 'login' | null>(null);
+
+  const handleClose = () => {
+    if (modalType === 'notice') navigate('/owner/store');
+    else if (modalType === 'login') navigate('/login');
+  };
 
   useEffect(() => {
     if (!localStorage.getItem('userId')) {
@@ -76,7 +82,11 @@ export default function StorePost() {
           )}
         </div>
       </section>
-      {modalType && <Modal>{MODAL_MESSAGE[modalType]}</Modal>}
+      {modalType && (
+        <Modal onClose={handleClose} onButtonClick={handleClose}>
+          {MODAL_MESSAGE[modalType]}
+        </Modal>
+      )}
       <Footer />
     </div>
   );
