@@ -65,7 +65,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
         )}
       </div>
       <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346">
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 text-body2/22 font-regular md:gap-12 md:text-body1/26">
           <div
             className="flex items-center gap-4 md:gap-8"
             title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
@@ -88,23 +88,21 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-8 text-body2/22 font-regular md:gap-12 md:text-body1/26">
-            <div className="flex items-center gap-6 text-gray-50">
-              <img
-                src={ic_clock}
-                alt="시계 아이콘"
-                className="size-16 md:size-20"
-              />
-              <span>{dateTime}</span>
-            </div>
-            <div className="flex items-center gap-6 text-gray-50">
-              <img
-                src={ic_location}
-                alt="위치 아이콘"
-                className="size-16 md:size-20"
-              />
-              <span>{address1}</span>
-            </div>
+          <div className="flex items-center gap-6 text-gray-50">
+            <img
+              src={ic_clock}
+              alt="시계 아이콘"
+              className="size-16 md:size-20"
+            />
+            <span>{dateTime}</span>
+          </div>
+          <div className="flex items-center gap-6 text-gray-50">
+            <img
+              src={ic_location}
+              alt="위치 아이콘"
+              className="size-16 md:size-20"
+            />
+            <span>{address1}</span>
           </div>
         </div>
       </div>
