@@ -73,7 +73,7 @@ export default function Filter({
   if (!open) return null;
 
   return (
-    <div className="z-5 flex w-full max-w-390 flex-col gap-24 rounded-xl border border-gray-20 bg-white px-20 py-24 shadow-custom">
+    <div className="fixed inset-0 z-5 flex w-full flex-col gap-24 overflow-y-auto border border-gray-20 bg-white px-12 py-24 shadow-custom md:static md:max-w-390 md:rounded-xl md:px-19">
       <div className="flex flex-row items-center justify-between">
         <h3 className="text-h3 font-bold text-black">상세 필터</h3>
         <button
@@ -86,7 +86,7 @@ export default function Filter({
       </div>
       <div className="flex flex-col">
         <p className="text-body1 font-regular">위치</p>
-        <div className="custom-scrollbar my-12 grid h-258 w-full max-w-348 grid-cols-2 gap-32 overflow-y-auto rounded-md border border-gray-20 px-28 py-20">
+        <div className="custom-scrollbar my-12 grid h-258 w-full grid-cols-2 gap-32 overflow-y-auto rounded-md border border-gray-20 px-28 py-20 md:max-w-348">
           {ADDRESS_OPTIONS.map((item) => (
             <button
               key={item}
@@ -129,7 +129,7 @@ export default function Filter({
 
         <HorizontalLine />
 
-        <div className="mb-40 flex items-end gap-12">
+        <div className="mb-80 flex items-end gap-12 md:mb-40">
           <div className="flex-1">
             <Input
               label="금액"
@@ -144,11 +144,15 @@ export default function Filter({
           <span className="flex-1 pb-16 text-body1/26">이상부터</span>
         </div>
 
-        <div className="flex gap-8">
-          <Button solid={false} className="w-80" onClick={handleReset}>
+        <div className="fixed right-0 bottom-0 left-0 flex w-full gap-8 border-t border-gray-20 bg-white px-12 py-16 md:static md:border-none md:p-0">
+          <Button
+            solid={false}
+            className="w-full flex-[0.5] md:max-w-82"
+            onClick={handleReset}
+          >
             초기화
           </Button>
-          <Button className="flex-1 md:w-240" onClick={handleApply}>
+          <Button className="w-full flex-1 md:max-w-260" onClick={handleApply}>
             적용하기
           </Button>
         </div>

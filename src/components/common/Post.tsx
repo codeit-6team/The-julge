@@ -1,3 +1,4 @@
+import { useNavigate, useLocation } from 'react-router-dom';
 import formatWorkTime from '@/utils/formatWorkTime';
 import ClockRed from '@/assets/icons/clock-red.svg';
 import ClockGray from '@/assets/icons/clock-gray.svg';
@@ -26,15 +27,17 @@ function getStatus(
 
 export default function Post({ data }: { data: NoticeShopItem }) {
   const {
+    id: noticeId,
     hourlyPay,
     workhour,
     startsAt,
     closed,
     shop: {
-      item: { name, address1, imageUrl, originalHourlyPay },
+      item: { id: shopId, name, address1, imageUrl, originalHourlyPay },
     },
   } = data;
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const status = getStatus(startsAt, closed);
   const isInactive = status !== 'ACTIVE';
   const overlayText = isInactive
@@ -79,8 +82,20 @@ export default function Post({ data }: { data: NoticeShopItem }) {
     }
   }
 
+  const handleClick = () => {
+    const isOwnerPage = location.pathname.startsWith('/owner');
+
+    const path = isOwnerPage
+      ? `/owner/post/${shopId}/${noticeId}`
+      : `/${shopId}/${noticeId}`;
+
+    navigate(path);
+  };
   return (
-    <div className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348">
+    <button
+      onClick={handleClick}
+      className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348"
+    >
       <div className="relative">
         <div
           className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
@@ -152,6 +167,6 @@ export default function Post({ data }: { data: NoticeShopItem }) {
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
