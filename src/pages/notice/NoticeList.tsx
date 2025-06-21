@@ -5,7 +5,7 @@ import { SORT_OPTIONS } from '@/constants/dropdownOptions';
 import Pagination from '@/components/common/Pagination';
 import Filter from '@/components/common/Filter';
 import { getNotices } from '@/api/noticeApi';
-import type { NoticeWithShopItem } from '@/api/noticeApi';
+import type { NoticeShopItem } from '@/api/noticeApi';
 import { Link } from 'react-router-dom';
 
 type FilterValues = {
@@ -44,9 +44,9 @@ function countAppliedFilters(filterValues: FilterValues): number {
 
 // 컴포넌트
 export default function NoticeList({ search = '' }: NoticeListProps) {
-  const [allNotices, setAllNotices] = useState<NoticeWithShopItem[]>([]); // 현재 페이지에 노출할 공고 목록
+  const [allNotices, setAllNotices] = useState<NoticeShopItem[]>([]); // 현재 페이지에 노출할 공고 목록
   const [totalCount, setTotalCount] = useState(0); // 전체 공고 수
-  const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number]>(
+  const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number] | null>(
     SORT_OPTIONS[0],
   ); // 정렬(드롭다운 값)
   const [filterValues, setFilterValues] = useState<FilterValues>({}); // 상세필터 상태값
@@ -59,15 +59,21 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     setLoading(true);
     setError(null);
 
-    getNotices({
+    const rawQuery = {
       offset: (currentPage - 1) * ITEMS_PER_PAGE,
       limit: ITEMS_PER_PAGE,
       address: filterValues.address?.[0],
       keyword: search,
       startsAtGte: filterValues.startsAt ?? undefined,
       hourlyPayGte: filterValues.hourlyPay ?? undefined,
-      sort: sortMap[sort] ?? undefined,
-    })
+      sort: sort ? sortMap[sort] : undefined,
+    };
+
+    const cleanedQuery = Object.fromEntries(
+      Object.entries(rawQuery).filter(([, v]) => v !== undefined && v !== ''),
+    );
+
+    getNotices(cleanedQuery)
       .then((data) => {
         setAllNotices(data.items.map((item) => item.item));
         setTotalCount(data.count);
@@ -113,7 +119,9 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
                   to={`/shops/${notice.shop.item.id}/notices/${notice.id}`}
                   className="block last:pr-12"
                 >
-                  <Post data={notice} />
+                  <div className="w-171">
+                    <Post data={notice} />
+                  </div>
                 </Link>
               ))}
             </div>
