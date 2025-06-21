@@ -72,6 +72,24 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           >
             {name}
           </div>
+          <div
+            className="flex flex-col justify-between md:flex-row md:items-center"
+            title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
+          >
+            <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
+              {hourlyPay.toLocaleString()}원
+            </div>
+            {isHigherPay && status === 'ACTIVE' && (
+              <div
+                className={`flex h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white ${badgeBgColor}`}
+              >
+                <div className="max-w-168 truncate">
+                  기존 시급보다 {percent}%
+                </div>
+                <img src={ic_arrow} alt="위 화살표" className="h-20 w-20" />
+              </div>
+            )}
+          </div>
           <div className="flex flex-col gap-8 text-caption/16 font-regular text-gray-50 md:text-body2/22">
             <div className="flex items-center gap-6">
               <img
@@ -90,22 +108,6 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
               <span>{address1}</span>
             </div>
           </div>
-        </div>
-        <div
-          className="flex flex-col justify-between md:flex-row md:items-center"
-          title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
-        >
-          <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
-            {hourlyPay.toLocaleString()}원
-          </div>
-          {isHigherPay && status === 'ACTIVE' && (
-            <div
-              className={`flex h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white ${badgeBgColor}`}
-            >
-              <div className="max-w-168 truncate">기존 시급보다 {percent}%</div>
-              <img src={ic_arrow} alt="위 화살표" className="h-20 w-20" />
-            </div>
-          )}
         </div>
       </div>
     </div>
