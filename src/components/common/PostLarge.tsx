@@ -66,27 +66,32 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
       </div>
       <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346">
         <div className="flex flex-col gap-8 text-body2/22 font-regular md:gap-12 md:text-body1/26">
-          <div
-            className="flex items-center gap-4 md:gap-8"
-            title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
-          >
-            <div className="text-h2/29 font-bold md:text-h1/34">
-              {hourlyPay.toLocaleString()}원
+          <div>
+            <div className="mb-8 leading-17 font-bold text-primary md:leading-20">
+              시급
             </div>
-            {isHigherPay && status === 'ACTIVE' && (
-              <div
-                className={`flex h-24 items-center justify-center gap-2 rounded-full px-8 py-4 text-caption/16 text-white md:h-36 md:p-12 md:text-body2 md:font-bold ${badgeBgColor}`}
-              >
-                <div className="max-w-122 truncate">
-                  기존 시급보다 {percent}%
-                </div>
-                <img
-                  src={ic_arrow}
-                  alt="위 화살표"
-                  className="size-16 md:size-20"
-                />
+            <div
+              className="flex items-center gap-4 md:gap-8"
+              title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
+            >
+              <div className="text-h2/29 font-bold md:text-h1/34">
+                {hourlyPay.toLocaleString()}원
               </div>
-            )}
+              {isHigherPay && status === 'ACTIVE' && (
+                <div
+                  className={`flex h-24 items-center justify-center gap-2 rounded-full px-8 py-4 text-caption/16 text-white md:h-36 md:p-12 md:text-body2 md:font-bold ${badgeBgColor}`}
+                >
+                  <div className="max-w-122 truncate">
+                    기존 시급보다 {percent}%
+                  </div>
+                  <img
+                    src={ic_arrow}
+                    alt="위 화살표"
+                    className="size-16 md:size-20"
+                  />
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-6 text-gray-50">
             <img
