@@ -88,8 +88,8 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
               </div>
             )}
           </div>
-          <div className="flex flex-col gap-8 text-caption/16 font-regular text-gray-50 md:text-body2/22">
-            <div className="flex items-center gap-6">
+          <div className="flex flex-col gap-8 text-body2/22 font-regular md:gap-12 md:text-body1/26">
+            <div className="flex items-center gap-6 text-gray-50">
               <img
                 src={ic_clock}
                 alt="시계 아이콘"
@@ -97,7 +97,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
               />
               <span>{dateTime}</span>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 text-gray-50">
               <img
                 src={ic_location}
                 alt="위치 아이콘"
