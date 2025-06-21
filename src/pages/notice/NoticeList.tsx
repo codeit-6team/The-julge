@@ -62,6 +62,13 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
   const [shouldShowEmpty, setShouldShowEmpty] = useState(false); // 깜빡임 방지용
   const [showModal, setShowModal] = useState(false);
 
+  const getTomorrowISOString = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    date.setHours(0, 0, 0, 0);
+    return date.toISOString();
+  };
+
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -72,7 +79,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       limit: ITEMS_PER_PAGE,
       address: filterValues.address?.[0],
       keyword: search,
-      startsAtGte: filterValues.startsAt ?? undefined,
+      startsAtGte: filterValues.startsAt ?? getTomorrowISOString(),
       hourlyPayGte: filterValues.hourlyPay ?? undefined,
       sort: sort ? sortMap[sort] : undefined,
     };
@@ -103,6 +110,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
           offset: 0,
           limit: 9,
           sort: sort ? sortMap[sort] : 'time',
+          startsAtGte: getTomorrowISOString(),
         });
         setRecommendedNotices(result.items.map((i) => i.item));
       } catch (error) {
