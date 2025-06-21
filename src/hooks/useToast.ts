@@ -1,10 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 
 export function useToast(duration: number = 2000) {
-  const [toast, setToast] = useState<{
-    message: string;
-    isVisible: boolean;
-  }>({
+  const [toast, setToast] = useState({
     message: '',
     isVisible: false,
   });
