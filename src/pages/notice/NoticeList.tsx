@@ -6,8 +6,8 @@ import Pagination from '@/components/common/Pagination';
 import Filter from '@/components/common/Filter';
 import { getNotices } from '@/api/noticeApi';
 import type { NoticeShopItem } from '@/api/noticeApi';
-import { Link } from 'react-router-dom';
 import Footer from '@/components/layout/Footer';
+import Modal from '@/components/common/Modal';
 
 type FilterValues = {
   address?: string[] | null;
@@ -59,10 +59,13 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     NoticeShopItem[]
   >([]); // 맞춤 공고 보이는 목록
   const scrollRef = useRef<HTMLDivElement | null>(null); // 자동 스크롤
+  const [shouldShowEmpty, setShouldShowEmpty] = useState(false); // 깜빡임 방지용
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
+    setShouldShowEmpty(false);
 
     const rawQuery = {
       offset: (currentPage - 1) * ITEMS_PER_PAGE,
@@ -83,8 +86,12 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       .then((data) => {
         setAllNotices(data.items.map((item) => item.item));
         setTotalCount(data.count);
+        setShouldShowEmpty(true);
       })
-      .catch((err) => setError(err.message))
+      .catch((err) => {
+        setError(err.message);
+        setShowModal(true);
+      })
       .finally(() => setLoading(false));
   }, [search, sort, filterValues, currentPage]);
 
@@ -115,7 +122,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     const container = scrollRef.current;
 
     const interval = setInterval(() => {
-      const card = container.querySelector('a'); // 첫 번째 카드
+      const card = container.querySelector('[data-card]'); // 첫 번째 카드
       if (!card) return;
 
       const cardWidth = card.getBoundingClientRect().width; // getBoundingClientRect 브라우저에 실제 카드 너비를 가져옴
@@ -130,7 +137,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       } else {
         container.scrollTo({ left: scrollAmount, behavior: 'smooth' }); // 현 위치에서 이동
       }
-    }, 5000);
+    }, 4000);
     return () => clearInterval(interval);
   }, [recommendedNotices]);
 
@@ -146,122 +153,119 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
   // 렌더
   if (loading)
     return (
-      <div className="flex h-500 items-center justify-center text-h3 text-black">
-        잠시만 기다려주세요
-      </div>
-    );
-  if (error)
-    return (
-      <div className="flex h-500 items-center justify-center text-h3 text-red-500">
-        {error}
+      <div className="flex min-h-[calc(100vh-102px)] items-center justify-center md:min-h-[calc(100vh-70px)]">
+        <div className="size-100 animate-spin rounded-full border-8 border-gray-200 border-t-primary" />
       </div>
     );
 
   return (
-    <main>
-      {/* 맞춤 공고 */}
-      {!search && (
-        <article className="bg-red-10 py-40 pl-12 md:py-60 md:pl-32 lg:px-0">
-          <section className="flex flex-col gap-16 md:gap-32 lg:mx-auto lg:max-w-964">
-            <h2 className="text-h3/24 font-bold md:text-h1/34">맞춤 공고</h2>
-            <div
-              className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth md:gap-14"
-              ref={scrollRef}
-            >
-              {recommendedNotices.slice(0, 9).map((notice) => (
-                <Link
-                  key={notice.id}
-                  to={`/shops/${notice.shop.item.id}/notices/${notice.id}`}
-                  className="block last:pr-12 md:last:pr-32 lg:last:pr-0"
-                >
-                  <div className="min-w-171 md:min-w-312">
-                    <Post data={notice} />
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        </article>
+    <>
+      {showModal && error && (
+        <Modal
+          onClose={() => setShowModal(false)}
+          onButtonClick={() => setShowModal(false)}
+        >
+          {error}
+        </Modal>
       )}
-
-      {/* 전체 공고 */}
-      <article className="px-12 pt-40 pb-68 md:px-32 md:pt-60 md:pb-48 lg:mx-auto lg:max-w-964 lg:px-0">
-        <section className="flex flex-col gap-16 md:gap-32">
-          <div className="flex flex-col gap-16 md:flex-row md:justify-between">
-            <h2 className="text-h3/25 font-bold md:text-h1/34">
-              {search ? (
-                <>
-                  <span className="text-h3/24 font-bold text-primary md:text-h1/34">
-                    {search}
-                  </span>
-                  <span className="text-h3/24 font-bold md:text-h1/34">
-                    에 대한 공고 목록
-                  </span>
-                </>
-              ) : (
-                '전체 공고'
-              )}
-            </h2>
-            <div className="flex items-center gap-10">
-              <Dropdown
-                options={SORT_OPTIONS}
-                variant="filter"
-                selected={sort}
-                setSelect={setSort}
-              />
-              <div className="relative">
-                <button
-                  className="min-w-79 rounded-[5px] bg-red-30 px-12 py-6 text-body2/18 text-white"
-                  type="button"
-                  onClick={() => setFilterOpen(true)}
-                >
-                  상세 필터
-                  {appliedFilterCount > 0 && (
-                    <span className="ml-2">({appliedFilterCount})</span>
-                  )}
-                </button>
-                {filterOpen && (
-                  <div className="absolute right-0 z-50 mt-5">
-                    <Filter
-                      open={filterOpen}
-                      onClose={() => setFilterOpen(false)}
-                      onApply={handleApplyFilter}
-                      defaultValues={filterValues}
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          {allNotices.length === 0 ? (
-            <div className="flex h-500 items-center justify-center text-h3 text-black">
-              등록된 게시물이 없습니다.
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-16 md:gap-x-14 md:gap-y-32 lg:grid-cols-3">
-                {allNotices.map((notice) => (
-                  <Link
+      <main>
+        {/* 맞춤 공고 */}
+        {!search && (
+          <article className="bg-red-10 py-40 pl-12 md:py-60 md:pl-32 lg:px-0">
+            <section className="flex flex-col gap-16 md:gap-32 lg:mx-auto lg:max-w-964">
+              <h2 className="text-h3/24 font-bold md:text-h1/34">맞춤 공고</h2>
+              <div
+                className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth md:gap-14"
+                ref={scrollRef}
+              >
+                {recommendedNotices.slice(0, 9).map((notice) => (
+                  <div
                     key={notice.id}
-                    to={`/shops/${notice.shop.item.id}/notices/${notice.id}`}
-                    className="block"
+                    className="block last:pr-12 md:last:pr-32 lg:last:pr-0"
                   >
-                    <Post data={notice} />
-                  </Link>
+                    <div data-card className="min-w-171 md:min-w-312">
+                      <Post data={notice} />
+                    </div>
+                  </div>
                 ))}
               </div>
-              <div className="">
+            </section>
+          </article>
+        )}
+
+        {/* 전체 공고 */}
+        <article className="px-12 pt-40 pb-68 md:px-32 md:pt-60 md:pb-48 lg:mx-auto lg:max-w-964 lg:px-0">
+          <section className="flex flex-col gap-16 md:gap-32">
+            <div className="flex flex-col gap-16 md:flex-row md:justify-between">
+              <h2 className="text-h3/25 font-bold md:text-h1/34">
+                {search ? (
+                  <>
+                    <span className="text-h3/24 font-bold text-primary md:text-h1/34">
+                      {search}
+                    </span>
+                    <span className="text-h3/24 font-bold md:text-h1/34">
+                      에 대한 공고 목록
+                    </span>
+                  </>
+                ) : (
+                  '전체 공고'
+                )}
+              </h2>
+              <div className="flex items-center gap-10">
+                <Dropdown
+                  options={SORT_OPTIONS}
+                  variant="filter"
+                  selected={sort}
+                  setSelect={setSort}
+                />
+                <div className="relative">
+                  <button
+                    className="min-w-79 rounded-[5px] bg-red-30 px-12 py-6 text-body2/18 text-white"
+                    type="button"
+                    onClick={() => setFilterOpen(true)}
+                  >
+                    상세 필터
+                    {appliedFilterCount > 0 && (
+                      <span className="ml-2">({appliedFilterCount})</span>
+                    )}
+                  </button>
+                  {filterOpen && (
+                    <div className="absolute right-0 z-50 mt-5">
+                      <Filter
+                        open={filterOpen}
+                        onClose={() => setFilterOpen(false)}
+                        onApply={handleApplyFilter}
+                        defaultValues={filterValues}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {shouldShowEmpty && allNotices.length === 0 ? (
+              <div className="flex h-500 items-center justify-center text-h3 text-black">
+                등록된 게시물이 없습니다.
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-x-8 gap-y-16 md:gap-x-14 md:gap-y-32 lg:grid-cols-3">
+                  {allNotices.map((notice) => (
+                    <div key={notice.id} className="block">
+                      <Post data={notice} />
+                    </div>
+                  ))}
+                </div>
                 <Pagination
                   totalPages={totalPages}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                 />
-              </div>
-            </>
-          )}
-        </section>
-      </article>
-      <Footer />
-    </main>
+              </>
+            )}
+          </section>
+        </article>
+        <Footer />
+      </main>
+    </>
   );
 }
