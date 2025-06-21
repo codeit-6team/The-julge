@@ -30,12 +30,8 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
   } = data;
 
   const status = getStatus(startsAt, closed);
-  const isInactive = status !== 'ACTIVE';
-  const overlayText = isInactive
-    ? status === 'CLOSED'
-      ? '마감 완료'
-      : '지난 공고'
-    : '';
+  const overlayText =
+    status === 'ACTIVE' ? '' : status === 'CLOSED' ? '마감 완료' : '지난 공고';
 
   const dateTime = `${formatWorkTime({ startsAt, workhour })} (${workhour}시간)`;
 
@@ -47,17 +43,12 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
   const background = imageUrl ?? PostImg;
 
   let badgeBgColor = '';
-
-  if (isInactive) {
-    badgeBgColor = 'bg-gray-20';
-  } else {
-    if (percent >= 50) {
-      badgeBgColor = 'bg-red-40';
-    } else if (percent >= 30) {
-      badgeBgColor = 'bg-red-30';
-    } else if (percent >= 1) {
-      badgeBgColor = 'bg-red-20 ';
-    }
+  if (percent >= 50) {
+    badgeBgColor = 'bg-red-40';
+  } else if (percent >= 30) {
+    badgeBgColor = 'bg-red-30';
+  } else if (percent >= 1) {
+    badgeBgColor = 'bg-red-20 ';
   }
 
   return (
@@ -67,15 +58,13 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
           style={{ backgroundImage: `url(${background})` }}
         />
-        {isInactive && (
+        {status === 'ACTIVE' || (
           <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-[#000000]/70 text-h3 font-bold text-gray-30 md:text-h1">
             {overlayText}
           </div>
         )}
       </div>
-      <div
-        className={` ${isInactive ? 'text-gray-30' : 'text-black'} flex flex-col gap-16`}
-      >
+      <div className="flex flex-col gap-16 text-black">
         <div className="flex flex-col gap-8">
           <div
             className="truncate text-body1/20 font-bold md:text-h3/24"
@@ -83,9 +72,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           >
             {name}
           </div>
-          <div
-            className={`${isInactive ? 'text-gray-30' : 'text-gray-50'} flex flex-col gap-8 text-caption/16 font-regular md:text-body2/22`}
-          >
+          <div className="flex flex-col gap-8 text-caption/16 font-regular text-gray-50 md:text-body2/22">
             <div className="flex items-center gap-6">
               <img
                 src={ic_clock}
@@ -111,7 +98,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
             {hourlyPay.toLocaleString()}원
           </div>
-          {isHigherPay && (
+          {isHigherPay && status === 'ACTIVE' && (
             <div
               className={`flex h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white ${badgeBgColor}`}
             >
