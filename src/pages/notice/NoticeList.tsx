@@ -18,10 +18,10 @@ type NoticeListProps = {
   search?: string;
 };
 
-// ===================== 상수 =====================
+// 상수
 const ITEMS_PER_PAGE = 6;
 
-// ===================== 정렬 맵핑 =====================
+// 정렬 맵핑
 const sortMap: Record<
   (typeof SORT_OPTIONS)[number],
   'time' | 'pay' | 'hour' | 'shop'
@@ -42,13 +42,13 @@ function countAppliedFilters(filterValues: FilterValues): number {
   return count;
 }
 
-// ================== 컴포넌트 =========================
+// 컴포넌트
 export default function NoticeList({ search = '' }: NoticeListProps) {
   const [allNotices, setAllNotices] = useState<NoticeWithShopItem[]>([]); // 현재 페이지에 노출할 공고 목록
   const [totalCount, setTotalCount] = useState(0); // 전체 공고 수
   const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number]>(
     SORT_OPTIONS[0],
-  ); //정렬(드롭다운값)
+  ); // 정렬(드롭다운 값)
   const [filterValues, setFilterValues] = useState<FilterValues>({}); // 상세필터 상태값
   const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지(페이지네이션)
   const [filterOpen, setFilterOpen] = useState<boolean>(false); // 필터 모달 오픈
@@ -85,7 +85,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     setCurrentPage(1);
   };
 
-  // ===== 렌더 =====
+  // 렌더
   if (loading)
     return (
       <div className="flex h-500 items-center justify-center text-h3 text-black">
