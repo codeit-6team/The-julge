@@ -11,6 +11,7 @@ import ArrowUpRed30 from '@/assets/icons/arrow-up-red30.svg';
 import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
 import type { NoticeShopItem } from '@/api/noticeApi';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 
 // 상태 계산
 function getStatus(
@@ -38,6 +39,7 @@ export default function Post({ data }: { data: NoticeShopItem }) {
   } = data;
   const navigate = useNavigate();
   const location = useLocation();
+  const { addRecentlyViewed } = useRecentlyViewed();
   const status = getStatus(startsAt, closed);
   const isInactive = status !== 'ACTIVE';
   const overlayText = isInactive
@@ -83,6 +85,8 @@ export default function Post({ data }: { data: NoticeShopItem }) {
   }
 
   const handleClick = () => {
+    addRecentlyViewed(data);
+
     const isOwnerPage = location.pathname.startsWith('/owner');
 
     const path = isOwnerPage
