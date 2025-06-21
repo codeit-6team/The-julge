@@ -50,6 +50,9 @@ export default function Notice() {
     const userId = localStorage.getItem('userId');
     const fetchNotice = async () => {
       setIsLoading(true);
+      // notice 컴포넌트 재사용 문제 해결을 위한 데이터 초기화
+      setNoticeData(null);
+      setApplicationInfo({ isApplied: false, applicationId: null });
       try {
         const data = await getShopNotice(shopId, noticeId);
         setNoticeData(data.item);
@@ -67,6 +70,12 @@ export default function Notice() {
             setApplicationInfo({
               isApplied: true,
               applicationId: appliedApplication.item.id,
+            });
+          } else {
+            // 컴포넌트 재사용 문제 해결을 위한 데이터 초기화
+            setApplicationInfo({
+              isApplied: false,
+              applicationId: null,
             });
           }
         }
