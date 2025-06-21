@@ -32,7 +32,7 @@ export interface NoticeShopItem extends NoticeItem {
 
 // application까지 포함된 상세형 Notice (상세 조회 시 사용)
 export interface NoticeDetailItem extends NoticeShopItem {
-  currentUserApplication?: {
+  currentUserApplication: null | {
     item: ApplicationItem;
   };
 }
