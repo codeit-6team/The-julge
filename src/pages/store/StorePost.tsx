@@ -4,6 +4,7 @@ import { getShopNotice, type NoticeDetailItem } from '@/api/noticeApi';
 import Footer from '@/components/layout/Footer';
 import PostLarge from '@/components/common/PostLarge';
 import Button from '@/components/common/Button';
+import Table from '@/components/common/table/Table';
 
 export default function StorePost() {
   const { shopId, noticeId } = useParams();
@@ -50,9 +51,14 @@ export default function StorePost() {
         </div>
       </section>
       <section className="w-full flex-1 px-12 pt-40 pb-80 md:px-32 md:py-60">
-        <h1 className="text-h3/24 font-bold text-black md:text-h1/42 md:text-[#000]">
-          신청자 목록
-        </h1>
+        <div className="mx-auto flex max-w-964 flex-col gap-16 md:gap-32">
+          <h1 className="text-h3/24 font-bold text-black md:text-h1/42 md:text-[#000]">
+            신청자 목록
+          </h1>
+          {shopId && noticeId && (
+            <Table mode="notice" shopId={shopId} noticeId={noticeId} />
+          )}
+        </div>
       </section>
       <Footer />
     </div>
