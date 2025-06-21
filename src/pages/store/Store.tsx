@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getUser } from '@/api/userApi';
 import type { ShopItem } from '@/api/shopApi';
 import { getShopNotices, type NoticeInfo } from '@/api/noticeApi';
@@ -153,14 +153,10 @@ export default function Store() {
             {notices[0] ? (
               <div className="grid grid-cols-2 gap-x-9 gap-y-16 md:gap-x-14 md:gap-y-32 lg:grid-cols-3">
                 {notices.map((notice) => (
-                  <Link
+                  <Post
                     key={notice.item.id}
-                    to={`/owner/post/${notice.item.id}`}
-                  >
-                    <Post
-                      data={{ ...notice.item, shop: { item: shop, href: '' } }}
-                    />
-                  </Link>
+                    data={{ ...notice.item, shop: { item: shop, href: '' } }}
+                  />
                 ))}
               </div>
             ) : (
