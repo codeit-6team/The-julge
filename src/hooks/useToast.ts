@@ -9,7 +9,7 @@ export function useToast(duration: number = 2000) {
     isVisible: false,
   });
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // 토스트를 보여주는 함수
   const showToast = useCallback(
