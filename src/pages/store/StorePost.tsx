@@ -21,6 +21,7 @@ export default function StorePost() {
   useEffect(() => {
     if (!localStorage.getItem('userId')) {
       setModalType('login');
+      return;
     }
 
     if (!shopId || !noticeId) return;
