@@ -92,7 +92,7 @@ export default function Post({ data }: { data: NoticeShopItem }) {
     navigate(path);
   };
   return (
-    <div
+    <button
       onClick={handleClick}
       className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348"
     >
@@ -167,6 +167,6 @@ export default function Post({ data }: { data: NoticeShopItem }) {
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 }
