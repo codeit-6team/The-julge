@@ -7,6 +7,11 @@ import Button from '@/components/common/Button';
 import Table from '@/components/common/table/Table';
 import Modal from '@/components/common/Modal';
 
+const MODAL_MESSAGE = {
+  notice: '존재하지 않는 공고입니다.',
+  login: '로그인이 필요합니다.',
+};
+
 export default function StorePost() {
   const { shopId, noticeId } = useParams();
   const [notice, setNotice] = useState<NoticeDetailItem>();
@@ -70,7 +75,7 @@ export default function StorePost() {
           )}
         </div>
       </section>
-      {modalType && <Modal>존재하지 않는 공고입니다.</Modal>}
+      {modalType && <Modal>{MODAL_MESSAGE[modalType]}</Modal>}
       <Footer />
     </div>
   );
