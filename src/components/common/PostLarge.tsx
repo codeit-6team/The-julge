@@ -67,10 +67,10 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
       <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346">
         <div className="flex flex-col gap-8">
           <div
-            className="flex flex-col justify-between md:flex-row md:items-center"
+            className="flex items-center gap-4 md:gap-8"
             title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
           >
-            <div className="truncate text-lg/23 font-bold md:text-h2/29 lg:max-w-110">
+            <div className="text-h2/29 font-bold md:text-h1/34">
               {hourlyPay.toLocaleString()}원
             </div>
             {isHigherPay && status === 'ACTIVE' && (
