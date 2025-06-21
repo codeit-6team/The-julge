@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { NoticeShopItem } from '@/api/noticeApi';
 
 const loadFromStorage = (): NoticeShopItem[] => {
@@ -42,5 +42,9 @@ export function useRecentlyViewed() {
     setRecentlyViewed(limitedPosts);
   };
 
-  return { recentlyViewed, addRecentlyViewed };
+  const refreshRecentlyViewed = useCallback(() => {
+    setRecentlyViewed(loadFromStorage());
+  }, []);
+
+  return { recentlyViewed, addRecentlyViewed, refreshRecentlyViewed };
 }
