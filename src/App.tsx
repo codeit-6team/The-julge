@@ -20,7 +20,7 @@ export default function App() {
       <Routes>
         {/* 공통 페이지 */}
         <Route path="/" element={<NoticeList />} />
-        <Route path=":shopId/:userId" element={<Notice />} />
+        <Route path=":shopId/:noticeId" element={<Notice />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
 
@@ -32,7 +32,7 @@ export default function App() {
           </Route>
           <Route path="post">
             <Route index element={<StoreForm />} />
-            <Route path=":shopId/:userId" element={<StorePost />} />
+            <Route path=":shopId/:noticeId" element={<StorePost />} />
           </Route>
         </Route>
 
