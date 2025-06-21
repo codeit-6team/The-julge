@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import formatWorkTime from '@/utils/formatWorkTime';
 import ic_clock from '@/assets/icons/clock-red.svg';
 import ic_location from '@/assets/icons/location-red.svg';
@@ -18,7 +19,15 @@ function getStatus(
   return 'ACTIVE';
 }
 
-export default function PostLarge({ data }: { data: NoticeDetailItem }) {
+export default function PostLarge({
+  className = '',
+  data,
+  children,
+}: {
+  className?: string;
+  data: NoticeDetailItem;
+  children?: ReactNode;
+}) {
   const {
     hourlyPay,
     workhour,
@@ -58,7 +67,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
   }
 
   return (
-    <div className="text-body2/22 font-regular md:text-body1/26">
+    <div className={`text-body2/22 font-regular md:text-body1/26 ${className}`}>
       <div className="flex min-h-356 flex-col items-stretch justify-between rounded-xl border border-gray-20 bg-white p-20 md:p-24 lg:flex-row">
         <div className="relative h-178 md:h-360 lg:h-auto lg:w-539">
           <div
@@ -118,6 +127,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
             </div>
             {shopDescription}
           </div>
+          {children}
         </div>
       </div>
       <div className="mt-12 rounded-xl bg-gray-10 p-20 md:mt-24 md:p-32">
