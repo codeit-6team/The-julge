@@ -120,7 +120,12 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           </div>
         </div>
       </div>
-      <div>{noticeDescription}</div>
+      <div className="mt-12 rounded-xl bg-gray-10 p-20 md:mt-24 md:p-32">
+        <div className="mb-8 leading-17 font-bold md:mb-12 md:leading-20">
+          공고 설명
+        </div>
+        {noticeDescription}
+      </div>
     </div>
   );
 }
