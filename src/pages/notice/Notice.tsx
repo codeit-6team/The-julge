@@ -29,6 +29,14 @@ interface ModalState {
   type?: ModalType;
 }
 
+// 상태 계산
+function getStatus(startsAt: string, closed: boolean) {
+  const now = new Date();
+  const startDate = new Date(startsAt);
+
+  return closed || now >= startDate;
+}
+
 export default function Notice() {
   const navigate = useNavigate();
   const { shopId, noticeId } = useParams();
@@ -45,6 +53,7 @@ export default function Notice() {
     message: '',
   });
   const [buttonSize, setButtonSize] = useState<'large' | 'medium'>('medium');
+  const [closed, setClosed] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -73,6 +82,7 @@ export default function Notice() {
       try {
         const data = await getShopNotice(shopId!, noticeId!);
         setNoticeData(data.item);
+        setClosed(getStatus(data.item.startsAt, data.item.closed));
         if (userId) {
           const applicationsResult = await getUserApplications(userId);
           const userApplications = applicationsResult.items;
@@ -182,10 +192,7 @@ export default function Notice() {
 
   // 버튼 렌더링 로직
   const renderApplyButton = () => {
-    if (!noticeData) {
-      return null;
-    }
-    if (noticeData.closed) {
+    if (closed) {
       return (
         <Button size={buttonSize} disabled>
           신청 불가
