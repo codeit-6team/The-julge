@@ -11,7 +11,7 @@ export default function StorePost() {
   const { shopId, noticeId } = useParams();
   const [notice, setNotice] = useState<NoticeDetailItem>();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'notice' | null>(null);
 
   useEffect(() => {
     if (!shopId || !noticeId) return;
@@ -21,7 +21,7 @@ export default function StorePost() {
         const { item } = await getShopNotice(shopId, noticeId);
         setNotice(item);
       } catch {
-        setIsModalOpen(true);
+        setModalType('notice');
       }
     })();
   }, [shopId, noticeId]);
@@ -66,7 +66,7 @@ export default function StorePost() {
           )}
         </div>
       </section>
-      {isModalOpen && <Modal>존재하지 않는 공고입니다.</Modal>}
+      {modalType && <Modal>존재하지 않는 공고입니다.</Modal>}
       <Footer />
     </div>
   );
