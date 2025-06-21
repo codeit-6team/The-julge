@@ -24,7 +24,7 @@ export default function StorePost() {
             식당
           </div>
           <h1 className="text-h3/24 font-bold text-black md:text-h1/34 md:text-[#000]">
-            {notice?.shop.item.name}아
+            {notice?.shop.item.name}
           </h1>
         </div>
       </section>
