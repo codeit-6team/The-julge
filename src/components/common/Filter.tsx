@@ -73,7 +73,7 @@ export default function Filter({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-5 flex w-full flex-col gap-24 overflow-y-auto border border-gray-20 bg-white px-12 py-24 shadow-custom md:static md:max-w-390 md:rounded-xl md:px-19">
+    <div className="fixed inset-0 z-5 scrollbar-hide flex w-full flex-col gap-24 overflow-y-auto border border-gray-20 bg-white px-12 py-24 shadow-custom md:static md:max-w-390 md:rounded-xl md:px-19">
       <div className="flex flex-row items-center justify-between">
         <h3 className="text-h3 font-bold text-black">상세 필터</h3>
         <button
