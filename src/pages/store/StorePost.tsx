@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getShopNotice, type NoticeDetailItem } from '@/api/noticeApi';
 import Footer from '@/components/layout/Footer';
 import PostLarge from '@/components/common/PostLarge';
+import Button from '@/components/common/Button';
 
 export default function StorePost() {
   const { shopId, noticeId } = useParams();
@@ -39,7 +40,13 @@ export default function StorePost() {
               {notice?.shop.item.name}
             </h1>
           </div>
-          {notice && <PostLarge data={notice} />}
+          {notice && (
+            <PostLarge data={notice}>
+              <Button size={isMobile ? 'medium' : 'large'} solid={false}>
+                공고 편집하기
+              </Button>
+            </PostLarge>
+          )}
         </div>
       </section>
       <section className="w-full flex-1 px-12 pt-40 pb-80 md:px-32 md:py-60">
