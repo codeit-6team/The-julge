@@ -5,9 +5,11 @@ import Footer from '@/components/layout/Footer';
 import PostLarge from '@/components/common/PostLarge';
 import Modal from '@/components/common/Modal';
 import Button from '@/components/common/Button';
+import Toast from '@/components/common/Toast';
+import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
+import { useToast } from '@/hooks/useToast';
 import { getUser } from '@/api/userApi';
 import { getShopNotice, type NoticeDetailItem } from '@/api/noticeApi';
-import { useRecentlyViewed } from '@/hooks/useRecentlyViewed';
 import {
   getUserApplications,
   postNoticeApplications,
@@ -31,6 +33,7 @@ export default function Notice() {
   const navigate = useNavigate();
   const { shopId, noticeId } = useParams();
   const { recentlyViewed, refreshRecentlyViewed } = useRecentlyViewed();
+  const { toast, showToast } = useToast();
   const [noticeData, setNoticeData] = useState<NoticeDetailItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [applicationInfo, setApplicationInfo] = useState<ApplicationInfoState>({
@@ -126,6 +129,7 @@ export default function Notice() {
           isApplied: true,
           applicationId: newApplicationId,
         });
+        showToast('신청 완료!');
       } else {
         setModal({
           isOpen: true,
@@ -157,6 +161,7 @@ export default function Notice() {
         isOpen: false,
         message: '',
       });
+      showToast('취소했어요');
     } catch (error) {
       setModal({
         isOpen: true,
@@ -265,6 +270,15 @@ export default function Notice() {
                 {modal.message}
               </Modal>
             )}
+            <div
+              className={`fixed bottom-100 left-1/2 -translate-x-1/2 transform transition-all duration-300 ease-out ${
+                toast.isVisible
+                  ? 'translate-y-0 opacity-100'
+                  : 'pointer-events-none translate-y-10 opacity-0'
+              } `}
+            >
+              <Toast>{toast.message}</Toast>
+            </div>
           </div>
         )
       )}
