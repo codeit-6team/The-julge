@@ -11,9 +11,13 @@ export default function StorePost() {
   const { shopId, noticeId } = useParams();
   const [notice, setNotice] = useState<NoticeDetailItem>();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const [modalType, setModalType] = useState<'notice' | null>(null);
+  const [modalType, setModalType] = useState<'notice' | 'login' | null>(null);
 
   useEffect(() => {
+    if (!localStorage.getItem('userId')) {
+      setModalType('login');
+    }
+
     if (!shopId || !noticeId) return;
 
     (async () => {
