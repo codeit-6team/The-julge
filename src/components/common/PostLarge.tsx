@@ -4,10 +4,6 @@ import ClockGray from '@/assets/icons/clock-gray.svg';
 import LocationRed from '@/assets/icons/location-red.svg';
 import LocationGray from '@/assets/icons/location-gray.svg';
 import ArrowUpWhite from '@/assets/icons/arrow-up-white.svg';
-import ArrowUpGray from '@/assets/icons/arrow-up-gray.svg';
-import ArrowUpRed40 from '@/assets/icons/arrow-up-red40.svg';
-import ArrowUpRed30 from '@/assets/icons/arrow-up-red30.svg';
-import ArrowUpRed20 from '@/assets/icons/arrow-up-red20.svg';
 import PostImg from '@/assets/images/post-default.png';
 import type { NoticeDetailItem } from '@/api/noticeApi';
 
@@ -56,26 +52,16 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
   const background = imageUrl ?? PostImg;
 
   let badgeBgColor = '';
-  let badgeTextColor = '';
-  let arrowIcon = '';
 
   if (isInactive) {
     badgeBgColor = 'bg-gray-20';
-    badgeTextColor = 'text-gray-20';
-    arrowIcon = ArrowUpGray;
   } else {
     if (percent >= 50) {
       badgeBgColor = 'bg-red-40';
-      badgeTextColor = 'text-red-40';
-      arrowIcon = ArrowUpRed40;
     } else if (percent >= 30) {
       badgeBgColor = 'bg-red-30';
-      badgeTextColor = 'text-red-30';
-      arrowIcon = ArrowUpRed30;
     } else if (percent >= 1) {
       badgeBgColor = 'bg-red-20 ';
-      badgeTextColor = 'text-red-20';
-      arrowIcon = ArrowUpRed20;
     }
   }
 
@@ -131,24 +117,12 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
             {hourlyPay.toLocaleString()}원
           </div>
           {isHigherPay && (
-            <>
-              {/*데스크탑, 태블릿*/}
-              <div
-                className={`hidden h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white md:flex ${badgeBgColor}`}
-              >
-                <div className="max-w-168 truncate">
-                  기존 시급보다 {percent}%
-                </div>
-                <img src={ArrowUpWhite} alt="위 화살표" className="h-20 w-20" />
-              </div>
-              {/*모바일*/}
-              <div
-                className={`flex items-center gap-2 text-caption/16 md:hidden ${badgeTextColor}`}
-              >
-                <div className="truncate">기존 시급보다 {percent}%</div>
-                <img src={arrowIcon} alt="위 화살표" className="h-16 w-16" />
-              </div>
-            </>
+            <div
+              className={`flex h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white ${badgeBgColor}`}
+            >
+              <div className="max-w-168 truncate">기존 시급보다 {percent}%</div>
+              <img src={ArrowUpWhite} alt="위 화살표" className="h-20 w-20" />
+            </div>
           )}
         </div>
       </div>
