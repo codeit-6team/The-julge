@@ -94,7 +94,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
               alt="시계 아이콘"
               className="size-16 md:size-20"
             />
-            <span>{dateTime}</span>
+            {dateTime}
           </div>
           <div className="flex items-center gap-6 text-gray-50">
             <img
@@ -102,7 +102,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
               alt="위치 아이콘"
               className="size-16 md:size-20"
             />
-            <span>{address1}</span>
+            {address1}
           </div>
         </div>
       </div>
