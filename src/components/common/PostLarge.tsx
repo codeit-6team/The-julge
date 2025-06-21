@@ -75,12 +75,16 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
             </div>
             {isHigherPay && status === 'ACTIVE' && (
               <div
-                className={`flex h-36 max-w-168 items-center justify-center gap-2 rounded-[20px] p-12 text-body2 font-bold text-white ${badgeBgColor}`}
+                className={`flex h-24 items-center justify-center gap-2 rounded-full px-8 py-4 text-caption/16 text-white md:h-36 md:p-12 md:text-body2 md:font-bold ${badgeBgColor}`}
               >
-                <div className="max-w-168 truncate">
+                <div className="max-w-122 truncate">
                   기존 시급보다 {percent}%
                 </div>
-                <img src={ic_arrow} alt="위 화살표" className="h-20 w-20" />
+                <img
+                  src={ic_arrow}
+                  alt="위 화살표"
+                  className="size-16 md:size-20"
+                />
               </div>
             )}
           </div>
