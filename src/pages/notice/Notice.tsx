@@ -123,7 +123,8 @@ export default function Notice() {
   const handleApply = async () => {
     try {
       const userId = localStorage.getItem('userId');
-      if (!userId) {
+      const userRole = localStorage.getItem('userRole');
+      if (!userId || !userRole) {
         setModal({
           isOpen: true,
           message: '로그인이 필요합니다.',
@@ -131,7 +132,18 @@ export default function Notice() {
         });
         return;
       }
+
+      if (userRole === 'employer') {
+        setModal({
+          isOpen: true,
+          message: '사장님 계정으로 지원할 수 없습니다.',
+          type: 'confirm',
+        });
+        return;
+      }
+
       const userInfo = await getUser(userId);
+
       if (userInfo.item.name) {
         const result = await postNoticeApplications(shopId!, noticeId!);
         const newApplicationId = result.item.id;
