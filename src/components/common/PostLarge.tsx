@@ -25,7 +25,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
     startsAt,
     closed,
     shop: {
-      item: { name, address1, imageUrl, originalHourlyPay },
+      item: { address1, imageUrl, originalHourlyPay },
     },
   } = data;
 
@@ -66,12 +66,6 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
       </div>
       <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346">
         <div className="flex flex-col gap-8">
-          <div
-            className="truncate text-body1/20 font-bold md:text-h3/24"
-            title={`${name}`}
-          >
-            {name}
-          </div>
           <div
             className="flex flex-col justify-between md:flex-row md:items-center"
             title={`${hourlyPay.toLocaleString()}원${isHigherPay ? `: 기존 시급보다 ${percent}%` : ''}`}
