@@ -52,10 +52,10 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
   }
 
   return (
-    <div className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348">
-      <div className="relative">
+    <div className="flex min-h-356 flex-col items-stretch justify-between rounded-xl border border-gray-20 bg-white p-20 md:p-24 lg:flex-row">
+      <div className="relative h-178 md:h-360 lg:h-auto lg:w-539">
         <div
-          className="relative h-84 w-full rounded-xl bg-cover bg-center md:h-171 lg:h-160"
+          className="h-full w-full rounded-xl bg-cover bg-center"
           style={{ backgroundImage: `url(${background})` }}
         />
         {status === 'ACTIVE' || (
@@ -64,7 +64,7 @@ export default function PostLarge({ data }: { data: NoticeDetailItem }) {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-16 text-black">
+      <div className="mt-12 flex flex-col justify-between gap-24 text-black md:mt-16 md:gap-40 lg:w-346">
         <div className="flex flex-col gap-8">
           <div
             className="truncate text-body1/20 font-bold md:text-h3/24"
