@@ -7,6 +7,7 @@ import PostLarge from '@/components/common/PostLarge';
 export default function StorePost() {
   const { shopId, noticeId } = useParams();
   const [notice, setNotice] = useState<NoticeDetailItem>();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
     if (!shopId || !noticeId) return;
@@ -16,6 +17,15 @@ export default function StorePost() {
       setNotice(item);
     })();
   }, [shopId, noticeId]);
+
+  // 반응형
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="flex min-h-[calc(100vh-108px)] flex-col justify-between bg-gray-5 md:min-h-[calc(100vh_-_70px)]">
