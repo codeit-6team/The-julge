@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Post from '@/components/common/Post';
 import Dropdown from '@/components/common/Dropdown';
 import { SORT_OPTIONS } from '@/constants/dropdownOptions';
@@ -7,6 +7,7 @@ import Filter from '@/components/common/Filter';
 import { getNotices } from '@/api/noticeApi';
 import type { NoticeShopItem } from '@/api/noticeApi';
 import { Link } from 'react-router-dom';
+import Footer from '@/components/layout/Footer';
 
 type FilterValues = {
   address?: string[] | null;
@@ -54,6 +55,10 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
   const [filterOpen, setFilterOpen] = useState<boolean>(false); // 필터 모달 오픈
   const [loading, setLoading] = useState(false); // 로딩 에러처리
   const [error, setError] = useState<string | null>(null); // 로딩 에러처리
+  const [recommendedNotices, setRecommendedNotices] = useState<
+    NoticeShopItem[]
+  >([]); // 맞춤 공고 보이는 목록
+  const scrollRef = useRef<HTMLDivElement | null>(null); // 자동 스크롤
 
   useEffect(() => {
     setLoading(true);
@@ -70,7 +75,8 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     };
 
     const cleanedQuery = Object.fromEntries(
-      Object.entries(rawQuery).filter(([, v]) => v !== undefined && v !== ''),
+      // fromEntries() 키-값 쌍의 배열을 객체로 변환
+      Object.entries(rawQuery).filter(([, v]) => v !== undefined && v !== ''), // entries() 객체의 속성을 배열로 반환
     );
 
     getNotices(cleanedQuery)
@@ -81,6 +87,52 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [search, sort, filterValues, currentPage]);
+
+  // 필터 기준으로 맞춤 공고 추천
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const result = await getNotices({
+          offset: 0,
+          limit: 9,
+          sort: sort ? sortMap[sort] : 'time',
+        });
+        setRecommendedNotices(result.items.map((i) => i.item));
+      } catch (error) {
+        console.error('추천 공고 에러', error);
+      }
+    };
+
+    if (!search) {
+      fetchRecommended();
+    }
+  }, [sort, search]);
+
+  // 자동 스크롤
+  useEffect(() => {
+    if (!recommendedNotices.length || !scrollRef.current) return;
+
+    const container = scrollRef.current;
+
+    const interval = setInterval(() => {
+      const card = container.querySelector('a'); // 첫 번째 카드
+      if (!card) return;
+
+      const cardWidth = card.getBoundingClientRect().width; // getBoundingClientRect 브라우저에 실제 카드 너비를 가져옴
+      const style = window.getComputedStyle(container); // getComputedStyle 적용된 css 찾기
+      const gap = parseInt(style.columnGap || style.gap || '0', 10);
+
+      const scrollAmount = container.scrollLeft + cardWidth + gap; // 카드 1개 너비 + 간격만큼 이동 거리 계산
+      const maxScrollLeft = container.scrollWidth - container.clientWidth; // 최대 거리 계산 / scrollWidth 총 길이 / clientWidth 보이는 너비
+
+      if (scrollAmount >= maxScrollLeft - 1) {
+        container.scrollTo({ left: 0, behavior: 'smooth' }); // 처음으로 이동
+      } else {
+        container.scrollTo({ left: scrollAmount, behavior: 'smooth' }); // 현 위치에서 이동
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [recommendedNotices]);
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE); // 페이지네이션
   const appliedFilterCount = countAppliedFilters(filterValues); // 필터 적용
@@ -109,17 +161,20 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     <main>
       {/* 맞춤 공고 */}
       {!search && (
-        <article className="bg-red-10 py-40 pl-12">
-          <section className="flex flex-col gap-16">
-            <h2 className="text-h3/24 font-bold">맞춤 공고</h2>
-            <div className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth">
-              {allNotices.slice(0, 9).map((notice) => (
+        <article className="bg-red-10 py-40 pl-12 md:py-60 md:pl-32 lg:px-0">
+          <section className="flex flex-col gap-16 md:gap-32 lg:mx-auto lg:max-w-964">
+            <h2 className="text-h3/24 font-bold md:text-h1/34">맞춤 공고</h2>
+            <div
+              className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth md:gap-14"
+              ref={scrollRef}
+            >
+              {recommendedNotices.slice(0, 9).map((notice) => (
                 <Link
                   key={notice.id}
                   to={`/shops/${notice.shop.item.id}/notices/${notice.id}`}
-                  className="block last:pr-12"
+                  className="block last:pr-12 md:last:pr-32 lg:last:pr-0"
                 >
-                  <div className="w-171">
+                  <div className="min-w-171 md:min-w-312">
                     <Post data={notice} />
                   </div>
                 </Link>
@@ -130,16 +185,16 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       )}
 
       {/* 전체 공고 */}
-      <article className="px-12 pt-40 pb-80">
-        <section className="flex flex-col gap-16">
-          <div className="flex flex-col gap-16">
-            <h2 className="text-h3/25 font-bold">
+      <article className="px-12 pt-40 pb-68 md:px-32 md:pt-60 md:pb-48 lg:mx-auto lg:max-w-964 lg:px-0">
+        <section className="flex flex-col gap-16 md:gap-32">
+          <div className="flex flex-col gap-16 md:flex-row md:justify-between">
+            <h2 className="text-h3/25 font-bold md:text-h1/34">
               {search ? (
                 <>
-                  <span className="text-h3/24 font-bold text-primary">
+                  <span className="text-h3/24 font-bold text-primary md:text-h1/34">
                     {search}
                   </span>
-                  <span className="text-h3/24 font-bold">
+                  <span className="text-h3/24 font-bold md:text-h1/34">
                     에 대한 공고 목록
                   </span>
                 </>
@@ -147,7 +202,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
                 '전체 공고'
               )}
             </h2>
-            <div className="flex gap-10">
+            <div className="flex items-center gap-10">
               <Dropdown
                 options={SORT_OPTIONS}
                 variant="filter"
@@ -156,25 +211,23 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
               />
               <div className="relative">
                 <button
-                  className="rounded-[5px] bg-red-30 px-12 py-6 text-body2/18 text-white"
+                  className="min-w-79 rounded-[5px] bg-red-30 px-12 py-6 text-body2/18 text-white"
                   type="button"
                   onClick={() => setFilterOpen(true)}
                 >
-                  상세필터
+                  상세 필터
                   {appliedFilterCount > 0 && (
                     <span className="ml-2">({appliedFilterCount})</span>
                   )}
                 </button>
                 {filterOpen && (
-                  <div className="absolute top-full right-365 z-50 mt-8">
-                    <div className="absolute z-50 mt-2">
-                      <Filter
-                        open={filterOpen}
-                        onClose={() => setFilterOpen(false)}
-                        onApply={handleApplyFilter}
-                        defaultValues={filterValues}
-                      />
-                    </div>
+                  <div className="absolute right-0 z-50 mt-5">
+                    <Filter
+                      open={filterOpen}
+                      onClose={() => setFilterOpen(false)}
+                      onApply={handleApplyFilter}
+                      defaultValues={filterValues}
+                    />
                   </div>
                 )}
               </div>
@@ -186,7 +239,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-x-8 gap-y-16 sm:grid-cols-2 sm:gap-x-14 sm:gap-y-32 lg:grid-cols-3">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-16 md:gap-x-14 md:gap-y-32 lg:grid-cols-3">
                 {allNotices.map((notice) => (
                   <Link
                     key={notice.id}
@@ -197,7 +250,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
                   </Link>
                 ))}
               </div>
-              <div className="mt-24">
+              <div className="">
                 <Pagination
                   totalPages={totalPages}
                   currentPage={currentPage}
@@ -208,6 +261,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
           )}
         </section>
       </article>
+      <Footer />
     </main>
   );
 }
