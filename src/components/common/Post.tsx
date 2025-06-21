@@ -105,7 +105,7 @@ export default function Post({ data }: { data: NoticeWithShopItem }) {
           <div
             className={`${isInactive ? 'text-gray-30' : 'text-gray-50'} flex flex-col gap-8 text-caption/16 font-regular md:text-body2/22`}
           >
-            <div className="flex items-center gap-6">
+            <div className="flex gap-6 md:items-center">
               <img
                 src={clockIcon}
                 alt="시계 아이콘"
