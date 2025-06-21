@@ -104,7 +104,7 @@ export default function StoreForm() {
   const handleModalConfirm = useCallback(() => {
     if (modal.message === '등록이 완료되었습니다.') {
       setModal({ isOpen: false, message: '' });
-      navigate(`/owner/post/${noticeId.current}`);
+      navigate(`/owner/post/${shopId.current}/${noticeId.current}`);
     } else if (modal.message.includes('로그인')) {
       setModal({ isOpen: false, message: '' });
       navigate('/login');
