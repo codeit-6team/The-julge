@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, type ReactNode } from 'react';
-import { getAlerts, type AlertViewResponse } from '@/api/alertApi';
+import { getAlerts, putAlerts, type AlertViewResponse } from '@/api/alertApi';
 type UserRole = 'employer' | 'employee' | null;
 
 interface AuthContextType {
@@ -8,6 +8,7 @@ interface AuthContextType {
   alarms: AlertViewResponse; // 알림 정보
   login: (token: string, role: UserRole, userId: string) => void; // 로그인 함수
   logout: () => void; // 로그아웃 함수
+  markAlertAsRead: (alertId: string) => void;
 }
 
 const defaultAuthContext: AuthContextType = {
@@ -23,6 +24,7 @@ const defaultAuthContext: AuthContextType = {
   },
   login: () => {},
   logout: () => {},
+  markAlertAsRead: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
@@ -35,12 +37,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const role = localStorage.getItem('userRole') as UserRole;
-    if (token && role) {
-      setIsLoggedIn(true);
-      setRole(role);
-    }
+    const fetchAuth = async () => {
+      const token = localStorage.getItem('accessToken');
+      const userRole = localStorage.getItem('userRole') as UserRole;
+      const userId = localStorage.getItem('userId');
+
+      if (token && userRole && userId) {
+        setIsLoggedIn(true);
+        setRole(userRole);
+        try {
+          const alertRes = await getAlerts(userId);
+          setAlarms(alertRes);
+        } catch (error) {
+          console.error('앱 로딩 중 알림 가져오기 실패:', error);
+        }
+      }
+    };
+
+    fetchAuth();
   }, []);
 
   const login = async (token: string, role: UserRole, userId: string) => {
@@ -66,8 +80,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAlarms(defaultAuthContext.alarms);
   };
 
+  const markAlertAsRead = async (alertId: string) => {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      console.error('읽음 처리 실패: userId를 찾을 수 없습니다.');
+      return;
+    }
+
+    setAlarms((prevAlarms) => ({
+      ...prevAlarms,
+      items: prevAlarms.items.filter((alert) => alert.item.id !== alertId),
+    }));
+
+    try {
+      await putAlerts(userId, alertId);
+    } catch (error) {
+      console.error('API - 알림 읽음 처리 실패:', error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ isLoggedIn, role, alarms, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, role, alarms, login, logout, markAlertAsRead }}
+    >
       {children}
     </AuthContext.Provider>
   );
