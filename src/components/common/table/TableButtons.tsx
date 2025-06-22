@@ -12,13 +12,6 @@ export default function TableButtons({ index, click }: Props) {
   const [status, setStatus] = useState<'pending' | 'accepted' | 'rejected'>(
     'pending',
   );
-  const [modal, setModal] = useState<{
-    isOpen: boolean;
-    status: 'accepted' | 'rejected';
-  }>({
-    isOpen: false,
-    status: 'accepted',
-  });
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const closeModal = () =>
