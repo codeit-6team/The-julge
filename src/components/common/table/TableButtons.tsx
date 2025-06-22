@@ -1,7 +1,5 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../Button';
-import TableStatus from './TableStatus';
-import { putNoticeApplications } from '@/api/applicationApi';
 
 interface Props {
   index: number;
@@ -9,22 +7,7 @@ interface Props {
 }
 
 export default function TableButtons({ index, click }: Props) {
-  const [status, setStatus] = useState<'pending' | 'accepted' | 'rejected'>(
-    'pending',
-  );
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  const handleModalClick = async () => {
-    closeModal();
-    setStatus(modal.status);
-    try {
-      await putNoticeApplications(shopId, noticeId, applicaitonId, {
-        status: modal.status,
-      });
-    } catch {
-      setStatus('pending');
-    }
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,7 +17,7 @@ export default function TableButtons({ index, click }: Props) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return status === 'pending' ? (
+  return (
     <div className="flex gap-8 md:gap-12">
       <Button
         solid={false}
@@ -59,7 +42,5 @@ export default function TableButtons({ index, click }: Props) {
         승인하기
       </Button>
     </div>
-  ) : (
-    <TableStatus status={status} />
   );
 }
