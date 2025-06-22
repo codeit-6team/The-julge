@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Post from '@/components/common/Post';
 import Dropdown from '@/components/common/Dropdown';
 import { SORT_OPTIONS } from '@/constants/dropdownOptions';
@@ -8,6 +8,7 @@ import { getNotices } from '@/api/noticeApi';
 import type { NoticeShopItem } from '@/api/noticeApi';
 import Footer from '@/components/layout/Footer';
 import Modal from '@/components/common/Modal';
+import { getUser } from '@/api/userApi';
 
 type FilterValues = {
   address?: string[] | null;
@@ -58,16 +59,31 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
   const [recommendedNotices, setRecommendedNotices] = useState<
     NoticeShopItem[]
   >([]); // 맞춤 공고 보이는 목록
-  const scrollRef = useRef<HTMLDivElement | null>(null); // 자동 스크롤
+  const sliderIndexRef = useRef(0); // 카드 인덱스
+  const sliderRef = useRef<HTMLDivElement | null>(null); // 자동 스크롤
   const [shouldShowEmpty, setShouldShowEmpty] = useState(false); // 깜빡임 방지용
   const [showModal, setShowModal] = useState(false);
 
+  // 지난 공고 안보이게 처리
   const getTomorrowISOString = () => {
     const date = new Date();
     date.setDate(date.getDate() + 1);
     date.setHours(0, 0, 0, 0);
     return date.toISOString();
   };
+
+  // 기본 공고 가져오기
+  const fetchDefaultNotices = useCallback(async (): Promise<
+    NoticeShopItem[]
+  > => {
+    const result = await getNotices({
+      offset: 0,
+      limit: 9,
+      startsAtGte: getTomorrowISOString(),
+      sort: 'shop',
+    });
+    return result.items.map((i) => i.item).filter((item) => !item.closed);
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -102,52 +118,83 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
       .finally(() => setLoading(false));
   }, [search, sort, filterValues, currentPage]);
 
-  // 필터 기준으로 맞춤 공고 추천
+  // 유저 위치 기반 맞춤 공고 추천
   useEffect(() => {
     const fetchRecommended = async () => {
       try {
+        const userId = localStorage.getItem('userId');
+
+        // 로그아웃 상태 -> 기본 공고
+        if (!userId) {
+          const notices = await fetchDefaultNotices();
+          setRecommendedNotices(notices);
+          return;
+        }
+
+        // 로그인 상태 -> 선호 지역
+        const userInfo = await getUser(userId);
+        const preferredAddress = userInfo.item.address;
+
         const result = await getNotices({
           offset: 0,
           limit: 9,
-          sort: sort ? sortMap[sort] : 'time',
           startsAtGte: getTomorrowISOString(),
+          ...(preferredAddress
+            ? { address: preferredAddress }
+            : { sort: 'shop' }),
         });
-        setRecommendedNotices(result.items.map((i) => i.item));
+
+        setRecommendedNotices(
+          result.items.map((i) => i.item).filter((item) => !item.closed),
+        );
       } catch (error) {
         console.error('추천 공고 에러', error);
+        setRecommendedNotices([]);
       }
     };
 
-    if (!search) {
-      fetchRecommended();
-    }
-  }, [sort, search]);
+    fetchRecommended();
+  }, [search, fetchDefaultNotices]);
 
   // 자동 스크롤
+  const autoplaySlider = useCallback(() => {
+    const container = sliderRef.current;
+    if (!container) return;
+
+    const cards = container.querySelectorAll('[data-card]'); // 모든 카드
+    if (!cards.length) return;
+
+    const card = cards[0];
+    const cardWidth = card.getBoundingClientRect().width; // getBoundingClientRect 브라우저에 실제 카드 너비를 가져옴
+    const style = window.getComputedStyle(container); // getComputedStyle 적용된 css 찾기
+    const gap = parseInt(style.columnGap || style.gap || '0', 10);
+    const stepSize = cardWidth + gap;
+
+    sliderIndexRef.current += 1;
+    if (sliderIndexRef.current >= cards.length) {
+      sliderIndexRef.current = 0;
+    }
+
+    container.scrollTo({
+      left: stepSize * sliderIndexRef.current,
+      behavior: 'smooth',
+    });
+  }, []);
+
+  // 스크롤 인덱스 초기화
   useEffect(() => {
-    if (!recommendedNotices.length || !scrollRef.current) return;
+    if (recommendedNotices.length > 0) {
+      sliderIndexRef.current = 0;
+    }
+  }, [recommendedNotices]);
 
-    const container = scrollRef.current;
-
+  // 자동 스크롤 타이머
+  useEffect(() => {
     const interval = setInterval(() => {
-      const card = container.querySelector('[data-card]'); // 첫 번째 카드
-      if (!card) return;
-
-      const cardWidth = card.getBoundingClientRect().width; // getBoundingClientRect 브라우저에 실제 카드 너비를 가져옴
-      const style = window.getComputedStyle(container); // getComputedStyle 적용된 css 찾기
-      const gap = parseInt(style.columnGap || style.gap || '0', 10);
-
-      const scrollAmount = container.scrollLeft + cardWidth + gap; // 카드 1개 너비 + 간격만큼 이동 거리 계산
-      const maxScrollLeft = container.scrollWidth - container.clientWidth; // 최대 거리 계산 / scrollWidth 총 길이 / clientWidth 보이는 너비
-
-      if (scrollAmount >= maxScrollLeft - 1) {
-        container.scrollTo({ left: 0, behavior: 'smooth' }); // 처음으로 이동
-      } else {
-        container.scrollTo({ left: scrollAmount, behavior: 'smooth' }); // 현 위치에서 이동
-      }
+      autoplaySlider();
     }, 4000);
     return () => clearInterval(interval);
-  }, [recommendedNotices]);
+  }, [autoplaySlider]);
 
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE); // 페이지네이션
   const appliedFilterCount = countAppliedFilters(filterValues); // 필터 적용
@@ -184,7 +231,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
               <h2 className="text-h3/24 font-bold md:text-h1/34">맞춤 공고</h2>
               <div
                 className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth md:gap-14"
-                ref={scrollRef}
+                ref={sliderRef}
               >
                 {recommendedNotices.slice(0, 9).map((notice) => (
                   <div
