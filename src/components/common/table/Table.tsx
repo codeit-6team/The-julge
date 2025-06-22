@@ -7,6 +7,7 @@ import formatWorkTime from '@/utils/formatWorkTime';
 import {
   getNoticeApplications,
   getUserApplications,
+  putNoticeApplications,
 } from '@/api/applicationApi';
 
 interface UserProps {
@@ -54,6 +55,31 @@ export default function Table(props: UserProps | NoticeProps) {
       status,
       dataIndex,
     });
+  };
+
+  const handleModalClick = async () => {
+    closeModal();
+    if (mode === 'user') return;
+
+    setDatas((prev) => {
+      prev[modal.dataIndex][3] = modal.status;
+      return prev;
+    });
+    try {
+      await putNoticeApplications(
+        props.shopId,
+        props.noticeId,
+        datas[modal.dataIndex][4] ?? '',
+        {
+          status: modal.status,
+        },
+      );
+    } catch {
+      setDatas((prev) => {
+        prev[modal.dataIndex][3] = 'pending';
+        return prev;
+      });
+    }
   };
 
   useEffect(() => {
