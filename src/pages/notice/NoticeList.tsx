@@ -182,7 +182,7 @@ export default function NoticeList({ search = '' }: { search?: string }) {
           {error}
         </Modal>
       )}
-      <main>
+      <main className="flex min-h-[calc(100vh-102px)] flex-col justify-between md:min-h-[calc(100vh-70px)]">
         {/* 맞춤 공고 */}
         {!search && (
           <article className="bg-red-10 py-40 pl-12 md:py-60 md:pl-32 lg:px-0">
@@ -205,7 +205,7 @@ export default function NoticeList({ search = '' }: { search?: string }) {
         )}
 
         {/* 전체 공고 */}
-        <article className="px-12 pt-40 pb-68 md:px-32 md:pt-60 md:pb-48 lg:mx-auto lg:max-w-964 lg:px-0">
+        <article className="flex-1 px-12 pt-40 pb-68 md:px-32 md:pt-60 md:pb-48 lg:mx-auto lg:max-w-964 lg:px-0">
           <section className="flex flex-col gap-16 md:gap-32">
             <div className="flex flex-col gap-16 md:flex-row md:justify-between">
               <h2 className="text-h3/25 font-bold md:text-h1/34">
