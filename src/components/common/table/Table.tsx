@@ -41,6 +41,11 @@ export default function Table(props: UserProps | NoticeProps) {
     status: 'accepted',
   });
 
+  const closeModal = () =>
+    setModal((prev) => {
+      return { ...prev, isOpen: false };
+    });
+
   useEffect(() => {
     (async () => {
       try {
@@ -170,7 +175,12 @@ export default function Table(props: UserProps | NoticeProps) {
         </div>
       </div>
       {modal.isOpen && (
-        <Modal option="action" yesButtonContent="예">
+        <Modal
+          option="action"
+          yesButtonContent="예"
+          onButtonClick={closeModal}
+          onClose={closeModal}
+        >
           신청을 {modal.status === 'accepted' ? '승인' : '거절'}하시겠어요?
         </Modal>
       )}
