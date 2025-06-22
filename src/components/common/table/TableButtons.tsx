@@ -26,13 +26,6 @@ export default function TableButtons({ index, click }: Props) {
     }
   };
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    setModal({
-      isOpen: true,
-      status: e.currentTarget.value as 'accepted' | 'rejected',
-    });
-  };
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
