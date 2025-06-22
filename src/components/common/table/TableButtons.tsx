@@ -2,7 +2,6 @@ import { useEffect, useState, type MouseEvent } from 'react';
 import Button from '../Button';
 import TableStatus from './TableStatus';
 import { putNoticeApplications } from '@/api/applicationApi';
-import Modal from '../Modal';
 
 interface Props {
   shopId: string;
