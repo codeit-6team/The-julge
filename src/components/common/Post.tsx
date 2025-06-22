@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import formatWorkTime from '@/utils/formatWorkTime';
 import ClockRed from '@/assets/icons/clock-red.svg';
 import ClockGray from '@/assets/icons/clock-gray.svg';
@@ -37,7 +37,6 @@ export default function Post({ data }: { data: NoticeShopItem }) {
       item: { id: shopId, name, address1, imageUrl, originalHourlyPay },
     },
   } = data;
-  const navigate = useNavigate();
   const location = useLocation();
   const { addRecentlyViewed } = useRecentlyViewed();
   const status = getStatus(startsAt, closed);
@@ -84,20 +83,15 @@ export default function Post({ data }: { data: NoticeShopItem }) {
     }
   }
 
-  const handleClick = () => {
-    addRecentlyViewed(data);
+  const isOwnerPage = location.pathname.startsWith('/owner');
+  const linkPath = isOwnerPage
+    ? `/owner/post/${shopId}/${noticeId}`
+    : `/${shopId}/${noticeId}`;
 
-    const isOwnerPage = location.pathname.startsWith('/owner');
-
-    const path = isOwnerPage
-      ? `/owner/post/${shopId}/${noticeId}`
-      : `/${shopId}/${noticeId}`;
-
-    navigate(path);
-  };
   return (
-    <button
-      onClick={handleClick}
+    <Link
+      to={linkPath}
+      onClick={() => addRecentlyViewed(data)}
       className="flex h-261 w-full cursor-pointer flex-col gap-12 rounded-xl border border-gray-20 bg-white p-12 md:h-359 md:gap-20 md:p-16 lg:h-348"
     >
       <div className="relative">
@@ -171,6 +165,6 @@ export default function Post({ data }: { data: NoticeShopItem }) {
           )}
         </div>
       </div>
-    </button>
+    </Link>
   );
 }
