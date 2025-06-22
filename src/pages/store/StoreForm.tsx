@@ -144,7 +144,13 @@ export default function StoreForm() {
       <div className="mx-12 flex flex-col gap-24 pt-40 pb-80 md:mx-32 md:gap-32 md:py-60 lg:mx-auto lg:w-964">
         <div className="flex items-center justify-between">
           <h1 className="text-h3/24 font-bold md:text-h1/34">공고 등록</h1>
-          <Link to="/owner/store">
+          <Link
+            to={
+              noticeId.current
+                ? `/owner/post/${shopId.current}/${noticeId.current}`
+                : '/owner/store'
+            }
+          >
             <img src={close} alt="닫기" className="md:size-32" />
           </Link>
         </div>
