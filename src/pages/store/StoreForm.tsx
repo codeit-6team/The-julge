@@ -1,7 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getUser } from '@/api/userApi';
-import { postShopNotice, type NoticeUpsertRequest } from '@/api/noticeApi';
+import {
+  getShopNotice,
+  postShopNotice,
+  putShopNotice,
+  type NoticeUpsertRequest,
+} from '@/api/noticeApi';
 import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
@@ -15,8 +20,9 @@ export default function StoreForm() {
     workhour: undefined,
     description: '',
   });
-  const shopId = useRef('');
-  const noticeId = useRef('');
+  const params = useParams();
+  const shopId = useRef(params.shopId ?? '');
+  const noticeId = useRef(params.noticeId ?? '');
 
   const [modal, setModal] = useState({
     isOpen: false,
@@ -36,8 +42,23 @@ export default function StoreForm() {
 
     (async () => {
       try {
-        const userInfo = await getUser(userId);
-        shopId.current = userInfo.item.shop?.item.id ?? '';
+        if (shopId.current) {
+          const { item } = await getShopNotice(
+            shopId.current,
+            noticeId.current,
+          );
+          setNoticeInfo({
+            ...item,
+            startsAt: new Date(
+              new Date(item.startsAt).getTime() + 1000 * 60 * 60 * 9,
+            )
+              .toISOString()
+              .slice(0, 16),
+          });
+        } else {
+          const userInfo = await getUser(userId);
+          shopId.current = userInfo.item.shop?.item.id ?? '';
+        }
       } catch (error) {
         setModal({
           isOpen: true,
@@ -82,13 +103,18 @@ export default function StoreForm() {
 
     try {
       const startsTime = new Date(noticeInfo?.startsAt).toISOString();
-      const { item } = await postShopNotice(shopId.current, {
+      const body = {
         hourlyPay: noticeInfo?.hourlyPay ?? 0,
         startsAt: startsTime,
         workhour: noticeInfo?.workhour ?? 0,
         description: noticeInfo?.description ?? '',
-      });
-      noticeId.current = item.id;
+      };
+      if (noticeId.current) {
+        await putShopNotice(shopId.current, noticeId.current, body);
+      } else {
+        const { item } = await postShopNotice(shopId.current, body);
+        noticeId.current = item.id;
+      }
       setModal({
         isOpen: true,
         message: '등록이 완료되었습니다.',
@@ -117,8 +143,14 @@ export default function StoreForm() {
     <div className="min-h-[calc(100vh-102px)] bg-gray-5 md:min-h-[calc(100vh-70px)]">
       <div className="mx-12 flex flex-col gap-24 pt-40 pb-80 md:mx-32 md:gap-32 md:py-60 lg:mx-auto lg:w-964">
         <div className="flex items-center justify-between">
-          <h1 className="text-h3/24 font-bold md:text-h1/34">내 프로필</h1>
-          <Link to="/owner/store">
+          <h1 className="text-h3/24 font-bold md:text-h1/34">공고 등록</h1>
+          <Link
+            to={
+              noticeId.current
+                ? `/owner/post/${shopId.current}/${noticeId.current}`
+                : '/owner/store'
+            }
+          >
             <img src={close} alt="닫기" className="md:size-32" />
           </Link>
         </div>

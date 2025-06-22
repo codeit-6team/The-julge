@@ -65,7 +65,13 @@ export default function StorePost() {
           </div>
           {notice && (
             <PostLarge data={notice}>
-              <Button size={isMobile ? 'medium' : 'large'} solid={false}>
+              <Button
+                size={isMobile ? 'medium' : 'large'}
+                solid={false}
+                onClick={() =>
+                  navigate(`/owner/post/${shopId}/${noticeId}/edit`)
+                }
+              >
                 공고 편집하기
               </Button>
             </PostLarge>

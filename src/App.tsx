@@ -33,6 +33,7 @@ export default function App() {
           <Route path="post">
             <Route index element={<StoreForm />} />
             <Route path=":shopId/:noticeId" element={<StorePost />} />
+            <Route path=":shopId/:noticeId/edit" element={<StoreForm />} />
           </Route>
         </Route>
 
