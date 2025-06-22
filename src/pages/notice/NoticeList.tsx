@@ -90,7 +90,7 @@ export default function NoticeList({ search = '' }: { search?: string }) {
       const rawQuery = {
         offset: (currentPage - 1) * ITEMS_PER_PAGE,
         limit: ITEMS_PER_PAGE,
-        address: filterValues.address?.[0],
+        address: filterValues.address,
         keyword: search,
         startsAtGte: filterValues.startsAt ?? getTomorrowISOString(),
         hourlyPayGte: filterValues.hourlyPay,
