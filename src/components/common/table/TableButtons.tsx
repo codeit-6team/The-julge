@@ -4,10 +4,11 @@ import TableStatus from './TableStatus';
 import { putNoticeApplications } from '@/api/applicationApi';
 
 interface Props {
+  index: number;
   click: (dataIndex: number, status: 'accepted' | 'rejected') => void;
 }
 
-export default function TableButtons({ click }: Props) {
+export default function TableButtons({ index, click }: Props) {
   const [status, setStatus] = useState<'pending' | 'accepted' | 'rejected'>(
     'pending',
   );
