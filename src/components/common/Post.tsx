@@ -1,4 +1,4 @@
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import formatWorkTime from '@/utils/formatWorkTime';
 import ClockRed from '@/assets/icons/clock-red.svg';
 import ClockGray from '@/assets/icons/clock-gray.svg';
@@ -37,7 +37,6 @@ export default function Post({ data }: { data: NoticeShopItem }) {
       item: { id: shopId, name, address1, imageUrl, originalHourlyPay },
     },
   } = data;
-  const navigate = useNavigate();
   const location = useLocation();
   const { addRecentlyViewed } = useRecentlyViewed();
   const status = getStatus(startsAt, closed);
