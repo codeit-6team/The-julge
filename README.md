@@ -6,7 +6,7 @@
 - The Julge는 사용자가 원하는 조건의 일자리를 검색하고 지원하며, 근무 승인까지 받을 수 있는 매칭 플랫폼입니다.
   고용인이 더 높은 시급을 제공할 경우, 시급 인상률을 기준으로 일자리를 정렬하는 독특한 기능을 구현하여 사용자에게 더 나은 조건의 일자리를 추천합니다.
 ## 🚀 배포 링크
-[더줄게 바로가기](http://) 
+[더줄게 바로가기](https://the-julge-eight.vercel.app/) 
 
 ## 🖐️ 팀원을 소개합니다
 |[![](https://avatars.githubusercontent.com/u/198836946?v=4)](https://github.com/minimo-9)|[![](https://avatars.githubusercontent.com/u/127847577?v=4)](https://github.com/Moon-ju-young)|[![](https://avatars.githubusercontent.com/u/166713026?v=4)](https://github.com/dltmdals3929)|[![](https://avatars.githubusercontent.com/u/127362044?v=4)](https://github.com/Yun-Jinwoo)|
