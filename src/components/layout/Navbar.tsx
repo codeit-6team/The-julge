@@ -8,10 +8,15 @@ import alarmActive from '@/assets/icons/alarm-active.svg';
 import alarmInactive from '@/assets/icons/alarm-inactive.svg';
 
 export default function Navbar() {
-  const { isLoggedIn, role, alarms, logout } = useContext(AuthContext);
+  const { isLoggedIn, role, alarms, logout, markAlertAsRead } =
+    useContext(AuthContext);
   const [isShowModal, setIsShowModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const unreadAlarmCount = alarms.items.filter(
+    (alert) => !alert.item.read,
+  ).length;
 
   // 바깥 클릭 시 모달 닫기
   useEffect(() => {
@@ -41,6 +46,11 @@ export default function Navbar() {
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const handleNotificationClick = (alertId: string) => {
+    markAlertAsRead(alertId); // AuthContext의 함수를 호출해 알림을 읽음 처리
+    setIsShowModal(false); // Navbar의 state를 변경해 모달을 닫음
+  };
 
   return (
     <header className="bg-white">
@@ -73,7 +83,7 @@ export default function Navbar() {
               ref={buttonRef}
               onClick={() => setIsShowModal((prev) => !prev)}
             >
-              {alarms.count > 0 ? (
+              {unreadAlarmCount > 0 ? (
                 <img src={alarmActive} />
               ) : (
                 <img src={alarmInactive} />
@@ -94,8 +104,8 @@ export default function Navbar() {
           >
             <NotificationModal
               data={alarms.items}
-              count={alarms.count}
               onClose={() => setIsShowModal(false)}
+              onMarkAsRead={handleNotificationClick}
             />
           </div>
         )}
