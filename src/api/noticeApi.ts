@@ -90,19 +90,32 @@ export interface NoticeUpsertRequest {
 export const getNotices = async (query?: {
   offset?: number;
   limit?: number;
-  address?: string;
+  address?: string[];
   keyword?: string;
   startsAtGte?: string;
   hourlyPayGte?: number;
   sort?: 'time' | 'pay' | 'hour' | 'shop';
 }): Promise<GetNoticesResponse> => {
   try {
-    const newQuery = new URLSearchParams({
-      ...query,
-      offset: String(query?.offset ?? ''),
-      limit: String(query?.limit ?? ''),
-      hourlyPayGte: String(query?.hourlyPayGte ?? ''),
+    const { address, ...rest } = query ?? {}; // address만 분리
+
+    const newQuery = new URLSearchParams();
+
+    // 키값을 하나씩 꺼내 문자열 변환
+    Object.entries(rest).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        newQuery.set(key, String(value));
+      }
     });
+
+    // 배열로 각 값의 trim 적용, 유효한 값만 append
+    address?.forEach((addr) => {
+      const trimmed = addr.trim();
+      if (trimmed) {
+        newQuery.append('address', trimmed);
+      }
+    });
+
     const response = await api.get<GetNoticesResponse>(`/notices?${newQuery}`);
     return response.data;
   } catch (error) {

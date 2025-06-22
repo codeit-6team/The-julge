@@ -90,7 +90,7 @@ export default function NoticeList({ search = '' }: { search?: string }) {
       const rawQuery = {
         offset: (currentPage - 1) * ITEMS_PER_PAGE,
         limit: ITEMS_PER_PAGE,
-        address: filterValues.address?.[0],
+        address: filterValues.address,
         keyword: search,
         startsAtGte: filterValues.startsAt ?? getTomorrowISOString(),
         hourlyPayGte: filterValues.hourlyPay,
@@ -134,13 +134,19 @@ export default function NoticeList({ search = '' }: { search?: string }) {
         const userInfo = await getUser(userId);
         const preferredAddress = userInfo.item.address;
 
+        let addressArray: string[] = [];
+        if (preferredAddress) {
+          addressArray = Array.isArray(preferredAddress)
+            ? preferredAddress
+            : [preferredAddress];
+        }
+
         const result = await getNotices({
           offset: 0,
           limit: 9,
           startsAtGte: getTomorrowISOString(),
-          ...(preferredAddress
-            ? { address: preferredAddress }
-            : { sort: 'shop' }),
+          address: addressArray.length > 0 ? addressArray : undefined,
+          sort: addressArray.length === 0 ? 'shop' : undefined,
         });
 
         setRecommendedNotices(
