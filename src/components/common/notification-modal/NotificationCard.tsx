@@ -5,12 +5,14 @@ import formatWorkTime from '@/utils/formatWorkTime';
 
 interface NotificationCardProps {
   alertId: string; // 알림 id
+  shopId: string; // 가게 id
   noticeId: string; // 공고 id
   status: 'accepted' | 'rejected'; // 공고 지원 상태
   restaurantName: string; // 음식점 이름
   startsAt: string; // 공고 시작 시간 (ISO 8601 문자열)
   workhour: number; // 근무 시간 (시간 단위)
   createdAt: string; // 알림 생성 시간 (ISO 8601 문자열)
+  onMarkAsRead: (alertId: string) => void;
 }
 
 /*
@@ -21,12 +23,14 @@ interface NotificationCardProps {
 
 export default function NotificationCard({
   alertId,
+  shopId,
   noticeId,
   status,
   restaurantName,
   startsAt,
   workhour,
   createdAt,
+  onMarkAsRead,
 }: NotificationCardProps) {
   const formattedTime = formatWorkTime({
     startsAt,
@@ -38,19 +42,11 @@ export default function NotificationCard({
   const formattedStatusClass =
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
   const handleClick = () => {
-    const userId = localStorage.getItem('userId');
+    // 부모로부터 받은 함수를 호출하여 "이 알림(alertId)이 클릭되었다"고 알립니다.
+    onMarkAsRead(alertId);
 
-    if (!userId) {
-      console.error('userId를 찾을 수 없습니다.');
-      return;
-    }
-
-    try {
-      putAlerts(userId, alertId); // 알림 읽음 처리
-      navigate(`/${noticeId}`);
-    } catch (error) {
-      console.error(error);
-    }
+    // 페이지 이동 로직은 그대로 유지합니다.
+    navigate(`${shopId}/${noticeId}`);
   };
   return (
     <div onClick={handleClick} className="cursor-pointer">
