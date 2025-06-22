@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Post from '@/components/common/Post';
 import Dropdown from '@/components/common/Dropdown';
 import { SORT_OPTIONS } from '@/constants/dropdownOptions';
@@ -9,6 +9,7 @@ import type { NoticeShopItem } from '@/api/noticeApi';
 import Footer from '@/components/layout/Footer';
 import Modal from '@/components/common/Modal';
 import { getUser } from '@/api/userApi';
+import { AuthContext } from '@/context/AuthContext';
 
 type FilterValues = {
   address?: string[] | null;
@@ -63,6 +64,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
   const sliderRef = useRef<HTMLDivElement | null>(null); // 자동 스크롤
   const [shouldShowEmpty, setShouldShowEmpty] = useState(false); // 깜빡임 방지용
   const [showModal, setShowModal] = useState(false);
+  const { isLoggedIn } = useContext(AuthContext);
 
   // 지난 공고 안보이게 처리
   const getTomorrowISOString = () => {
@@ -125,7 +127,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
         const userId = localStorage.getItem('userId');
 
         // 로그아웃 상태 -> 기본 공고
-        if (!userId) {
+        if (!userId || !isLoggedIn) {
           const notices = await fetchDefaultNotices();
           setRecommendedNotices(notices);
           return;
@@ -154,7 +156,7 @@ export default function NoticeList({ search = '' }: NoticeListProps) {
     };
 
     fetchRecommended();
-  }, [search, fetchDefaultNotices]);
+  }, [search, fetchDefaultNotices, isLoggedIn]);
 
   // 자동 스크롤
   const autoplaySlider = useCallback(() => {
