@@ -14,11 +14,6 @@ export default function TableButtons({ index, click }: Props) {
   );
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
-  const closeModal = () =>
-    setModal((prev) => {
-      return { ...prev, isOpen: false };
-    });
-
   const handleModalClick = async () => {
     closeModal();
     setStatus(modal.status);
