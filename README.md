@@ -53,7 +53,7 @@ project-root/
 │   ├── components/           # 재사용 가능한 컴포넌트들
 │   │   ├── common/           # 공용 컴포넌트  
 │   │   └── layout/           # 페이지 레이아웃 컴포넌트들
-│   │       └── Header.tsx    
+│   │       └── Navbar.tsx    
 │   ├── context/
 │   ├── constants/            # 상수
 │   ├── hooks/                # 커스텀 React 훅들
