@@ -41,7 +41,7 @@ export default function TableButtons({ index, click }: Props) {
         size={isMobile ? 'small' : 'medium'}
         className="w-69 md:w-92"
         value="rejected"
-        onClick={handleClick}
+        onClick={() => click(index, 'rejected')}
       >
         거절하기
       </Button>
@@ -54,7 +54,7 @@ export default function TableButtons({ index, click }: Props) {
           borderColor: 'var(--color-blue-20)',
         }}
         value="accepted"
-        onClick={handleClick}
+        onClick={() => click(index, 'accepted')}
       >
         승인하기
       </Button>
