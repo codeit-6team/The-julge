@@ -48,6 +48,14 @@ export default function Table(props: UserProps | NoticeProps) {
       return { ...prev, isOpen: false };
     });
 
+  const clickButton = (dataIndex: number, status: 'accepted' | 'rejected') => {
+    setModal({
+      isOpen: true,
+      status,
+      dataIndex,
+    });
+  };
+
   useEffect(() => {
     (async () => {
       try {
