@@ -29,9 +29,14 @@ export default function Filter({
   const [address, setAddress] = useState<string[]>(
     defaultValues?.address ?? [],
   );
-  const [startsAt, setStartsAt] = useState<string>(
-    defaultValues?.startsAt ?? '',
-  );
+
+  const [startsAt, setStartsAt] = useState<string>(() => {
+    if (!defaultValues?.startsAt) return '';
+    const utcDate = new Date(defaultValues.startsAt);
+    const kstDate = new Date(utcDate.getTime() + 9 * 60 * 60 * 1000); // UTC → KST
+    return kstDate.toISOString().slice(0, 10); // YYYY-MM-DD
+  });
+
   const [hourlyPay, setHourlyPay] = useState<string>(
     defaultValues?.hourlyPay?.toString() ?? '',
   );
@@ -62,9 +67,20 @@ export default function Filter({
 
   const handleApply = () => {
     const cleanPay = hourlyPay.replace(/,/g, '');
+
+    let startsAtISO: string | null = null;
+
+    if (startsAt) {
+      const [year, month, day] = startsAt.split('-').map(Number);
+      const kstMidnight = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+      startsAtISO = new Date(
+        kstMidnight.getTime() - 9 * 60 * 60 * 1000,
+      ).toISOString(); // KST → UTC
+    }
+
     onApply({
       address,
-      startsAt: startsAt || null,
+      startsAt: startsAtISO,
       hourlyPay: cleanPay ? Number(cleanPay) : null,
     });
     onClose();
@@ -73,7 +89,7 @@ export default function Filter({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-5 flex w-full flex-col gap-24 overflow-y-auto border border-gray-20 bg-white px-12 py-24 shadow-custom md:static md:max-w-390 md:rounded-xl md:px-19">
+    <div className="fixed inset-0 z-5 scrollbar-hide flex w-full flex-col gap-24 overflow-y-auto border border-gray-20 bg-white px-12 py-24 shadow-custom md:static md:inset-auto md:w-390 md:rounded-xl md:px-19">
       <div className="flex flex-row items-center justify-between">
         <h3 className="text-h3 font-bold text-black">상세 필터</h3>
         <button

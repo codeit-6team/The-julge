@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, useSearchParams } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Login from './pages/account/Login';
 import Signup from './pages/account/Signup';
@@ -11,6 +11,12 @@ import ProfileForm from './pages/profile/ProfileForm';
 import NoticeList from './pages/notice/NoticeList';
 import Notice from './pages/notice/Notice';
 
+function SearchPage() {
+  const [params] = useSearchParams();
+  const query = params.get('query') || '';
+  return <NoticeList search={query} />;
+}
+
 export default function App() {
   const { pathname } = useLocation();
 
@@ -20,6 +26,7 @@ export default function App() {
       <Routes>
         {/* 공통 페이지 */}
         <Route path="/" element={<NoticeList />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path=":shopId/:noticeId" element={<Notice />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />

@@ -14,8 +14,7 @@ export default function formatWorkTime({
   }
 
   /* 시각이 24시를 넘으면 다음날로 설정되어 자동으로 처리  */
-  const endDate = new Date(date);
-  endDate.setHours(endDate.getHours() + workhour);
+  const endDate = new Date(date.getTime() + workhour * 60 * 60 * 1000);
 
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');

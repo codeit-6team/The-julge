@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useRef, useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '@/context/AuthContext';
 import NotificationModal from '../common/notification-modal/NotificationModal';
 import logo from '@/assets/images/logo.svg';
@@ -13,6 +14,8 @@ export default function Navbar() {
   const [isShowModal, setIsShowModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
 
   const unreadAlarmCount = alarms.items.filter(
     (alert) => !alert.item.read,
@@ -70,6 +73,15 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="가게 이름으로 찾아보세요"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchValue.trim()) {
+                navigate(
+                  `/search?query=${encodeURIComponent(searchValue.trim())}`,
+                );
+              }
+            }}
             className="h-36 w-full rounded-[10px] bg-gray-10 pt-10 pb-10 pl-40 placeholder:text-body2 placeholder:text-gray-40 md:h-40 md:w-344 lg:w-450"
           />
         </div>
