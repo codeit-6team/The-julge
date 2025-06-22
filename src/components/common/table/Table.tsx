@@ -36,9 +36,11 @@ export default function Table(props: UserProps | NoticeProps) {
   const [modal, setModal] = useState<{
     isOpen: boolean;
     status: 'accepted' | 'rejected';
+    dataIndex: number;
   }>({
     isOpen: false,
     status: 'accepted',
+    dataIndex: 0,
   });
 
   const closeModal = () =>
