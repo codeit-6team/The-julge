@@ -17,10 +17,6 @@ type FilterValues = {
   hourlyPay?: number | null;
 };
 
-type NoticeListProps = {
-  search?: string;
-};
-
 // 상수
 const ITEMS_PER_PAGE = 6;
 
@@ -46,15 +42,15 @@ function countAppliedFilters(filterValues: FilterValues): number {
 }
 
 // 컴포넌트
-export default function NoticeList({ search = '' }: NoticeListProps) {
+export default function NoticeList({ search = '' }: { search?: string }) {
   const [allNotices, setAllNotices] = useState<NoticeShopItem[]>([]); // 현재 페이지에 노출할 공고 목록
   const [totalCount, setTotalCount] = useState(0); // 전체 공고 수
   const [sort, setSort] = useState<(typeof SORT_OPTIONS)[number] | null>(
     SORT_OPTIONS[0],
   ); // 정렬(드롭다운 값)
   const [filterValues, setFilterValues] = useState<FilterValues>({}); // 상세필터 상태값
-  const [currentPage, setCurrentPage] = useState<number>(1); // 현재 페이지(페이지네이션)
-  const [filterOpen, setFilterOpen] = useState<boolean>(false); // 필터 모달 오픈
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지(페이지네이션)
+  const [filterOpen, setFilterOpen] = useState(false); // 필터 모달 오픈
   const [loading, setLoading] = useState(false); // 로딩 에러처리
   const [error, setError] = useState<string | null>(null); // 로딩 에러처리
   const [recommendedNotices, setRecommendedNotices] = useState<
