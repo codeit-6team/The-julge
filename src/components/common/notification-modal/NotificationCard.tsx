@@ -1,5 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-import { putAlerts } from '@/api/alertApi';
+import { Link } from 'react-router-dom';
 import calculateTimeDifference from '@/utils/calculateTimeDifference';
 import formatWorkTime from '@/utils/formatWorkTime';
 
@@ -36,20 +35,14 @@ export default function NotificationCard({
     startsAt,
     workhour,
   });
-  const navigate = useNavigate();
+
   const formattedCreatedAt = calculateTimeDifference(createdAt);
   const formattedStatus = status === 'accepted' ? '승인' : '거절';
   const formattedStatusClass =
     status === 'accepted' ? 'text-blue-20' : 'text-red-20';
-  const handleClick = () => {
-    // 부모로부터 받은 함수를 호출하여 "이 알림(alertId)이 클릭되었다"고 알립니다.
-    onMarkAsRead(alertId);
 
-    // 페이지 이동 로직은 그대로 유지합니다.
-    navigate(`${shopId}/${noticeId}`);
-  };
   return (
-    <div onClick={handleClick} className="cursor-pointer">
+    <Link to={`${shopId}/${noticeId}`} onClick={() => onMarkAsRead(alertId)}>
       <div className="flex flex-col gap-4 rounded-[5px] border border-gray-20 bg-white px-12 py-16 md:w-328">
         {status === 'accepted' ? (
           <div className="h-5 w-5 rounded-full bg-blue-20"></div>
@@ -63,6 +56,6 @@ export default function NotificationCard({
         </h2>
         <p className="text-caption/16 text-gray-40">{formattedCreatedAt}</p>
       </div>
-    </div>
+    </Link>
   );
 }
