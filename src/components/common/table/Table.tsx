@@ -210,6 +210,7 @@ export default function Table(props: UserProps | NoticeProps) {
         <Modal
           option="action"
           yesButtonContent="예"
+          onYesButtonClick={handleModalClick}
           onButtonClick={closeModal}
           onClose={closeModal}
         >
