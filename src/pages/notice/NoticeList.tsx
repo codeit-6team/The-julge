@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import Post from '@/components/common/Post';
 import Dropdown from '@/components/common/Dropdown';
 import { SORT_OPTIONS } from '@/constants/dropdownOptions';
@@ -56,8 +56,6 @@ export default function NoticeList({ search = '' }: { search?: string }) {
   const [recommendedNotices, setRecommendedNotices] = useState<
     NoticeShopItem[]
   >([]); // 맞춤 공고 보이는 목록
-  const sliderIndexRef = useRef(0); // 카드 인덱스
-  const sliderRef = useRef<HTMLDivElement | null>(null); // 자동 스크롤
   const [shouldShowEmpty, setShouldShowEmpty] = useState(false); // 깜빡임 방지용
   const [showModal, setShowModal] = useState(false);
   const { isLoggedIn } = useContext(AuthContext);
@@ -84,36 +82,39 @@ export default function NoticeList({ search = '' }: { search?: string }) {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    setShouldShowEmpty(false);
+    const fetchNotices = async () => {
+      setLoading(true);
+      setError(null);
+      setShouldShowEmpty(false);
 
-    const rawQuery = {
-      offset: (currentPage - 1) * ITEMS_PER_PAGE,
-      limit: ITEMS_PER_PAGE,
-      address: filterValues.address?.[0],
-      keyword: search,
-      startsAtGte: filterValues.startsAt ?? getTomorrowISOString(),
-      hourlyPayGte: filterValues.hourlyPay ?? undefined,
-      sort: sort ? sortMap[sort] : undefined,
-    };
+      const rawQuery = {
+        offset: (currentPage - 1) * ITEMS_PER_PAGE,
+        limit: ITEMS_PER_PAGE,
+        address: filterValues.address?.[0],
+        keyword: search,
+        startsAtGte: filterValues.startsAt ?? getTomorrowISOString(),
+        hourlyPayGte: filterValues.hourlyPay,
+        sort: sort ? sortMap[sort] : undefined,
+      };
 
-    const cleanedQuery = Object.fromEntries(
-      // fromEntries() 키-값 쌍의 배열을 객체로 변환
-      Object.entries(rawQuery).filter(([, v]) => v !== undefined && v !== ''), // entries() 객체의 속성을 배열로 반환
-    );
+      const cleanedQuery = Object.fromEntries(
+        Object.entries(rawQuery).filter(([, v]) => v !== undefined && v !== ''),
+      );
 
-    getNotices(cleanedQuery)
-      .then((data) => {
+      try {
+        const data = await getNotices(cleanedQuery);
         setAllNotices(data.items.map((item) => item.item));
         setTotalCount(data.count);
         setShouldShowEmpty(true);
-      })
-      .catch((err) => {
-        setError(err.message);
+      } catch (error) {
+        setError((error as Error).message);
         setShowModal(true);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotices();
   }, [search, sort, filterValues, currentPage]);
 
   // 유저 위치 기반 맞춤 공고 추천
@@ -154,46 +155,6 @@ export default function NoticeList({ search = '' }: { search?: string }) {
     fetchRecommended();
   }, [search, fetchDefaultNotices, isLoggedIn]);
 
-  // 자동 스크롤
-  const autoplaySlider = useCallback(() => {
-    const container = sliderRef.current;
-    if (!container) return;
-
-    const cards = container.querySelectorAll('[data-card]'); // 모든 카드
-    if (!cards.length) return;
-
-    const card = cards[0];
-    const cardWidth = card.getBoundingClientRect().width; // getBoundingClientRect 브라우저에 실제 카드 너비를 가져옴
-    const style = window.getComputedStyle(container); // getComputedStyle 적용된 css 찾기
-    const gap = parseInt(style.columnGap || style.gap || '0', 10);
-    const stepSize = cardWidth + gap;
-
-    sliderIndexRef.current += 1;
-    if (sliderIndexRef.current >= cards.length) {
-      sliderIndexRef.current = 0;
-    }
-
-    container.scrollTo({
-      left: stepSize * sliderIndexRef.current,
-      behavior: 'smooth',
-    });
-  }, []);
-
-  // 스크롤 인덱스 초기화
-  useEffect(() => {
-    if (recommendedNotices.length > 0) {
-      sliderIndexRef.current = 0;
-    }
-  }, [recommendedNotices]);
-
-  // 자동 스크롤 타이머
-  useEffect(() => {
-    const interval = setInterval(() => {
-      autoplaySlider();
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [autoplaySlider]);
-
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE); // 페이지네이션
   const appliedFilterCount = countAppliedFilters(filterValues); // 필터 적용
 
@@ -227,10 +188,7 @@ export default function NoticeList({ search = '' }: { search?: string }) {
           <article className="bg-red-10 py-40 pl-12 md:py-60 md:pl-32 lg:px-0">
             <section className="flex flex-col gap-16 md:gap-32 lg:mx-auto lg:max-w-964">
               <h2 className="text-h3/24 font-bold md:text-h1/34">맞춤 공고</h2>
-              <div
-                className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth md:gap-14"
-                ref={sliderRef}
-              >
+              <div className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth md:gap-14">
                 {recommendedNotices.slice(0, 9).map((notice) => (
                   <div
                     key={notice.id}
