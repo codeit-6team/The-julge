@@ -60,43 +60,30 @@ export default function TableButtons({
   }, []);
 
   return status === 'pending' ? (
-    <>
-      <div className="flex gap-8 md:gap-12">
-        <Button
-          solid={false}
-          size={isMobile ? 'small' : 'medium'}
-          className="w-69 md:w-92"
-          value="rejected"
-          onClick={handleClick}
-        >
-          거절하기
-        </Button>
-        <Button
-          solid={false}
-          size={isMobile ? 'small' : 'medium'}
-          className="w-69 md:w-92"
-          style={{
-            color: 'var(--color-blue-20)',
-            borderColor: 'var(--color-blue-20)',
-          }}
-          value="accepted"
-          onClick={handleClick}
-        >
-          승인하기
-        </Button>
-      </div>
-      {modal.isOpen && (
-        <Modal
-          option="action"
-          onButtonClick={closeModal}
-          onYesButtonClick={handleModalClick}
-          yesButtonContent="예"
-          onClose={closeModal}
-        >
-          신청을 {modal.status === 'accepted' ? '승인' : '거절'}하시겠어요?
-        </Modal>
-      )}
-    </>
+    <div className="flex gap-8 md:gap-12">
+      <Button
+        solid={false}
+        size={isMobile ? 'small' : 'medium'}
+        className="w-69 md:w-92"
+        value="rejected"
+        onClick={handleClick}
+      >
+        거절하기
+      </Button>
+      <Button
+        solid={false}
+        size={isMobile ? 'small' : 'medium'}
+        className="w-69 md:w-92"
+        style={{
+          color: 'var(--color-blue-20)',
+          borderColor: 'var(--color-blue-20)',
+        }}
+        value="accepted"
+        onClick={handleClick}
+      >
+        승인하기
+      </Button>
+    </div>
   ) : (
     <TableStatus status={status} />
   );
