@@ -260,12 +260,12 @@ export default function NoticeList({ search = '' }: { search?: string }) {
               </div>
             </div>
             {shouldShowEmpty && allNotices.length === 0 ? (
-              <div className="flex h-728 w-964 items-center justify-center text-h3 text-black">
+              <div className="flex h-815 items-center justify-center text-h3 text-black md:h-1141 lg:h-728 lg:w-964">
                 등록된 게시물이 없습니다.
               </div>
             ) : (
               <>
-                <div className="grid h-728 grid-cols-2 gap-x-8 gap-y-16 md:gap-x-14 md:gap-y-32 lg:grid-cols-3">
+                <div className="grid h-815 grid-cols-2 gap-x-8 gap-y-16 md:h-1141 md:gap-x-14 md:gap-y-32 lg:h-728 lg:grid-cols-3">
                   {allNotices.map((notice) => (
                     <div key={notice.id} className="block">
                       <Post data={notice} />
